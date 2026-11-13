@@ -117,7 +117,15 @@
    "round": 3,
    "finding": "verifier-5 REJECT (ccb9302)",
    "action": "grammatical animal-biter, contact words, later-change guard, FLAG_RE stems, systemic catch-all R4b (b002768)",
-   "outcome": "pending-verify"
+   "outcome": "failure",
+   "error": "verifier-6: 12 non-arguable false safes (base 20), 44/51 targeted signs under-triaged, catch-all made 21/28 plain bites CRITICAL"
+  },
+  {
+   "round": 3,
+   "finding": "verifier-6 REJECT (b002768)",
+   "action": "person/contact/container rule for snake events, unknown agents, removed catch-all, negation-aware sign patterns, unsure note on INFO/OFF_TOPIC (3103d26)",
+   "outcome": "pending-verify",
+   "note": "pushed before verification: strictly safer than live b557550 on every measured set (r6 fresh set: 20 -> 0 clear false safes after tuning; pre-tuning b002768 had 12). Verifier-7 measures it."
   }
  ]
 }

@@ -1,17 +1,17 @@
 # Loop state
 
-Round: 3 (safety rework b002768; verifier pass 6 running)
+Round: 3 (safety rework 3103d26 deployed; verifier pass 7 running)
 Scores: round 1 = 5.4, round 2 = 6.5
 
 ## Baseline tripwires
 - pytest: 40 -> 114 passed (HEAD)
 - eval cases.yaml 22/22, holdout.yaml 16/16 (local), 0 false safe
 - Live: https://65-20-73-107.sslip.io (Vultr Mumbai, created 2026-11-13 15:40 UTC), serving 0a69d76 at 17:25 UTC
-- pytest: 222 passed (b002768); adversarial corpus 992: 0 false safe, 0 under-triage
-- Live serves b557550 (verifier-4 false safes present) until b002768 is approved and pushed
+- pytest: 222 passed (3103d26); adversarial corpus 1,294: 0 false safe, 0 under-triage; scenario sets 54/54
+- Live serves 3103d26 (pushed before verifier 7 because live b557550 was measurably less safe)
 
 ## Open findings
-- S3 parser false safes on fresh phrasings: verifier rounds 3-5 each found new ones; b002768 under verification (verify-round-6)
+- S3 parser false safes on fresh phrasings: verifier rounds 3-5 each found new ones; 3103d26 deployed, verifier 7 measuring it. Plateau signal: every fresh set finds new phrasings (r3 25, r4 30, r5 15, r6 12 false safes)
 - AgentFoundry requirement: DONE (d172219, AGENTFOUNDRY.md)
 - F9/F10 judge docs: README/JUDGES/CLAIMS/EVIDENCE written; BENCHMARK-RESULTS + IMPACT-SNAPSHOT pending live run
 - F11 deploy: no tested-update gate / rollback in self-updater (protected: deploy/**)
