@@ -1,0 +1,8 @@
+maxFiles: 10
+protected:
+  - eval_cases/**          # expectations written before runs
+  - eval_results/**        # recorded runs
+  - app/content.py         # medical guidance text + sources (wording changes need human review)
+  - deploy/**              # infra
+  - LICENSE
+  - "**/.env*"
