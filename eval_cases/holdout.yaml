@@ -1,0 +1,98 @@
+# HELD-OUT scenarios. Written 13 Nov 2026 02:35 UTC after the parser fixes for run 0,
+# BEFORE this file was ever run. Not used for tuning. Results are reported as-is.
+
+- id: h-en-russell
+  lang: en
+  group: bite
+  message: "My uncle was bitten by a Russell's viper while cutting sugarcane, his foot is swelling fast"
+  expect: {level: URGENT, include: [go_hospital, remove_tight]}
+
+- id: h-hinglish-krait-night
+  lang: hinglish
+  group: bite
+  message: "raat ko zameen par so rahi thi, subah uthi to aankhen band ho rahi hain aur kamzori hai"
+  expect: {level: CRITICAL, include: [suspect_krait]}
+
+- id: h-hi-ojha-tourniquet
+  lang: hi
+  group: bite
+  message: "भाई को सांप ने डसा, गांव वालों ने रस्सी बांधी और ओझा के पास ले गए"
+  expect: {level: URGENT, include: [fix_tourniquet, fix_healer]}
+
+- id: h-en-walked
+  lang: en
+  group: bite
+  message: "snake bit me 30 minutes ago and I walked 2 km to the road"
+  expect: {level: URGENT, include: [fix_walked, no_walk]}
+
+- id: h-en-alcohol
+  lang: en
+  group: bite
+  message: "snake bite on his hand, he drank alcohol for the pain"
+  expect: {level: URGENT, include: [fix_ate, nil_by_mouth]}
+
+- id: h-hinglish-swallow
+  lang: hinglish
+  group: bite
+  message: "cobra ne kaata, ab nigalne mein dikkat aur awaaz badal gayi"
+  expect: {level: CRITICAL}
+
+- id: h-en-vomit-blood
+  lang: en
+  group: bite
+  message: "bitten by a snake yesterday, today she is vomiting blood"
+  expect: {level: CRITICAL, include: [late_note]}
+
+- id: h-hi-child
+  lang: hi
+  group: bite
+  message: "मेरी बेटी को खेलते समय साँप ने काट लिया"
+  expect: {level: URGENT, include: [child_note]}
+
+- id: h-en-mp-helpline
+  lang: en
+  group: bite
+  message: "We are in Madhya Pradesh, a snake bit my grandmother"
+  expect: {level: URGENT, include: [call_15400]}
+
+- id: h-en-dont-know-snake
+  lang: en
+  group: bite
+  message: "I felt a sharp prick on my ankle in the dark grass, I think it may have been a snake"
+  expect: {level: URGENT, include: [go_hospital]}
+
+- id: h-hinglish-killed-snake
+  lang: hinglish
+  group: bite
+  message: "saanp ne kaata aur humne saanp ko maar diya, ab kya karein"
+  expect: {level: URGENT, include: [dont_catch]}
+
+- id: h-en-not-responding
+  lang: en
+  group: bite
+  message: "snake bit my father, now he is not responding when we call him"
+  expect: {level: CRITICAL, include: [recovery_position]}
+
+- id: h-ctl-bee
+  lang: en
+  group: control
+  message: "A bee stung my son on the arm"
+  expect: {level: OTHER, exclude: [go_hospital]}
+
+- id: h-ctl-monkey
+  lang: hinglish
+  group: control
+  message: "bandar ne haath pe kaata"
+  expect: {level: OTHER, exclude: [go_hospital]}
+
+- id: h-ctl-sleep-advice
+  lang: en
+  group: control
+  message: "How do I avoid snakes when sleeping in a village house?"
+  expect: {level: INFO, exclude: [go_hospital]}
+
+- id: h-ctl-fever
+  lang: en
+  group: control
+  message: "my child has a fever and cough since two days"
+  expect: {level: OFF_TOPIC, exclude: [go_hospital]}

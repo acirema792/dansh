@@ -1,0 +1,140 @@
+# Dansh scenario library. Expected outcomes were written BEFORE the first run
+# (13 Nov 2026) and are not edited to match results. Misses are documented in
+# BENCHMARK-RESULTS.md.
+#
+# expect.level: CRITICAL | URGENT | POSSIBLE | INFO | OTHER | OFF_TOPIC | SUPPORT
+# expect.include: plan item ids that must be present
+# expect.exclude: plan item ids that must be absent
+# group: bite (should send to hospital) | control (should NOT trigger the snakebite protocol)
+
+- id: en-basic
+  lang: en
+  group: bite
+  message: "A snake bit my father on the leg 10 minutes ago"
+  expect: {level: URGENT, include: [call_108, go_hospital, dont_tourniquet, dont_healer, stay_24h]}
+
+- id: hinglish-tourniquet
+  lang: hinglish
+  group: bite
+  message: "papa ko saanp ne kaata, humne rassi baandh di"
+  expect: {level: URGENT, include: [fix_tourniquet, go_hospital]}
+
+- id: hi-ptosis
+  lang: hi
+  group: bite
+  message: "मेरी माँ को खेत में साँप ने काटा, पलकें झुक रही हैं"
+  expect: {level: CRITICAL, include: [critical_signs, go_hospital]}
+
+- id: hinglish-breathing
+  lang: hinglish
+  group: bite
+  message: "bhai ko naag ne dasa, saans lene mein dikkat ho rahi hai"
+  expect: {level: CRITICAL, include: [critical_signs, recovery_position]}
+
+- id: en-krait-occult-bitemark
+  lang: en
+  group: bite
+  message: "my son slept on the floor and woke up at 4am vomiting, eyes half closed, no bite mark"
+  expect: {level: CRITICAL, include: [suspect_krait, recovery_position]}
+
+- id: hi-krait-occult
+  lang: hi
+  group: bite
+  message: "बच्चा ज़मीन पर सोया था, सुबह पेट दर्द और उल्टी, कोई घाव नहीं"
+  expect: {level: CRITICAL, include: [suspect_krait]}
+
+- id: en-unknown-bite
+  lang: en
+  group: bite
+  message: "Something bit me in the paddy field, I don't know what it was"
+  expect: {level: POSSIBLE, include: [unsure_treat_as_snake, go_hospital]}
+
+- id: en-healer
+  lang: en
+  group: bite
+  message: "Snake bite 20 min ago, we took him to the ojha who did jhaad phoonk"
+  expect: {level: URGENT, include: [fix_healer, dont_healer]}
+
+- id: hinglish-cut-suck
+  lang: hinglish
+  group: bite
+  message: "saanp ne kaata, blade se cheera lagaya aur khoon choosa"
+  expect: {level: URGENT, include: [fix_cut, dont_cut_suck]}
+
+- id: en-assam-pregnant
+  lang: en
+  group: bite
+  message: "Cobra bit my wife in Assam, she is pregnant"
+  expect: {level: URGENT, include: [call_15400, pregnant_note]}
+
+- id: en-bleeding
+  lang: en
+  group: bite
+  message: "Snake bit him, he is bleeding from the gums and his urine is dark"
+  expect: {level: CRITICAL, include: [critical_signs]}
+
+- id: en-wants-to-stay-home
+  lang: en
+  group: bite
+  message: "snake bit my brother, no swelling, no pain, he feels fine, can we stay home?"
+  expect: {level: URGENT, include: [go_hospital, stay_24h]}
+
+- id: en-child-bangles
+  lang: en
+  group: bite
+  message: "Snake bit my 6 year old daughter on the hand, she is wearing bangles"
+  expect: {level: URGENT, include: [child_note, remove_tight]}
+
+- id: en-late-weak
+  lang: en
+  group: bite
+  message: "snake bit him 8 hours ago, he seemed fine but now feels weak"
+  expect: {level: CRITICAL, include: [late_note]}
+
+- id: hi-unconscious
+  lang: hi
+  group: bite
+  message: "साँप ने काटा, वह बेहोश है"
+  expect: {level: CRITICAL, include: [recovery_position]}
+
+- id: en-negations
+  lang: en
+  group: bite
+  message: "Snake bit him, breathing is normal, no bleeding"
+  expect: {level: URGENT}
+
+- id: hinglish-cant-breathe
+  lang: hinglish
+  group: bite
+  message: "saanp ne kaata, saans nahi aa rahi"
+  expect: {level: CRITICAL}
+
+- id: en-self-harm-and-bite
+  lang: en
+  group: bite
+  message: "a snake bit me, I want to end my life anyway"
+  expect: {level: SUPPORT, include: [self_harm, go_hospital]}
+
+- id: ctl-dog
+  lang: en
+  group: control
+  message: "Dog bit my son"
+  expect: {level: OTHER, include: [other_bite], exclude: [go_hospital]}
+
+- id: ctl-scorpion
+  lang: hinglish
+  group: control
+  message: "bichhu ne kaata"
+  expect: {level: OTHER, exclude: [go_hospital]}
+
+- id: ctl-prevention
+  lang: en
+  group: control
+  message: "How can I protect my family from snakes during the monsoon?"
+  expect: {level: INFO, include: [prevent_sleep], exclude: [go_hospital]}
+
+- id: ctl-hello
+  lang: en
+  group: control
+  message: "hello"
+  expect: {level: OFF_TOPIC, exclude: [go_hospital]}

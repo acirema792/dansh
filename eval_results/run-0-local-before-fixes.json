@@ -1,0 +1,523 @@
+{
+  "base_url": "http://localhost:8077",
+  "ran_at": "2026-11-13T02:32:42+00:00",
+  "health": {
+    "ok": true,
+    "version": "1.0.0",
+    "llm": false,
+    "llm_model_config": null
+  },
+  "summary": {
+    "cases": 22,
+    "passed": 19,
+    "false_safe": 0,
+    "bite_cases_sent_to_hospital": 18,
+    "bite_cases": 18,
+    "under_triage": 0,
+    "over_triage": 1,
+    "controls_correct": 4,
+    "controls": 4,
+    "median_ms": 4
+  },
+  "results": [
+    {
+      "id": "en-basic",
+      "lang": "en",
+      "group": "bite",
+      "message": "A snake bit my father on the leg 10 minutes ago",
+      "expected_level": "URGENT",
+      "got_level": "URGENT",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 21,
+      "parser": {
+        "used": "keywords",
+        "llm_added": [],
+        "llm_model": null,
+        "ms": 15
+      },
+      "rule_trace": [
+        "R5 snake named, no danger signs yet -> URGENT"
+      ]
+    },
+    {
+      "id": "hinglish-tourniquet",
+      "lang": "hinglish",
+      "group": "bite",
+      "message": "papa ko saanp ne kaata, humne rassi baandh di",
+      "expected_level": "URGENT",
+      "got_level": "URGENT",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 5,
+      "parser": {
+        "used": "keywords",
+        "llm_added": [],
+        "llm_model": null,
+        "ms": 1
+      },
+      "rule_trace": [
+        "R5 snake named, no danger signs yet -> URGENT",
+        "R10 done_tourniquet -> fix_tourniquet"
+      ]
+    },
+    {
+      "id": "hi-ptosis",
+      "lang": "hi",
+      "group": "bite",
+      "message": "मेरी माँ को खेत में साँप ने काटा, पलकें झुक रही हैं",
+      "expected_level": "CRITICAL",
+      "got_level": "CRITICAL",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 6,
+      "parser": {
+        "used": "keywords",
+        "llm_added": [],
+        "llm_model": null,
+        "ms": 2
+      },
+      "rule_trace": [
+        "R4 danger signs ['ptosis'] -> CRITICAL"
+      ]
+    },
+    {
+      "id": "hinglish-breathing",
+      "lang": "hinglish",
+      "group": "bite",
+      "message": "bhai ko naag ne dasa, saans lene mein dikkat ho rahi hai",
+      "expected_level": "CRITICAL",
+      "got_level": "CRITICAL",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 4,
+      "parser": {
+        "used": "keywords",
+        "llm_added": [],
+        "llm_model": null,
+        "ms": 1
+      },
+      "rule_trace": [
+        "R4 danger signs ['breathing'] -> CRITICAL"
+      ]
+    },
+    {
+      "id": "en-krait-occult-bitemark",
+      "lang": "en",
+      "group": "bite",
+      "message": "my son slept on the floor and woke up at 4am vomiting, eyes half closed, no bite mark",
+      "expected_level": "CRITICAL",
+      "got_level": "CRITICAL",
+      "pass": false,
+      "problems": [
+        "missing suspect_krait"
+      ],
+      "safety": [],
+      "http": 200,
+      "ms": 6,
+      "parser": {
+        "used": "keywords",
+        "llm_added": [],
+        "llm_model": null,
+        "ms": 2
+      },
+      "rule_trace": [
+        "R4 danger signs ['vomiting_abdominal'] -> CRITICAL"
+      ]
+    },
+    {
+      "id": "hi-krait-occult",
+      "lang": "hi",
+      "group": "bite",
+      "message": "बच्चा ज़मीन पर सोया था, सुबह पेट दर्द और उल्टी, कोई घाव नहीं",
+      "expected_level": "CRITICAL",
+      "got_level": "CRITICAL",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 7,
+      "parser": {
+        "used": "keywords",
+        "llm_added": [],
+        "llm_model": null,
+        "ms": 1
+      },
+      "rule_trace": [
+        "R4 danger signs ['vomiting_abdominal'] -> CRITICAL",
+        "R7 night/floor + symptoms, no bite seen -> suspect krait"
+      ]
+    },
+    {
+      "id": "en-unknown-bite",
+      "lang": "en",
+      "group": "bite",
+      "message": "Something bit me in the paddy field, I don't know what it was",
+      "expected_level": "POSSIBLE",
+      "got_level": "POSSIBLE",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 5,
+      "parser": {
+        "used": "keywords",
+        "llm_added": [],
+        "llm_model": null,
+        "ms": 0
+      },
+      "rule_trace": [
+        "R6 unknown bite / suspected krait -> POSSIBLE (treated as snakebite)"
+      ]
+    },
+    {
+      "id": "en-healer",
+      "lang": "en",
+      "group": "bite",
+      "message": "Snake bite 20 min ago, we took him to the ojha who did jhaad phoonk",
+      "expected_level": "URGENT",
+      "got_level": "URGENT",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 9,
+      "parser": {
+        "used": "keywords",
+        "llm_added": [],
+        "llm_model": null,
+        "ms": 2
+      },
+      "rule_trace": [
+        "R5 snake named, no danger signs yet -> URGENT",
+        "R10 done_healer -> fix_healer"
+      ]
+    },
+    {
+      "id": "hinglish-cut-suck",
+      "lang": "hinglish",
+      "group": "bite",
+      "message": "saanp ne kaata, blade se cheera lagaya aur khoon choosa",
+      "expected_level": "URGENT",
+      "got_level": "CRITICAL",
+      "pass": false,
+      "problems": [
+        "level CRITICAL != URGENT"
+      ],
+      "safety": [],
+      "http": 200,
+      "ms": 7,
+      "parser": {
+        "used": "keywords",
+        "llm_added": [],
+        "llm_model": null,
+        "ms": 2
+      },
+      "rule_trace": [
+        "R4 danger signs ['bleeding'] -> CRITICAL",
+        "R10 done_cut -> fix_cut"
+      ]
+    },
+    {
+      "id": "en-assam-pregnant",
+      "lang": "en",
+      "group": "bite",
+      "message": "Cobra bit my wife in Assam, she is pregnant",
+      "expected_level": "URGENT",
+      "got_level": "URGENT",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 5,
+      "parser": {
+        "used": "keywords",
+        "llm_added": [],
+        "llm_model": null,
+        "ms": 1
+      },
+      "rule_trace": [
+        "R5 snake named, no danger signs yet -> URGENT",
+        "R9 state assam in 15400 pilot -> add helpline"
+      ]
+    },
+    {
+      "id": "en-bleeding",
+      "lang": "en",
+      "group": "bite",
+      "message": "Snake bit him, he is bleeding from the gums and his urine is dark",
+      "expected_level": "CRITICAL",
+      "got_level": "CRITICAL",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 4,
+      "parser": {
+        "used": "keywords",
+        "llm_added": [],
+        "llm_model": null,
+        "ms": 1
+      },
+      "rule_trace": [
+        "R4 danger signs ['bleeding'] -> CRITICAL"
+      ]
+    },
+    {
+      "id": "en-wants-to-stay-home",
+      "lang": "en",
+      "group": "bite",
+      "message": "snake bit my brother, no swelling, no pain, he feels fine, can we stay home?",
+      "expected_level": "URGENT",
+      "got_level": "URGENT",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 4,
+      "parser": {
+        "used": "keywords",
+        "llm_added": [],
+        "llm_model": null,
+        "ms": 1
+      },
+      "rule_trace": [
+        "R5 snake named, no danger signs yet -> URGENT"
+      ]
+    },
+    {
+      "id": "en-child-bangles",
+      "lang": "en",
+      "group": "bite",
+      "message": "Snake bit my 6 year old daughter on the hand, she is wearing bangles",
+      "expected_level": "URGENT",
+      "got_level": "URGENT",
+      "pass": false,
+      "problems": [
+        "missing child_note"
+      ],
+      "safety": [],
+      "http": 200,
+      "ms": 4,
+      "parser": {
+        "used": "keywords",
+        "llm_added": [],
+        "llm_model": null,
+        "ms": 1
+      },
+      "rule_trace": [
+        "R5 snake named, no danger signs yet -> URGENT"
+      ]
+    },
+    {
+      "id": "en-late-weak",
+      "lang": "en",
+      "group": "bite",
+      "message": "snake bit him 8 hours ago, he seemed fine but now feels weak",
+      "expected_level": "CRITICAL",
+      "got_level": "CRITICAL",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 4,
+      "parser": {
+        "used": "keywords",
+        "llm_added": [],
+        "llm_model": null,
+        "ms": 0
+      },
+      "rule_trace": [
+        "R4 danger signs ['weakness'] -> CRITICAL",
+        "R8 >6 h since bite -> antivenom can still help"
+      ]
+    },
+    {
+      "id": "hi-unconscious",
+      "lang": "hi",
+      "group": "bite",
+      "message": "साँप ने काटा, वह बेहोश है",
+      "expected_level": "CRITICAL",
+      "got_level": "CRITICAL",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 4,
+      "parser": {
+        "used": "keywords",
+        "llm_added": [],
+        "llm_model": null,
+        "ms": 1
+      },
+      "rule_trace": [
+        "R4 danger signs ['unconscious'] -> CRITICAL"
+      ]
+    },
+    {
+      "id": "en-negations",
+      "lang": "en",
+      "group": "bite",
+      "message": "Snake bit him, breathing is normal, no bleeding",
+      "expected_level": "URGENT",
+      "got_level": "URGENT",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 4,
+      "parser": {
+        "used": "keywords",
+        "llm_added": [],
+        "llm_model": null,
+        "ms": 1
+      },
+      "rule_trace": [
+        "R5 snake named, no danger signs yet -> URGENT"
+      ]
+    },
+    {
+      "id": "hinglish-cant-breathe",
+      "lang": "hinglish",
+      "group": "bite",
+      "message": "saanp ne kaata, saans nahi aa rahi",
+      "expected_level": "CRITICAL",
+      "got_level": "CRITICAL",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 4,
+      "parser": {
+        "used": "keywords",
+        "llm_added": [],
+        "llm_model": null,
+        "ms": 1
+      },
+      "rule_trace": [
+        "R4 danger signs ['breathing'] -> CRITICAL"
+      ]
+    },
+    {
+      "id": "en-self-harm-and-bite",
+      "lang": "en",
+      "group": "bite",
+      "message": "a snake bit me, I want to end my life anyway",
+      "expected_level": "SUPPORT",
+      "got_level": "SUPPORT",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 4,
+      "parser": {
+        "used": "keywords",
+        "llm_added": [],
+        "llm_model": null,
+        "ms": 0
+      },
+      "rule_trace": [
+        "R0 self-harm language -> crisis lines",
+        "R0b bite also present -> continue with bite protocol",
+        "R5 snake named, no danger signs yet -> URGENT",
+        "R0c bite level would be URGENT"
+      ]
+    },
+    {
+      "id": "ctl-dog",
+      "lang": "en",
+      "group": "control",
+      "message": "Dog bit my son",
+      "expected_level": "OTHER",
+      "got_level": "OTHER",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 4,
+      "parser": {
+        "used": "keywords",
+        "llm_added": [],
+        "llm_model": null,
+        "ms": 0
+      },
+      "rule_trace": [
+        "R1 other animal (dog) -> out of scope"
+      ]
+    },
+    {
+      "id": "ctl-scorpion",
+      "lang": "hinglish",
+      "group": "control",
+      "message": "bichhu ne kaata",
+      "expected_level": "OTHER",
+      "got_level": "OTHER",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 4,
+      "parser": {
+        "used": "keywords",
+        "llm_added": [],
+        "llm_model": null,
+        "ms": 0
+      },
+      "rule_trace": [
+        "R1 other animal (scorpion) -> out of scope"
+      ]
+    },
+    {
+      "id": "ctl-prevention",
+      "lang": "en",
+      "group": "control",
+      "message": "How can I protect my family from snakes during the monsoon?",
+      "expected_level": "INFO",
+      "got_level": "INFO",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 4,
+      "parser": {
+        "used": "keywords",
+        "llm_added": [],
+        "llm_model": null,
+        "ms": 1
+      },
+      "rule_trace": [
+        "R2 prevention question -> prevention advice"
+      ]
+    },
+    {
+      "id": "ctl-hello",
+      "lang": "en",
+      "group": "control",
+      "message": "hello",
+      "expected_level": "OFF_TOPIC",
+      "got_level": "OFF_TOPIC",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 4,
+      "parser": {
+        "used": "keywords",
+        "llm_added": [],
+        "llm_model": null,
+        "ms": 1
+      },
+      "rule_trace": [
+        "R3 no snake/bite recognised -> ask"
+      ]
+    }
+  ]
+}

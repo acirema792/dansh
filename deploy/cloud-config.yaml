@@ -1,0 +1,101 @@
+#cloud-config
+# Dansh on any Ubuntu 22.04/24.04 VM (AWS, GCP, Azure, DigitalOcean, Hetzner, Vultr...).
+# Paste as "user data". YAML normalises line endings, so it survives web forms.
+# Gives: HTTPS on <ip-with-dashes>.sslip.io via Caddy, a git-pull self-updater every 5 min,
+# and an install log at http://<ip>/install.log during first boot.
+#
+# Optional: set REPO below, and add `ANTHROPIC_API_KEY=...` to /etc/dansh.env after boot.
+
+write_files:
+  - path: /etc/dansh.repo
+    content: "https://github.com/OWNER/dansh.git"
+  - path: /usr/local/bin/dansh-install
+    permissions: "0755"
+    content: |
+      #!/bin/bash
+      set -euxo pipefail
+      exec > >(tee -a /var/log/dansh-install.log /dev/console) 2>&1
+      REPO=$(cat /etc/dansh.repo)
+      apt-get -o DPkg::Lock::Timeout=900 update
+      apt-get -o DPkg::Lock::Timeout=900 install -y python3-venv python3-pip git curl ufw
+      id dansh || useradd -r -m -d /srv/dansh -s /usr/sbin/nologin dansh
+      if [ ! -d /srv/dansh/app/.git ]; then git clone "$REPO" /srv/dansh/app; fi
+      python3 -m venv /srv/dansh/venv
+      /srv/dansh/venv/bin/pip install -r /srv/dansh/app/requirements.txt
+      mkdir -p /srv/dansh/data && chown -R dansh /srv/dansh
+      touch /etc/dansh.env && chmod 600 /etc/dansh.env
+      cat > /etc/systemd/system/dansh.service <<'EOF'
+      [Unit]
+      Description=Dansh
+      After=network-online.target
+      [Service]
+      User=dansh
+      WorkingDirectory=/srv/dansh/app
+      Environment=DANSH_DB=/srv/dansh/data/dansh.db
+      EnvironmentFile=-/etc/dansh.env
+      ExecStart=/srv/dansh/venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000 --proxy-headers --forwarded-allow-ips 127.0.0.1
+      Restart=always
+      [Install]
+      WantedBy=multi-user.target
+      EOF
+      cat > /usr/local/bin/dansh-update <<'EOF'
+      #!/bin/bash
+      set -e
+      cd /srv/dansh/app
+      OLD=$(git rev-parse HEAD)
+      git fetch -q origin && git reset -q --hard origin/HEAD
+      NEW=$(git rev-parse HEAD)
+      if [ "$OLD" != "$NEW" ]; then
+        if git diff --name-only "$OLD" "$NEW" | grep -q requirements.txt; then /srv/dansh/venv/bin/pip install -q -r requirements.txt; fi
+        systemctl restart dansh
+      fi
+      EOF
+      chmod 755 /usr/local/bin/dansh-update
+      chown -R dansh /srv/dansh/app
+      git config --system --add safe.directory /srv/dansh/app
+      cat > /etc/systemd/system/dansh-update.service <<'EOF'
+      [Service]
+      Type=oneshot
+      ExecStart=/usr/local/bin/dansh-update
+      EOF
+      cat > /etc/systemd/system/dansh-update.timer <<'EOF'
+      [Timer]
+      OnBootSec=2min
+      OnUnitActiveSec=5min
+      [Install]
+      WantedBy=timers.target
+      EOF
+      # Caddy from the official release binary (no third-party apt repo)
+      curl -fsSL "https://caddyserver.com/api/download?os=linux&arch=amd64" -o /usr/local/bin/caddy
+      chmod 755 /usr/local/bin/caddy
+      IP=$(curl -fsS https://api.ipify.org || hostname -I | awk '{print $1}')
+      HOST="$(echo "$IP" | tr . -).sslip.io"
+      mkdir -p /etc/caddy /var/lib/caddy
+      printf '%s {\n  encode gzip\n  reverse_proxy 127.0.0.1:8000\n}\n' "$HOST" > /etc/caddy/Caddyfile
+      cat > /etc/systemd/system/caddy.service <<'EOF'
+      [Unit]
+      Description=Caddy
+      After=network-online.target
+      [Service]
+      Environment=XDG_DATA_HOME=/var/lib/caddy XDG_CONFIG_HOME=/var/lib/caddy
+      ExecStart=/usr/local/bin/caddy run --config /etc/caddy/Caddyfile --adapter caddyfile
+      Restart=always
+      AmbientCapabilities=CAP_NET_BIND_SERVICE
+      [Install]
+      WantedBy=multi-user.target
+      EOF
+      ufw allow 22/tcp || true; ufw allow 80/tcp || true; ufw allow 443/tcp || true
+      systemctl stop dansh-bootlog || true
+      systemctl daemon-reload
+      systemctl enable --now dansh dansh-update.timer caddy
+      sleep 5
+      OUT=$(curl -fsS http://127.0.0.1:8000/api/health || true)
+      if echo "$OUT" | grep -q '"ok":true'; then echo "DANSH SELF-TEST PASSED: https://$HOST"; else echo "DANSH SELF-TEST FAILED: $OUT"; fi
+
+bootcmd:
+  - echo "dansh cloud-config v1 bootcmd ran" > /dev/console
+
+runcmd:
+  - mkdir -p /var/www/boot && ln -sf /var/log/dansh-install.log /var/www/boot/install.log
+  - systemd-run --unit dansh-bootlog --working-directory=/var/www/boot python3 -m http.server 80
+  - /usr/local/bin/dansh-install

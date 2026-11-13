@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dansh: what to do in the first 30 minutes after a snakebite</title>
+<meta name="description" content="Free snakebite first-aid guide for India, in Hindi and English. Based on Government of India treatment guidelines. Take the 3-minute check.">
+<meta property="og:title" content="Would you know what to do after a snakebite?">
+<meta property="og:description" content="58,000 Indians die of snakebite every year. Most deaths are preventable. Take the free 3-minute check.">
+<meta name="theme-color" content="#123524">
+<link rel="icon" href="/static/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="/" aria-label="Dansh home"><img src="/static/icon.svg" alt="" width="26" height="26" class="mark"> Dansh <span class="dev">दंश</span></a>
+  <nav class="tabs" role="tablist">
+    <button role="tab" id="tab-help" aria-selected="true" data-view="help" data-i18n="tab_help">Bitten now</button>
+    <button role="tab" id="tab-check" aria-selected="false" data-view="check" data-i18n="tab_check">3-min check</button>
+    <a href="/impact" data-i18n="tab_impact">Impact</a>
+  </nav>
+  <button class="lang" id="lang" aria-label="Switch language">हिंदी</button>
+</header>
+
+<a class="callbar" href="tel:108"><span data-i18n="callbar">Snakebite? Call 108 now (free ambulance)</span> <b>📞 108</b></a>
+
+<main>
+<!-- ======================= EMERGENCY ======================= -->
+<section id="view-help" class="view" aria-labelledby="h-help">
+  <h1 id="h-help" data-i18n="help_h">Someone was bitten by a snake?</h1>
+  <p class="lede" data-i18n="help_lede">Tell me what happened, in Hindi or English. I'll give you the steps from the Government of India's snakebite guidelines.</p>
+  <form id="ask" autocomplete="off">
+    <label for="msg" class="sr" data-i18n="msg_label">What happened?</label>
+    <textarea id="msg" rows="3" maxlength="2000" data-i18n-ph="msg_ph" placeholder="e.g. snake bit my father on the leg 10 minutes ago, we tied a rope"></textarea>
+    <div class="row">
+      <button type="submit" class="primary" data-i18n="send">Tell me what to do</button>
+      <button type="button" id="mic" class="ghost" aria-label="Speak instead of typing" hidden>🎤 <span data-i18n="speak">Speak</span></button>
+    </div>
+  </form>
+  <div class="chips" aria-label="Examples">
+    <button class="chip" data-ex="ex1"></button>
+    <button class="chip" data-ex="ex2"></button>
+    <button class="chip" data-ex="ex3"></button>
+  </div>
+  <div id="plan" aria-live="polite"></div>
+  <p class="fine" data-i18n="disclaimer">Dansh is not a doctor and does not diagnose. It only repeats the first-aid steps in the Ministry of Health's Standard Treatment Guidelines (2017). Every snakebite needs a hospital.</p>
+</section>
+
+<!-- ======================= 3-MINUTE CHECK ======================= -->
+<section id="view-check" class="view" hidden aria-labelledby="h-check">
+  <div id="check-intro">
+    <h1 id="h-check" data-i18n="check_h">Would you know what to do?</h1>
+    <p class="lede" data-i18n="check_lede">About 58,000 people in India die of snakebite every year. Most could be saved by doing the right thing in the first hour. Answer 6 quick questions, learn the answers, then try 6 more.</p>
+    <ul class="facts">
+      <li data-i18n="check_f1">About 3 minutes</li>
+      <li data-i18n="check_f2">No name, no phone number</li>
+      <li data-i18n="check_f3">Your answers are added anonymously to the public impact numbers</li>
+    </ul>
+    <div class="optional">
+      <label><span data-i18n="state_q">Your state (optional)</span>
+        <select id="state"><option value="" data-i18n="skip">Skip</option></select></label>
+      <label><span data-i18n="role_q">You are (optional)</span>
+        <select id="role">
+          <option value="" data-i18n="skip">Skip</option>
+          <option value="farmer" data-i18n="r_farmer">Farmer / farm worker</option>
+          <option value="student" data-i18n="r_student">Student</option>
+          <option value="health_worker" data-i18n="r_health">ASHA / health worker</option>
+          <option value="teacher" data-i18n="r_teacher">Teacher</option>
+          <option value="parent" data-i18n="r_parent">Parent</option>
+          <option value="other" data-i18n="r_other">Other</option>
+        </select></label>
+    </div>
+    <button id="start" class="primary big" data-i18n="start">Start the check</button>
+  </div>
+  <div id="check-run" hidden></div>
+</section>
+</main>
+
+<footer class="foot">
+  <span data-i18n="foot1">Free and open source (MIT).</span>
+  <a href="https://ncdc.mohfw.gov.in/uploads/pdf/Standard-Treatment-Guidelines-for-Management-of-Snake-Bite.pdf" target="_blank" rel="noopener" data-i18n="foot_src">Source: MoHFW guidelines</a> ·
+  <a href="/impact" data-i18n="tab_impact">Impact</a> ·
+  <a id="gh" href="#" target="_blank" rel="noopener">GitHub</a>
+</footer>
+<script src="/static/app.js"></script>
+</body>
+</html>
