@@ -109,3 +109,46 @@ def test_v_llm_total_deadline(monkeypatch):
     t0 = _t.time()
     data, meta = llm.read("snake bit me")
     assert data is None and meta["error"] == "deadline" and _t.time() - t0 < 1.0
+
+
+def test_r2_7_shared_network_counts_each_browser(monkeypatch):
+    """A classroom on one Wi-Fi: each browser counts (up to the network cap), each browser capped at 5/day."""
+    monkeypatch.setattr(main, "MIN_PRE_SECS", 0)
+    monkeypatch.setattr(main, "MIN_POST_SECS", 0)
+    c = TestClient(main.app, client=("10.11.11.11", 1))
+    before = c.get("/api/impact").json()["learn"]["completed"]
+
+    def run(client_id):
+        r = c.post("/api/learn/start", json={"lang": "en", "client": client_id}).json()
+        ans = {q["concept"]: quiz.correct_option(q["concept"], r["form"]) for q in r["questions"]}
+        r2 = c.post("/api/learn/pre", json={"session": r["session"], "answers": ans}).json()
+        ans2 = {q["concept"]: quiz.correct_option(q["concept"], r2["form"]) for q in r2["questions"]}
+        c.post("/api/learn/post", json={"session": r["session"], "answers": ans2})
+
+    for i in range(12):
+        run(f"student-browser-{i:04d}-abcdef")
+    for _ in range(3):
+        run("student-browser-0000-abcdef")  # the same browser again: 4 total, still under 5
+    after = c.get("/api/impact").json()["learn"]
+    assert after["completed"] - before == 15
+    assert after["chose_dangerous_action_post_ci95"] is not None
+
+
+def test_r2_7_network_cap(monkeypatch):
+    monkeypatch.setattr(main, "MIN_PRE_SECS", 0)
+    monkeypatch.setattr(main, "MIN_POST_SECS", 0)
+    monkeypatch.setattr(main, "MAX_COMPLETIONS_PER_NETWORK_PER_DAY", 3)
+    c = TestClient(main.app, client=("10.12.12.12", 1))
+    before = c.get("/api/impact").json()["learn"]["completed"]
+    for i in range(5):
+        r = c.post("/api/learn/start", json={"lang": "en", "client": f"net-cap-browser-{i:04d}-xyz"}).json()
+        ans = {q["concept"]: quiz.correct_option(q["concept"], r["form"]) for q in r["questions"]}
+        r2 = c.post("/api/learn/pre", json={"session": r["session"], "answers": ans}).json()
+        ans2 = {q["concept"]: quiz.correct_option(q["concept"], r2["form"]) for q in r2["questions"]}
+        c.post("/api/learn/post", json={"session": r["session"], "answers": ans2})
+    assert c.get("/api/impact").json()["learn"]["completed"] - before == 3
+
+
+def test_health_reports_commit():
+    j = TestClient(main.app).get("/api/health").json()
+    assert "commit" in j

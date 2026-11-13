@@ -3,7 +3,10 @@
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const params = new URLSearchParams(location.search);
-const TEST = params.get("test") === "1";
+function ss(k, v) { try { if (v === undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k, v); } catch (_) { return null; } }
+if (params.get("test") === "1") ss("dansh_test", "1");
+if (params.get("test") === "0") ss("dansh_test", "0");
+const TEST = ss("dansh_test") === "1";
 const SRC = (params.get("src") || "").slice(0, 24);
 const GH = "https://github.com/";  // replaced at build time by REPO_URL below if set
 const REPO_URL = document.documentElement.dataset.repo || "";
@@ -274,7 +277,9 @@ async function submitStage() {
 $("#start").addEventListener("click", async () => {
   $("#start").disabled = true;
   try {
-    const r = await api("/api/learn/start", {lang, src: SRC || null});
+    let client = store("dansh_client");
+    if (!client) { client = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2) + Date.now()).replace(/[^A-Za-z0-9_-]/g, ""); store("dansh_client", client); }
+    const r = await api("/api/learn/start", {lang, src: SRC || null, client});
     S = {id: r.session, questions: r.questions, i: 0, answers: {}, stage: "pre"};
     $("#check-intro").hidden = true; $("#check-run").hidden = false;
     renderQuestion();
@@ -282,6 +287,7 @@ $("#start").addEventListener("click", async () => {
 });
 
 // --------------------------------------------------------------------------- boot
+if (TEST) { $$("a[href^='/']").forEach(a => { if (!a.href.includes("test=")) a.href += (a.href.includes("?") ? "&" : "?") + "test=1"; }); }
 if (TEST) { const b = document.createElement("div"); b.className = "note"; b.style.margin = "0"; b.dataset.i18n = "test_banner"; document.body.insertBefore(b, $("main")); }
 if (REPO_URL) $("#gh").href = REPO_URL; else $("#gh").href = GH;
 applyLang();

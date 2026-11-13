@@ -25,6 +25,10 @@ VERSION = "1.0.0"
 STATIC = Path(__file__).resolve().parent.parent / "static"
 TEST_TOKEN = os.environ.get("DANSH_TEST_TOKEN", "")
 MAX_COMPLETIONS_PER_DEVICE_PER_DAY = int(os.environ.get("DANSH_MAX_PER_DEVICE", "5"))
+# Indian mobile carriers put many people behind one IP (CGNAT) and a classroom shares one Wi-Fi, so the
+# per-day cap is per browser (random id kept in the browser), with a much larger outer cap per network.
+MAX_COMPLETIONS_PER_NETWORK_PER_DAY = int(os.environ.get("DANSH_MAX_PER_NETWORK", "150"))
+CLIENT_RE = re.compile(r"^[A-Za-z0-9_-]{16,64}$")
 MIN_PRE_SECS = float(os.environ.get("DANSH_MIN_PRE_SECS", "20"))
 MIN_POST_SECS = float(os.environ.get("DANSH_MIN_POST_SECS", "30"))
 SRC_RE = re.compile(r"^[a-z0-9_-]{0,24}$")
@@ -41,7 +45,7 @@ store.init()
 
 MAX_BODY = 16 * 1024
 _buckets: dict[str, list[float]] = {}
-RATE = float(os.environ.get("DANSH_RATE_PER_MIN", "40"))
+RATE = float(os.environ.get("DANSH_RATE_PER_MIN", "120"))
 
 
 def _allow(ip: str) -> bool:
@@ -149,6 +153,7 @@ def consult(body: ConsultIn, request: Request):
 class StartIn(BaseModel):
     lang: str = Field("en", pattern="^(en|hi)$")
     src: str | None = Field(None, max_length=24)
+    client: str | None = Field(None, max_length=64)
 
 
 @app.post("/api/learn/start")
@@ -157,7 +162,9 @@ def learn_start(body: StartIn, request: Request):
     pre, post = quiz.assign_forms()
     src = (body.src or "").lower()
     src = src if SRC_RE.match(src) else "other"
-    store.new_session(sid, body.lang, pre, post, src, store.device_hash(_ip(request)), _is_test(request))
+    client = body.client if body.client and CLIENT_RE.match(body.client) else None
+    device = store.device_hash("c:" + client) if client else store.device_hash(_ip(request))
+    store.new_session(sid, body.lang, pre, post, src, device, _is_test(request), network=store.device_hash(_ip(request)))
     return {"session": sid, "questions": quiz.questions(pre, body.lang, random.Random(sid)), "form": pre}
 
 
@@ -222,7 +229,8 @@ def learn_post(body: PostIn, request: Request):
                "pre_danger": pre["per_concept"][c]["dangerous"], "post_danger": scored["per_concept"][c]["dangerous"]}
            for c in quiz.ORDER}
     # Anti-stuffing: past a few completions per device per day, keep the row but mark it test.
-    over = store.device_completions_today(s["device"]) >= MAX_COMPLETIONS_PER_DEVICE_PER_DAY
+    over = (store.device_completions_today(s["device"]) >= MAX_COMPLETIONS_PER_DEVICE_PER_DAY
+            or store.network_completions_today(s["network"]) >= MAX_COMPLETIONS_PER_NETWORK_PER_DAY)
     state = body.state if body.state in ALLOWED_STATES else None
     role = body.role if body.role in ALLOWED_ROLES else None
     store.save_post(body.session, answers, scored, per, state, role)
@@ -257,11 +265,22 @@ def learn_shared(body: ShareIn):
 
 
 # ----------------------------------------------------------------------------- impact
+def _wilson(k: int, n: int, z: float = 1.96) -> list[float] | None:
+    if not n:
+        return None
+    p = k / n
+    den = 1 + z * z / n
+    c = (p + z * z / (2 * n)) / den
+    h = z * ((p * (1 - p) / n + z * z / (4 * n * n)) ** 0.5) / den
+    return [round(100 * max(0.0, c - h), 1), round(100 * min(1.0, c + h), 1)]
+
+
 def _pct(n: int, d: int) -> float | None:
     return round(100.0 * n / d, 1) if d else None
 
 
 def impact_summary(include_test: bool = False) -> dict:
+    k_ = len(quiz.ORDER)
     rows = store.completed_sessions(include_test)
     n = len(rows)
     per = {c: {"pre": 0, "post": 0, "pre_danger": 0, "post_danger": 0} for c in quiz.ORDER}
@@ -272,6 +291,7 @@ def impact_summary(include_test: bool = False) -> dict:
     by_state: dict[str, int] = {}
     by_role: dict[str, int] = {}
     by_form = {"A->B": 0, "B->A": 0}
+    groups: dict[str, dict[str, dict]] = {"src": {}, "order": {}}
     shared = 0
     first = last = None
     for r in rows:
@@ -293,6 +313,13 @@ def impact_summary(include_test: bool = False) -> dict:
         if r["role"]:
             by_role[r["role"]] = by_role.get(r["role"], 0) + 1
         by_form[f"{r['pre_form']}->{r['post_form']}"] += 1
+        for gname, key in (("src", r["src"] or "direct"), ("order", f"{r['pre_form']}->{r['post_form']}")):
+            g = groups[gname].setdefault(key, {"n": 0, "danger_pre": 0, "danger_post": 0, "pre": 0, "post": 0})
+            g["n"] += 1
+            g["danger_pre"] += int(r["pre_dangerous"] > 0)
+            g["danger_post"] += int(r["post_dangerous"] > 0)
+            g["pre"] += r["pre_correct"]
+            g["post"] += r["post_correct"]
         shared += r["shared"]
         first = first or r["completed_at"]
         last = r["completed_at"]
@@ -312,15 +339,24 @@ def impact_summary(include_test: bool = False) -> dict:
             "mean_score_post_pct": _pct(post_total, n * k),
             "chose_dangerous_action_pre_pct": _pct(any_danger_pre, n),
             "chose_dangerous_action_post_pct": _pct(any_danger_post, n),
+            "chose_dangerous_action_pre_ci95": _wilson(any_danger_pre, n),
+            "chose_dangerous_action_post_ci95": _wilson(any_danger_post, n),
             "improved": improved, "same": same, "worse": worse,
             "per_concept": {c: {"label_en": quiz.CONCEPTS[c]["en"], "label_hi": quiz.CONCEPTS[c]["hi"],
                                 "correct_pre_pct": _pct(per[c]["pre"], n), "correct_post_pct": _pct(per[c]["post"], n),
                                 "dangerous_pre_pct": _pct(per[c]["pre_danger"], n),
                                 "dangerous_post_pct": _pct(per[c]["post_danger"], n)} for c in quiz.ORDER},
             "by_lang": by_lang, "by_state": by_state, "by_role": by_role, "by_form_order": by_form,
+            "breakdown": {gname: {k: {"n": g["n"],
+                                      "dangerous_pre_pct": _pct(g["danger_pre"], g["n"]),
+                                      "dangerous_post_pct": _pct(g["danger_post"], g["n"]),
+                                      "score_pre_pct": _pct(g["pre"], g["n"] * k_),
+                                      "score_post_pct": _pct(g["post"], g["n"] * k_)}
+                                  for k, g in gv.items()} for gname, gv in groups.items()},
             "shared": shared, "first_completed_at": first, "last_completed_at": last,
             "excluded": store.excluded_counts(),
             "exclusion_rules": {"device_cap_per_day": MAX_COMPLETIONS_PER_DEVICE_PER_DAY,
+                                "network_cap_per_day": MAX_COMPLETIONS_PER_NETWORK_PER_DAY,
                                 "min_seconds_part1": MIN_PRE_SECS, "min_seconds_lesson_and_part3": MIN_POST_SECS},
         },
         "consults": {"total": len(consults), "by_level": levels,
@@ -352,9 +388,23 @@ def impact_csv():
 
 
 # ----------------------------------------------------------------------------- misc
+def _commit() -> str | None:
+    try:
+        root = Path(__file__).resolve().parent.parent / ".git"
+        head = (root / "HEAD").read_text().strip()
+        if head.startswith("ref:"):
+            return (root / head.split(" ", 1)[1]).read_text().strip()[:7]
+        return head[:7]
+    except OSError:
+        return None
+
+
+COMMIT = _commit()
+
+
 @app.get("/api/health")
 def health():
-    return {"ok": True, "version": VERSION, "llm": llm.enabled(), "llm_model_config": llm.MODEL if llm.enabled() else None}
+    return {"ok": True, "version": VERSION, "commit": COMMIT, "llm": llm.enabled(), "llm_model_config": llm.MODEL if llm.enabled() else None}
 
 
 @app.get("/api/sources")

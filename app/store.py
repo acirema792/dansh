@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS learn_sessions (
   state TEXT, role TEXT, src TEXT,
   device TEXT, is_test INTEGER NOT NULL DEFAULT 0,
   shared INTEGER NOT NULL DEFAULT 0,
-  pre_at REAL, excluded TEXT
+  pre_at REAL, excluded TEXT, network TEXT
 );
 CREATE TABLE IF NOT EXISTS consults (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -72,7 +72,7 @@ def init() -> None:
     with _lock, _conn() as c:
         c.executescript(SCHEMA)
         cols = {r[1] for r in c.execute("PRAGMA table_info(learn_sessions)")}
-        for col, typ in (("pre_at", "REAL"), ("excluded", "TEXT")):
+        for col, typ in (("pre_at", "REAL"), ("excluded", "TEXT"), ("network", "TEXT")):
             if col not in cols:
                 c.execute(f"ALTER TABLE learn_sessions ADD COLUMN {col} {typ}")
 
@@ -82,11 +82,12 @@ def device_hash(ip: str | None) -> str:
     return hashlib.sha256(f"{_SALT}|{day}|{ip or ''}".encode()).hexdigest()[:16]
 
 
-def new_session(sid: str, lang: str, pre_form: str, post_form: str, src: str | None, device: str, is_test: bool):
+def new_session(sid: str, lang: str, pre_form: str, post_form: str, src: str | None, device: str, is_test: bool,
+                network: str | None = None):
     with _lock, _conn() as c:
-        c.execute("INSERT INTO learn_sessions(id, created_at, lang, pre_form, post_form, src, device, is_test)"
-                  " VALUES (?,?,?,?,?,?,?,?)", (sid, time.time(), lang, pre_form, post_form, (src or "")[:24],
-                                               device, int(is_test)))
+        c.execute("INSERT INTO learn_sessions(id, created_at, lang, pre_form, post_form, src, device, is_test, network)"
+                  " VALUES (?,?,?,?,?,?,?,?,?)", (sid, time.time(), lang, pre_form, post_form, (src or "")[:24],
+                                                 device, int(is_test), network or device))
 
 
 def get_session(sid: str) -> sqlite3.Row | None:
@@ -111,6 +112,15 @@ def save_post(sid: str, answers: dict, scored: dict, per_concept: dict, state: s
 def mark_shared(sid: str):
     with _lock, _conn() as c:
         c.execute("UPDATE learn_sessions SET shared=1 WHERE id=?", (sid,))
+
+
+def network_completions_today(network: str | None) -> int:
+    if not network:
+        return 0
+    since = time.time() - 86400
+    with _conn() as c:
+        return c.execute("SELECT COUNT(*) FROM learn_sessions WHERE network=? AND completed_at>? AND is_test=0",
+                         (network, since)).fetchone()[0]
 
 
 def exclude(sid: str, reason: str):
