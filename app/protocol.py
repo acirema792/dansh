@@ -71,17 +71,22 @@ def decide(f: Facts, lang: str | None = None, answered: dict | None = None) -> P
         # fall through: a bite is still an emergency; keep the crisis line on top.
         trace.append("R0b bite also present -> continue with bite protocol")
 
-    # R1 another animal named and no snake -> out of scope with a safe pointer.
+    # R1 another animal named, no snake, no doubt about it -> out of scope with a safe pointer.
     if f.other_animal and not f.snake and not f.unknown_bite and not f.occult_krait:
         trace.append(f"R1 other animal ({f.other_animal}) -> out of scope")
-        p = Plan("OTHER", UI["level_OTHER"][lang], lang=lang, rule_trace=trace, calls=["108"])
+        p = Plan("OTHER", UI["level_OTHER"][lang], lang=lang, rule_trace=trace, calls=["108", "112"])
+        if flags:
+            p.understood = [RED_FLAGS[k][lang] for k in flags]
+            trace.append(f"R1b danger signs {flags} with another animal -> 108 first")
         p.notes.append(_item("other_bite", lang))
         return p
+    if f.other_animal and f.unknown_bite and not f.snake:
+        trace.append(f"R1c animal ({f.other_animal}) named but uncertain -> treat as possible snakebite")
 
     # R2 prevention question with no bite -> prevention advice.
     if f.prevention and not (f.bite or f.occult_krait or flags):
         trace.append("R2 prevention question -> prevention advice")
-        p = Plan("INFO", UI["level_INFO"][lang], lang=lang, rule_trace=trace)
+        p = Plan("INFO", UI["level_INFO"][lang], lang=lang, rule_trace=trace, calls=["108"])
         for i in ("prevent_torch", "prevent_sleep", "prevent_hands"):
             p.do.append(_item(i, lang))
         return p
@@ -94,7 +99,7 @@ def decide(f: Facts, lang: str | None = None, answered: dict | None = None) -> P
             f.occult_krait = True
         else:
             trace.append("R3 no snake/bite recognised -> ask")
-            p = Plan("OFF_TOPIC", UI["level_OFF_TOPIC"][lang], lang=lang, rule_trace=trace, calls=["112"])
+            p = Plan("OFF_TOPIC", UI["level_OFF_TOPIC"][lang], lang=lang, rule_trace=trace, calls=["112", "108"])
             p.notes.append(_item("off_topic", lang))
             return p
 

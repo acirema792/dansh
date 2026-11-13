@@ -60,13 +60,16 @@ def _any(text: str, words: list[str]) -> bool:
 
 
 SNAKE = ["snake", "snakes", "snakebite", "saanp", "saap", "sanp", "saamp", "samp", "saap ne", "naag", "nag ne",
-         "cobra", "krait", "karait", "kraitt", "viper", "russell", "russells", "ghonas", "sarp", "sarpdansh", "serpent",
+         "cobra", "krait", "karait", "kraitt", "viper", "snakbite", "snakebit", "snek", "snak", "snakes bite", "russell", "russells", "ghonas", "sarp", "sarpdansh", "serpent",
          "साँप", "सांप", "सर्प", "नाग", "करैत", "कोबरा", "वाइपर", "घोणस", "सर्पदंश", "फन"]
 BITE = ["bite", "bit", "bitten", "biting", "bites", "kaata", "kata", "kaat", "kaatа", "kaat liya", "kaat diya", "kat liya",
-        "daswa", "dasa", "dans", "dansh", "dank", "sting", "stung",
+        "daswa", "dasa", "dans", "dansh", "dank", "sting", "stung", "attack", "attacked", "struck", "strike",
+        "hamla", "got my", "got him", "got her", "fang", "fangs", "fang marks", "snakbite", "snakebit",
         "काटा", "काट", "डसा", "डस", "डंस", "दंश", "डंक"]
 UNKNOWN = ["something bit", "something has bitten", "kuch ne kaata", "kuch kaat", "kisi ne kaata", "pata nahi kisne",
            "dont know what bit", "don't know what bit", "not sure what bit", "unknown bite", "insect", "keeda", "kida",
+           "fang marks", "fang", "fangs", "two marks", "two holes", "two dots", "do nishan", "do nishaan", "chubh",
+           "chubha", "chubh gaya", "pricked", "prick", "चुभ", "दो निशान",
            "कुछ ने काटा", "किसी ने काटा", "पता नहीं किसने", "कीड़े", "कीड़ा"]
 OTHER = {
     "dog": ["dog", "kutta", "kutte", "kutiya", "कुत्ता", "कुत्ते"],
@@ -76,6 +79,9 @@ OTHER = {
     "rat": ["rat", "chuha", "chooha", "चूहा", "चूहे"],
     "cat": ["cat", "billi", "बिल्ली"],
 }
+# Doubt words only count together with a bite word or a named animal ("maybe a rat bit me").
+HEDGE = ["in the dark", "andhere", "andhere mein", "something", "kuch", "maybe", "shayad", "not sure", "pata nahi",
+         "may have been", "might be", "i think", "lagta hai", "अंधेरे", "शायद", "पता नहीं", "कुछ"]
 PREVENT = ["prevent", "prevention", "avoid", "stay safe", "keep away", "protect", "bachav", "bachaav", "kaise bache",
            "kaise bachein", "how to be safe", "बचाव", "बचें", "बचे", "रोकथाम"]
 SELF_HARM = ["suicide", "kill myself", "end my life", "self harm", "self-harm", "want to die", "aatmahatya",
@@ -84,12 +90,14 @@ SELF_HARM = ["suicide", "kill myself", "end my life", "self harm", "self-harm", 
 FLAG_WORDS = {
     "ptosis": ["droop", "drooping", "droopy", "eyelid", "eyelids", "ptosis", "double vision", "blurred vision",
                "blurry", "can't open eyes", "cannot open eyes", "cant open eyes", "eyes closing", "eyes are closing",
-               "aankh band", "aankhen band", "aankhein band", "ankh band", "palak", "palken", "dhundhla", "do do dikh",
+               "aankh band", "aankhen band", "aankhein band", "ankh band", "open his eyes", "open her eyes",
+               "open their eyes", "open my eyes", "eyes heavy", "keep eyes open", "keep his eyes open", "palak", "palken", "dhundhla", "do do dikh",
                "पलक", "पलकें", "आंख बंद", "आंखें बंद", "धुंधला", "दो दो दिख", "आंखें नहीं खुल", "आंख नहीं खुल"],
     "breathing": ["breath", "breathe", "breathing", "breathless", "short of breath", "choking", "saans", "sans",
                   "saas", "dam ghut", "dum ghut", "सांस", "दम घुट", "श्वास"],
     "speech_swallow": ["slurred", "can't speak", "cannot speak", "cant speak", "can't swallow", "cannot swallow",
-                       "difficulty swallowing", "trouble swallowing", "trouble speaking", "bol nahi", "bol nhi",
+                       "difficulty swallowing", "trouble swallowing", "unable to swallow", "drool", "drooling",
+                       "slurring", "lar tapak", "laar", "trouble speaking", "bol nahi", "bol nhi",
                        "nigal nahi", "nigalne", "awaaz", "आवाज़", "बोल नहीं", "निगल", "बोलने में"],
     "bleeding": ["bleeding", "bleed", "blood", "khoon", "khun", "gums", "nosebleed", "nose bleed", "red urine",
                  "dark urine", "black urine", "brown urine", "naak se", "masood", "खून", "मसूड़", "नाक से", "लाल पेशाब",
@@ -127,7 +135,7 @@ DONE = {
 CHILD = ["child", "kid", "baby", "toddler", "boy", "girl", "infant", "bachcha", "bacha", "bachche", "bachchi",
          "bacchi", "beta", "beti", "munna", "munni", "बच्चा", "बच्चे", "बच्ची", "बेटा", "बेटी", "मुन्ना"]
 PREGNANT = ["pregnant", "pregnancy", "garbhvati", "garbhavati", "pet se", "गर्भवती", "पेट से"]
-NIGHT_FLOOR = ["slept on the floor", "sleeping on the floor", "on the floor", "floor", "woke up", "woke", "at night",
+NIGHT_FLOOR = ["slept outside", "sleeping outside", "slept", "sleeping", "slept on the floor", "sleeping on the floor", "on the floor", "floor", "woke up", "woke", "at night",
                "in the morning", "early morning", "zameen par", "jameen par", "zamin", "neend", "subah", "raat",
                "ज़मीन", "जमीन", "सुबह", "रात", "नींद", "सो रहा", "सोया", "सोई"]
 
@@ -167,9 +175,14 @@ def _detect_lang(raw: str, text: str) -> str:
 # Negation is handled conservatively: when unsure, the danger sign is KEPT.
 # "not breathing", "can't open eyes", "saans nahi aa rahi" are symptoms, not denials, so plain
 # "not"/"nahi" never negates an inability-type sign. Only explicit denials count.
-NEG_BEFORE = re.compile(r"(?:\bno\b|\bwithout\b|\bdenies\b|\bnever\b|\bkoi\b|कोई)\s+(?:\S+\s+){0,2}$")
-NORMAL_AFTER = re.compile(r"^\s*(?:\S+\s+){0,2}?(?:normal|normally|fine|ok|okay|theek|thik|ठीक|सामान्य)\b")
-HI_NEG_AFTER = re.compile(r"^\s*(?:\S+\s+){0,1}?(?:nahi|nahin|nhi|नहीं|नही)\b")
+# A denial must be adjacent ("no bleeding", "no difficulty breathing", "without swelling") and must not
+# cross punctuation. "koi" is NOT a negator ("koi madad karo" = "someone help").
+NEG_BEFORE = re.compile(r"(?:\bno\b|\bwithout\b|\bdenies\b|\bnever\b)\s+(?:[^\s,.;!?।]+\s+){0,1}$")
+NORMAL_AFTER = re.compile(r"^\s*(?:is\s+|are\s+|hai\s+|है\s+)?(?:normal|normally|fine|ok|okay|theek|thik|ठीक|सामान्य)"
+                          r"(?![^,.;!?।]{0,12}(?:\bnot\b|\bnahi\b|\bnahin\b|\bnhi\b|\bna\b|नहीं|नही))")
+HI_NEG_AFTER = re.compile(r"^\s*(?:aa\s+|aa raha\s+|आ\s+)?(?:nahi|nahin|nhi|नहीं|नही)\b"
+                          r"(?!\s*(?:ruk|ruka|rukta|rukti|tham|tham\w*|band|रुक|थम|बंद))")
+NEG_STOPPING = re.compile(r"(?:\bnot\b|\bnahi\b|नहीं)[^,.;!?।]{0,10}$")
 PRESENCE_TYPE = {"bleeding", "vomiting_abdominal", "swelling"}  # "khoon nahi" = no bleeding
 
 
@@ -184,6 +197,8 @@ def _negated(text: str, words: list[str], flag: str = "") -> bool:
             before = text[max(0, m.start() - 30): m.start()]
             after = text[m.end(): m.end() + 24]
             denied = bool(NEG_BEFORE.search(before)) or bool(NORMAL_AFTER.search(after))
+            if denied and NEG_STOPPING.search(before) and not NEG_BEFORE.search(before):
+                denied = False
             if flag in PRESENCE_TYPE and HI_NEG_AFTER.search(after):
                 denied = True
             if not denied:
@@ -235,6 +250,8 @@ def parse(raw: str) -> Facts:
             if _any(text, words):
                 f.other_animal = animal
                 break
+    if not f.unknown_bite and (f.bite or f.other_animal) and _any(text, HEDGE):
+        f.unknown_bite = True
     f.prevention = _any(text, PREVENT)
     f.self_harm = _any(text, SELF_HARM)
     for flag, words in FLAG_WORDS.items():
