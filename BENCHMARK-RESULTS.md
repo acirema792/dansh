@@ -15,14 +15,20 @@ There were two misses, both shown below and fixed afterwards. The held-out score
 
 | # | When (UTC) | Set | Where | Exact | Bites → hospital | False safe | Under-triage | Controls | Notes |
 |---|---|---|---|---|---|---|---|---|---|
-| 0 | 13 Nov 02:30 | `cases.yaml` (22) | local | 19/22 | 18/18 | **0** | 0 | 4/4 | 3 misses: krait with "no bite mark", "khoon choosa" read as bleeding, "6 year old" not read as a child. Fixed and pinned by tests. |
-| 1 | 13 Nov 02:35 | `holdout.yaml` (16), first run | local | 15/16 | 12/12 | **0** | 0 | 4/4 | "yesterday" not read as a time. Fixed afterwards. |
+| 0 | 13 Nov 02:32 | `cases.yaml` (22) | local | 19/22 | 18/18 | **0** | 0 | 4/4 | 3 misses: krait with "no bite mark", "khoon choosa" read as bleeding, "6 year old" not read as a child. Fixed and pinned by tests. |
+| 1 | 13 Nov 02:33 | `holdout.yaml` (16), first run | local | 15/16 | 12/12 | **0** | 0 | 4/4 | "yesterday" not read as a time. Fixed afterwards. |
 | – | 13 Nov 03:00–15:00 | independent audit + verifier | – | – | – | – | – | – | The audit found **real false safes the sets above missed** (e.g. "snake attack on my son, how to protect him", "fang marks", "saans nahi aa rahi" read as "no breathing problem"). All are now regression tests: `tests/test_audit_r1.py`, `tests/test_verify_r1.py`. |
-| 2 | 13 Nov 16:15 | `cases.yaml` (22) | **live** | 22/22 | 18/18 | **0** | 0 | 4/4 | After fixes; no longer held out. |
-| 3 | 13 Nov 16:15 | `holdout.yaml` (16) | **live** | 16/16 | 12/12 | **0** | 0 | 4/4 | After fixes; no longer held out. |
-| 4 | 13 Nov 16:25 | **`holdout2.yaml` (16), first run** | **live** | **14/16** | **12/12** | **0** | **1** | 3/4 | Under-triage: "now he says he sees double" (krait, double vision) got URGENT, not CRITICAL. It still went to hospital. False alarm: "keep snakes out of my house?" got the bite plan. Both fixed afterwards (`test_h2_*`). |
+| 2 | 13 Nov 16:07 | `cases.yaml` (22) | **live** | 22/22 | 18/18 | **0** | 0 | 4/4 | After fixes; no longer held out. |
+| 3 | 13 Nov 16:07 | `holdout.yaml` (16) | **live** | 16/16 | 12/12 | **0** | 0 | 4/4 | After fixes; no longer held out. |
+| 4 | 13 Nov 16:08 | **`holdout2.yaml` (16), first run** | **live** | **14/16** | **12/12** | **0** | **1** | 3/4 | Under-triage: "now he says he sees double" (krait, double vision) got URGENT, not CRITICAL. It still went to hospital. False alarm: "keep snakes out of my house?" got the bite plan. Both fixed afterwards (`test_h2_*`). |
 
 Full tables: [`eval_results/live-holdout2-run1.md`](eval_results/live-holdout2-run1.md) · [`live-holdout.md`](eval_results/live-holdout.md) · [`live-cases.md`](eval_results/live-cases.md) · [`run-0-local-before-fixes.md`](eval_results/run-0-local-before-fixes.md) · [`holdout-run-1-local.md`](eval_results/holdout-run-1-local.md)
+
+Times are the `ran_at` values recorded in each bundle. The header comment in `holdout2.yaml` says "~16:20 UTC", which is wrong: git shows the file was committed at 16:07:42 and first run at 16:08:22. The file is not edited, because expectation files are frozen.
+
+## Audit-found inputs (adversarial set)
+
+Two independent audit rounds and two verifier passes wrote **about 180 fresh adversarial messages**. Many of them broke earlier versions: false safes, dropped danger signs and false alarms. Every one is now a permanent test (`tests/test_audit_r1.py`, `test_verify_r1.py`, `test_verify_r1b.py`, `test_audit_r2.py`). This is a harder benchmark than the scenario sets above, which a builder writes. The audit reports are in `loop/audits/`.
 
 ## What this does and doesn't show
 

@@ -25,13 +25,13 @@ Dansh is a free, open-source web app in **Hindi and English** for the moment som
 
 | | Figure | Source |
 |---|---|---|
-| Deaths | **~58,000 a year** (1.2 M from 2000–2019), about half of all snakebite deaths worldwide; 94% rural, 77% outside hospital | Suraweera et al., *eLife* 2020 (Million Death Study) |
+| Deaths | **~58,000 a year** (1.2 M from 2000–2019), about half of all snakebite deaths worldwide; 94% rural, 77% outside hospital | [Suraweera et al., *eLife* 2020](https://elifesciences.org/articles/54076) (Million Death Study) |
 | Lifetime risk | **1 in 250** Indians die of snakebite before age 70 (higher in 8 states holding ~55% of the population) | same |
-| Bites | **3–4 million a year** (Health Ministry estimate) | MoHFW at NAP-SE launch, Mar 2024 |
-| Newer, lower estimate | An ICMR community survey (60 M people, 25 districts, 11 states; excludes UP and Bihar) recorded 0.33 deaths per 100,000. **43% of deaths happened outside hospital**, and 53% of victims were below the poverty line. | ICMR, *Nature Communications*, 10 Nov 2025 |
+| Bites | **3–4 million a year** (Health Ministry estimate) | [MoHFW, NAP-SE launch, Mar 2024](https://medicaldialogues.in/news/health/health-ministry-aims-to-halve-snakebite-deaths-by-2030-launches-national-action-plan-125813) |
+| Newer, lower estimate | An ICMR community survey (60 M people, 25 districts, 11 states; excludes UP and Bihar) recorded 0.33 deaths per 100,000. **43% of deaths happened outside hospital**, and 53% of victims were below the poverty line. | [ICMR, *Nature Communications*, 10 Nov 2025](https://doi.org/10.1038/s41467-025-64849-2) |
 | Cost | Out-of-pocket ₹6,500 on average; **₹27,400 in private hospitals** vs ₹3,900 in public ones | same |
-| What goes wrong | Tourniquets used in **70%** of cases (coastal Karnataka) and **69–90%** (Tamil Nadu); a traditional healer was the **first contact for 64%** in a tribal block; healer use was linked to higher mortality. Reaching hospital within 30 minutes was associated with better survival. | Manipal VENOMS registry; Ralph et al., *Trans R Soc Trop Med Hyg* 2025 |
-| Government goal | Halve snakebite deaths by 2030. Public education and referral are named levers. | NAP-SE, MoHFW, Mar 2024 |
+| What goes wrong | Tourniquets were the most common first response, in **70%** of 273 envenomed patients (coastal Karnataka), and faster transfer to definitive care was associated with better outcomes. In two Tamil Nadu blocks, **69–90%** of victims applied tourniquets and a traditional healer was the **first contact for 64%** in the tribal block; those healers did not refer to hospitals. | [Wagle et al., VENOMS registry, Manipal](https://researcher.manipal.edu/en/publications/pre-hospital-interventions-in-snakebite-a-telephonic-survey-and-f/); [Ralph et al., *Trans R Soc Trop Med Hyg* 2025](https://doi.org/10.1093/trstmh/trae083) |
+| Government goal | Halve snakebite deaths by 2030. Public education and referral are named levers. | [NAP-SE, MoHFW, Mar 2024](https://medicaldialogues.in/news/health/health-ministry-aims-to-halve-snakebite-deaths-by-2030-launches-national-action-plan-125813) |
 
 **We use the estimates honestly.** The older verbal-autopsy estimate (~58k/yr) and the newer ICMR survey disagree by an order of magnitude. Every study agrees on the failure Dansh targets: **delay, tourniquets and healers in the first hour.** That failure needs no hospital, no doctor and no new drug to fix, only the right decision made by a relative with a phone.
 
@@ -60,7 +60,7 @@ message (hi/en/hinglish)
 
 ## Proof
 
-- **Tests:** `python3 -m pytest -q tests`. The 80+ tests include a 3,000-message fuzz test, monotonicity over all combinations of facts, every audit-found input as a regression test, and the impact-integrity rules.
+- **Tests:** `python3 -m pytest -q tests`. The 200+ tests include a 3,000-message fuzz test, monotonicity over all combinations of facts, every audit-found input as a regression test, and the impact-integrity rules.
 - **Scenario benchmark:** `python3 scripts/run_eval.py <url>` and `--cases eval_cases/holdout.yaml`. Expected outcomes are written before each run and never edited afterwards. Misses are kept in [BENCHMARK-RESULTS.md](BENCHMARK-RESULTS.md).
 - **Independent audit:** the loop is recorded in [`loop/`](loop/). A fresh auditor scores each round, a separate verifier must run the tests itself, and protected paths stop the loop from "fixing" its own benchmark.
 
