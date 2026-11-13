@@ -10,6 +10,9 @@ import json
 import os
 import time
 
+from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import TimeoutError as FutureTimeout
+
 import httpx
 
 from .content import RED_FLAGS
@@ -17,7 +20,8 @@ from .parser import Facts
 
 PROVIDER_URL = os.environ.get("DANSH_LLM_URL", "https://api.anthropic.com/v1/messages")
 MODEL = os.environ.get("DANSH_LLM_MODEL", "claude-haiku-4-5")
-TIMEOUT = float(os.environ.get("DANSH_LLM_TIMEOUT", "2.5"))  # never hold an emergency answer longer
+TIMEOUT = float(os.environ.get("DANSH_LLM_TIMEOUT", "2.5"))  # total wall-clock budget, enforced below
+_pool = ThreadPoolExecutor(max_workers=4)
 
 BOOL_KEYS = ["snake", "bite", "unknown_bite", "occult_krait", "prevention", "self_harm", "swelling",
              "done_tourniquet", "done_cut", "done_healer", "done_ate", "done_walked", "done_catch", "child", "pregnant"]
@@ -37,7 +41,16 @@ def enabled() -> bool:
 
 
 def read(message: str) -> tuple[dict | None, dict]:
-    """Returns (facts_dict_or_None, meta)."""
+    """Returns (facts_dict_or_None, meta). Never blocks longer than TIMEOUT seconds in total."""
+    fut = _pool.submit(_read, message)
+    try:
+        return fut.result(timeout=TIMEOUT)
+    except FutureTimeout:
+        return None, {"provider": "anthropic", "model": None, "ok": False, "ms": int(TIMEOUT * 1000),
+                      "error": "deadline"}
+
+
+def _read(message: str) -> tuple[dict | None, dict]:
     meta = {"provider": "anthropic", "model": None, "ok": False, "ms": 0}
     if not enabled():
         meta["provider"] = None

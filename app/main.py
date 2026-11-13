@@ -64,12 +64,19 @@ CSP = ("default-src 'self'; connect-src 'self' https://overpass-api.de; img-src 
 @app.middleware("http")
 async def headers(request: Request, call_next):
     if request.method == "POST":
+        if "chunked" in request.headers.get("transfer-encoding", "").lower():
+            return JSONResponse({"error": "content-length required"}, status_code=411)
         try:
             if int(request.headers.get("content-length") or 0) > MAX_BODY:
                 return JSONResponse({"error": "request too large"}, status_code=413)
         except ValueError:
             return JSONResponse({"error": "bad content-length"}, status_code=400)
-        if not _allow(_ip(request)):
+        allowed = _allow(_ip(request))
+        if request.url.path == "/api/consult":
+            # Never refuse an emergency answer. Over the limit we still answer (the rules are cheap),
+            # but skip the language model and do not log the request.
+            request.state.over_limit = not allowed
+        elif not allowed:
             return JSONResponse({"error": "too many requests, wait a minute"}, status_code=429)
     resp = await call_next(request)
     resp.headers["Content-Security-Policy"] = CSP
@@ -118,7 +125,8 @@ def consult(body: ConsultIn, request: Request):
     parser_used = "keywords"
     added: list[str] = []
     meta: dict = {}
-    if llm.enabled() and body.message.strip():
+    over_limit = getattr(request.state, "over_limit", False)
+    if llm.enabled() and body.message.strip() and not over_limit:
         extra, meta = llm.read(body.message)
         facts, added = llm.merge(facts, extra)
         parser_used = "keywords+llm" if meta.get("ok") else "keywords (llm unavailable)"
@@ -128,7 +136,7 @@ def consult(body: ConsultIn, request: Request):
         raise HTTPException(500, f"safety invariant failed: {errs}")
     ms = int((time.time() - t0) * 1000)
     answered_flags = {k for k, v in body.answered.items() if v and k in RED_FLAGS}
-    if not body.repeat:
+    if not body.repeat and not over_limit:
         store.log_consult(plan.lang, plan.level, sorted(set(facts.red_flags) | answered_flags),
                           parser_used, ms, store.device_hash(_ip(request)), _is_test(request))
     out = plan.to_dict()

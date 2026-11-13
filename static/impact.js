@@ -23,7 +23,7 @@ async function load(){
   </div>
   <div class="card"><h2>By decision</h2>
   <p class="legend"><span><i style="background:#c9b48a"></i>before</span><span><i style="background:var(--leaf)"></i>after</span></p>
-  <div class="tablewrap"><table><thead><tr><th>Decision</th><th>Correct</th><th></th><th>Dangerous choice</th></tr></thead><tbody>${rows}</tbody></table></div>
+  <div class="tablewrap"><table><thead><tr><th>Decision</th><th>Correct</th><th></th><th>Dangerous choice</th></tr></thead><tbody>${rows}</tbody></table></div></div>
   <div class="card"><h2>Who took it</h2>
   <p><b>Language:</b> ${kv(L.by_lang)}<br><b>State (self-reported, optional):</b> ${kv(L.by_state)}<br><b>Role (optional):</b> ${kv(L.by_role)}<br>
   <b>Question-set order:</b> ${kv(L.by_form_order)}<br><b>Not counted (excluded):</b> ${kv(L.excluded || {})}<br><b>First / latest:</b> ${ts(L.first_completed_at)} / ${ts(L.last_completed_at)}</p>

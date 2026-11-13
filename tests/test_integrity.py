@@ -63,7 +63,8 @@ def test_f7_rate_limit(monkeypatch):
     monkeypatch.setattr(main, "RATE", 3.0)
     main._buckets.clear()
     c = TestClient(main.app, client=("10.4.4.4", 1))
-    codes = [c.post("/api/consult", json={"message": "hello"}).status_code for _ in range(6)]
+    # The emergency endpoint is deliberately never refused (verifier round 1); the limit applies to the check.
+    codes = [c.post("/api/learn/start", json={"lang": "en"}).status_code for _ in range(6)]
     assert 429 in codes
     main._buckets.clear()
 
@@ -72,3 +73,39 @@ def test_f12_security_headers():
     r = TestClient(main.app).get("/")
     assert "default-src 'self'" in r.headers["content-security-policy"]
     assert r.headers["x-frame-options"] == "DENY"
+
+
+def test_v_chunked_rejected():
+    c = TestClient(main.app, client=("10.3.3.3", 1))
+    r = c.post("/api/learn/start", content=b'{"lang":"en"}',
+               headers={"transfer-encoding": "chunked", "content-type": "application/json"})
+    assert r.status_code in (411, 400)
+
+
+def test_v_emergency_never_rate_limited(monkeypatch):
+    monkeypatch.setattr(main, "RATE", 2.0)
+    main._buckets.clear()
+    c = TestClient(main.app, client=("10.2.2.2", 1))
+    codes = [c.post("/api/consult", json={"message": "snake bit my father, he cannot breathe"}).status_code
+             for _ in range(10)]
+    assert set(codes) == {200}
+    learn = [c.post("/api/learn/start", json={"lang": "en"}).status_code for _ in range(3)]
+    assert 429 in learn
+    main._buckets.clear()
+
+
+def test_v_impact_js_balanced():
+    s = open(os.path.join(os.path.dirname(__file__), "..", "static", "impact.js")).read()
+    assert s.count("<div") == s.count("</div>")
+
+
+def test_v_llm_total_deadline(monkeypatch):
+    import time as _t
+
+    from app import llm
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "x")
+    monkeypatch.setattr(llm, "TIMEOUT", 0.3)
+    monkeypatch.setattr(llm, "_read", lambda m: (_t.sleep(2), (None, {}))[1])
+    t0 = _t.time()
+    data, meta = llm.read("snake bit me")
+    assert data is None and meta["error"] == "deadline" and _t.time() - t0 < 1.0
