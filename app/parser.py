@@ -40,7 +40,6 @@ class Facts:
     contact: bool = False
     snake_mention_only: bool = False  # "snake plant care tips", "snakes and ladders rules"  # wound, marks, pain, swelling, or a snake touching a body part
     night_floor: bool = False
-    systemic: bool = False  # a body-wide change after a bite that no listed danger sign matched -> CRITICAL
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -92,7 +91,7 @@ BITE = ["chavla", "katne", "kaatne", "katne se", "kaatne se", "kaatne ke", "katn
         "daswa", "dasa", "dans", "dansh", "dank", "sting", "stung", "attack", "attacked", "struck", "strike",
         "hamla", "got my", "got him", "got her", "fang", "fangs", "fang marks", "snakbite", "snakebit",
         "काटा", "काट", "डसा", "डस", "डंस", "दंश", "डंक"]
-UNKNOWN = ["kisi cheez ne", "keede", "kide", "keede ne", "kida ne", "creature", "some animal", "an animal", "kuch jaanwar", "koi jaanwar", "slithered", "slithering", "slid over", "sarak", "किसी चीज़ ने", "किसी चीज ने", "something nipped", "something grabbed", "something bit", "something has bitten", "kuch ne kaata", "kuch kaat", "kisi ne kaata", "pata nahi kisne",
+UNKNOWN = ["kisi cheez ne", "kuch ne", "kisi ne", "कुछ ने", "something hit", "something struck", "something poked", "do chhed", "chhed", "छेद", "keede", "kide", "keede ne", "kida ne", "creature", "some animal", "an animal", "kuch jaanwar", "koi jaanwar", "slithered", "slithering", "slid over", "sarak", "किसी चीज़ ने", "किसी चीज ने", "something nipped", "something grabbed", "something bit", "something has bitten", "kuch ne kaata", "kuch kaat", "kisi ne kaata", "pata nahi kisne",
            "dont know what bit", "don't know what bit", "not sure what bit", "unknown bite", "insect", "keeda", "kida",
            "fang marks", "fang", "fangs", "two marks", "two holes", "two dots", "do nishan", "do nishaan", "chubh",
            "chubha", "chubh gaya", "pricked", "prick", "चुभ", "दो निशान", "long and black", "lamba kala",
@@ -128,7 +127,7 @@ SELF_HARM = ["suicide", "kill myself", "end my life", "self harm", "self-harm", 
              "आत्महत्या", "मरना चाहता", "मरना चाहती"]
 
 FLAG_WORDS = {
-    "ptosis": ["aankhe nhi khul", "aankhe nahi khul", "aankh nahi khol", "aankhen nahi khol", "aankh nhi khol", "आंख नहीं खोल", "आंखें नहीं खोल", "two of everything", "seeing two of", "droop", "drooping", "droopy", "eyelid", "eyelids", "ptosis", "double vision", "blurred vision",
+    "ptosis": ["ankhon ke aage andhera", "aankhon ke aage andhera", "aankhe nhi khul", "jhapak", "aankhen jhapak", "aankhe nahi khul", "aankh nahi khol", "aankhen nahi khol", "aankh nhi khol", "आंख नहीं खोल", "आंखें नहीं खोल", "two of everything", "seeing two of", "droop", "drooping", "droopy", "eyelid", "eyelids", "ptosis", "double vision", "blurred vision",
                "sees double", "seeing double", "see double", "everything double", "vision is blurred",
                "eyes not opening", "eyes are not opening", "eyes won't open", "half closed", "half-closed",
                "eyes keep shutting", "keep shutting", "eyes keep closing", "looks drunk", "cannot see properly", "can't see properly", "cant see properly", "seeing double", "aankh nahi khul", "aankhen nahi khul", "aankhein nahi khul",
@@ -138,25 +137,25 @@ FLAG_WORDS = {
                "aankh band", "aankhen band", "aankhein band", "ankh band", "open his eyes", "open her eyes",
                "open their eyes", "open my eyes", "eyes heavy", "keep eyes open", "keep his eyes open", "palak", "palken", "dhundhla", "do do dikh",
                "पलक", "पलकें", "आंख बंद", "आंखें बंद", "धुंधला", "दो दो दिख", "आंखें नहीं खुल", "आंख नहीं खुल"],
-    "breathing": ["breathin", "panting", "chest feels heavy", "chest heavy", "chest is heavy", "throat is closing", "throat closing", "breathing very slow", "breathing slow", "breathing slowly", "breath", "breathe", "breathing", "breathless", "short of breath", "choking", "saans", "sans",
+    "breathing": ["shwaas", "shwas", "swaas", "lene me takleef", "lene mein takleef", "bluish", "breathin", "panting", "chest feels heavy", "chest heavy", "chest is heavy", "throat is closing", "throat closing", "breathing very slow", "breathing slow", "breathing slowly", "breath", "breathe", "breathing", "breathless", "short of breath", "choking", "saans", "sans",
                   "gasping", "gasp", "haanf", "hanf", "haanp", "blue lips", "lips blue", "lips turning blue",
                   "lips are turning blue", "lips are blue", "turning blue", "breaths are", "far apart", "neela pad",
                   "struggling to get air", "get air", "gone blue", "blue around the mouth", "can't get air",
                   "chest tight", "chest tightness", "chhati jakad", "हांफ", "होंठ नीले",
                   "saas", "dam ghut", "dum ghut", "सांस", "दम घुट", "श्वास"],
-    "speech_swallow": ["can't talk", "cant talk", "cannot talk", "not able to talk", "talk properly", "speak properly", "mumbling", "words not clear", "not clear words", "awaz badal", "aawaz badal", "awaaz badal", "nigal nhi", "nigal nahi pa", "bat nahi kar", "baat nahi kar", "bat nhi kar", "baat nhi kar", "बात नहीं कर", "आवाज बदल", "आवाज़ बदल", "slurred", "can't speak", "cannot speak", "cant speak", "can't swallow", "cannot swallow",
+    "speech_swallow": ["words are jumbled", "jumbled", "hoarse", "get words out", "bolne me dikkat", "bolne mein dikkat", "bolne me takleef", "making any sense", "making sense", "gibberish", "can't talk", "cant talk", "cannot talk", "not able to talk", "talk properly", "speak properly", "mumbling", "words not clear", "not clear words", "awaz badal", "aawaz badal", "awaaz badal", "nigal nhi", "nigal nahi pa", "bat nahi kar", "baat nahi kar", "bat nhi kar", "baat nhi kar", "बात नहीं कर", "आवाज बदल", "आवाज़ बदल", "slurred", "can't speak", "cannot speak", "cant speak", "can't swallow", "cannot swallow",
                        "difficulty swallowing", "trouble swallowing", "unable to swallow",
                        "slurring", "gala band", "gale me kuch", "गला बंद", "spitting", "saliva", "tongue feels thick",
                        "thick tongue", "words are coming out wrong", "ladkhada", "aawaz ladkha", "awaaz ladkha",
                        "voice has gone", "voice gone", "talking like he is drunk", "talking like she is drunk",
                        "like he is drunk", "like she is drunk", "frothing", "froth", "jhaag", "झाग", "trouble speaking", "bol nahi", "bol nhi",
                        "nigal nahi", "nigalne", "awaaz", "आवाज़", "बोल नहीं", "निगल", "बोलने में"],
-    "bleeding": ["dark red", "peshab lal", "pishab lal", "lal peshab", "urine has become", "urine is dark", "dark urine", "pee has turned", "pee turned", "peshab bhura", "brown pee", "bleeding", "bleed", "blood", "khoon", "khun", "gums", "nosebleed", "nose bleed", "red urine",
+    "bleeding": ["reddish urine", "wee is red", "reddish", "bruises", "bruising", "bruise", "neel pad", "dark red", "peshab lal", "pishab lal", "lal peshab", "urine has become", "urine is dark", "dark urine", "pee has turned", "pee turned", "peshab bhura", "brown pee", "bleeding", "bleed", "blood", "khoon", "khun", "gums", "nosebleed", "nose bleed", "red urine",
                  "urine is red", "urine red", "peshab laal", "laal peshab", "pishab laal", "blood in urine",
                  "like cola", "cola", "coca", "black urine", "pee is", "पेशाब काला", "peshab kala", "kala peshab",
                  "dark urine", "black urine", "brown urine", "naak se", "masood", "खून", "मसूड़", "नाक से", "लाल पेशाब",
                  "काला पेशाब", "रक्त"],
-    "unconscious": ["eyes rolling", "eyes are rolling", "not answering", "not making sense", "talking nonsense", "cold and sweaty", "convulsing", "neend aa rhi", "nind aa rahi", "neend aa raha", "नहीं उठ", "नहीं जाग", "दौरे", "nahi uth raha", "nahi uth rahi", "nahi jaag", "nahi jag", "daure", "dore pad", "unconscious", "fainted", "fainting", "faint", "drowsy", "not responding", "unresponsive",
+    "unconscious": ["zoning out", "gone pale", "turned pale", "face is pale", "very pale", "drifting off", "stay awake", "aankhe ulat", "aankhen ulat", "gir pade", "gir padi", "gir pada", "होश खो", "bahut neend", "neend me", "so ja raha", "so ja rahi", "andhera", "gone quiet", "very quiet", "acting strange", "acting weird", "ajeeb harkat", "ajib harkat", "isn't himself", "isnt himself", "isn't herself", "not himself", "not herself", "groggy", "shaking", "eyes rolling", "eyes are rolling", "not answering", "not making sense", "talking nonsense", "cold and sweaty", "convulsing", "neend aa rhi", "nind aa rahi", "neend aa raha", "नहीं उठ", "नहीं जाग", "दौरे", "nahi uth raha", "nahi uth rahi", "nahi jaag", "nahi jag", "daure", "dore pad", "unconscious", "fainted", "fainting", "faint", "drowsy", "not responding", "unresponsive",
                     "collapsed", "collapse", "passed out", "pass out", "fits", "fit aa", "seizure", "seizures",
                     "having a fit", "a fit", "shaking all over", "jag nahi raha", "jag nahi rahi", "jaag nahi",
                     "uth nahi raha", "uth nahi rahi", "जाग नहीं", "उठ नहीं",
@@ -164,7 +163,7 @@ FLAG_WORDS = {
                     "neend aa rahi", "बहुत नींद", "झटके", "दौरा",
                     "not waking", "won't wake", "hard to wake", "behosh", "behoshi", "hosh nahi", "sust",
                     "बेहोश", "होश नहीं", "सुस्त", "बेसुध"],
-    "weakness": ["gardan nahi uth", "gardan nhi uth", "sir nahi uth", "sir nhi uth", "head up", "keep his head up", "keep her head up", "ढीले", "dheele pad", "kaam nahi kar rahe", "kaam nhi kar rahe", "हाथ पैर काम नहीं", "गर्दन नहीं उठ", "weak", "weakness", "paralysis", "paralysed", "paralyzed", "can't move", "cannot move",
+    "weakness": ["legs gave way", "gave way", "taakat nahi", "takat nahi", "sambhal nahi", "nahi sambhal", "sit up", "जान नहीं", "नहीं संभल", "wobbling", "wobbly", "gardan nahi uth", "gardan nhi uth", "sir nahi uth", "sir nhi uth", "head up", "keep his head up", "keep her head up", "ढीले", "dheele pad", "kaam nahi kar rahe", "kaam nhi kar rahe", "हाथ पैर काम नहीं", "गर्दन नहीं उठ", "weak", "weakness", "paralysis", "paralysed", "paralyzed", "can't move", "cannot move",
                  "can't hold his head", "can't hold her head", "cannot hold head", "can't hold head", "head drop",
                  "head falling", "gardan latak", "gardan gir", "no strength", "no power", "jaan nahi", "गर्दन लटक",
                  "floppy", "can't lift", "cannot lift", "cant lift", "lift his head", "lift her head", "dheela",
@@ -172,7 +171,7 @@ FLAG_WORDS = {
                  "head keeps falling", "head falling forward",
                  "can't stand", "cannot stand", "limp", "kamzori", "kamjori", "lakwa", "lakva", "kamzor",
                  "कमज़ोरी", "कमजोरी", "कमज़ोर", "कमजोर", "लकवा", "हिल नहीं"],
-    "vomiting_abdominal": ["threw up", "throw up", "vomitting", "vomitted", "vomting", "ultiyan", "ultiyaan", "ultiya", "उल्टियां", "उल्टियाँ", "vomit", "vomiting", "vomited", "throwing up", "stomach pain", "abdominal pain",
+    "vomiting_abdominal": ["been sick", "was sick", "gut hurts", "belly is sore", "sore belly", "stomach is sore", "threw up", "throw up", "vomitting", "vomitted", "vomting", "ultiyan", "ultiyaan", "ultiya", "उल्टियां", "उल्टियाँ", "vomit", "vomiting", "vomited", "throwing up", "stomach pain", "abdominal pain",
                            "belly pain", "stomach ache", "ulti", "ultee", "pet dard", "pet me dard", "pet mein dard",
                            "उल्टी", "पेट दर्द", "पेट में दर्द"],
 }
@@ -180,66 +179,39 @@ FLAG_RE = {
     "ptosis": re.compile(r"\b(?:eyes?|aankh\w*|ankh\w*)\s+(?:\w+\s+){0,3}(?:heavy|bhaari|bhari|droop\w*|jhuk\w*|band ho\w*|closing|"
                          r"keep shutting|shut\w*|(?:nahi|nhi|not|won'?t|can'?t)\s+(?:\w+\s+)?(?:open|khol|khul)\w*)"
                          r"|(?:can'?t|cannot|not able to|unable to)\s+(?:\w+\s+)?open\s+(?:his|her|their|my|the)?\s*eyes?"
-                         r"|nazar\s+(?:\w+\s+)?(?:dhundh?l\w*|kam|kharab|nahi|nhi|do)\b|dhundh?l\w*|blurr?\w*|"
+                         r"|nazar\s+(?:\w+\s+)?(?:dhundh?l\w*|kam ho|kharab)\b|dhundh?l\w*|blurr?\w*|"
                          r"(?:seeing|see|sees|vision)\s+(?:\w+\s+)?double|\bdo do dikh|"
                          r"आंख\S*\s+(?:\S+\s+)?(?:भारी|नहीं खुल)|आँख\S*\s+(?:\S+\s+)?(?:भारी|नहीं खुल)|धुंध"),
     "breathing": re.compile(r"\bbr[ea]{1,3}t?h\w*|\bbreat\w*|\bsaa?ns(?:e|en|on)?\b|dam\s+(?:phool|fool|ful|ghut)\w*|"
-                            r"\bhaa?n?f(?:\w*)|\bhaanp\w*|\bhanp\w*|lips?\s+(?:\w+\s+){0,2}blue|blue\s+lips|"
+                            r"\bhaa?nf\w*|\bhaanp\w*|\bhanp\w*|chest\s+(?:\w+\s+){0,2}tight\w*|lips?\s+(?:\w+\s+){0,2}blue|blue\s+lips|"
                             r"(?:can'?t|cannot|not able to)\s+(?:get\s+)?air|suffocat\w*|wheez\w*|gasp\w*|"
                             r"दम\s+फूल|सांस|साँस|हांफ|होंठ\S*\s+नीले"),
-    "speech_swallow": re.compile(r"speech\s+(?:is\s+)?(?:\w+\s+){0,2}(?:thick|slow|slurr\w*|unclear|strange|changed|weird)|"
+    "speech_swallow": re.compile(r"talks?\s+(?:\w+\s+)?(?:funny|strange|weird|slurr\w*)|aawaz\s+nahi|awaz\s+nahi|awaaz\s+nahi|आवाज\S*\s+नहीं|speech\s+(?:is\s+)?(?:\w+\s+){0,2}(?:thick|slow|slurr\w*|unclear|strange|changed|weird)|"
                                  r"tongue\s+(?:\w+\s+){0,2}(?:heavy|thick|numb)|\b(?:jubaa?n|zubaa?n|juban)\s+\w+|"
                                  r"ladkha\w*|\bfoam\w*|froth\w*|jhaag|(?:gale|gala|throat)\s+(?:se\s+)?(?:\w+\s+){0,3}(?:utar|nigal|swallow|band|clos)\w*|"
                                  r"(?:can'?t|cannot|unable to|not able to|nahi|nhi)\s+(?:\w+\s+){0,1}(?:speak|talk|swallow|bol pa|bol paa|nigal)\w*|"
                                  r"जुबान\S*\s+\S+|ज़ुबान|लड़खड़ा|झाग|गले\s+से|निगल"),
-    "bleeding": re.compile(r"(?:pee|urine|peshab|pishab|mutra)\s+(?:\w+\s+){0,4}(?:red|lal|laal|brown|bhura|dark|black|kala|tea|cola|coke|blood)|"
+    "bleeding": re.compile(r"(?:pee|urine|peshab|pishab|pishaab|peshaab|mutra)\s+(?:\w+\s+){0,4}(?:red|lal|laal|brown|bhura|dark|black|kala|tea|cola|coke|coffee|blood)|"
                            r"(?:blood|bleed\w*|khoon|khun|wound|ghav)\s+(?:\w+\s+){0,3}(?:won'?t|not|nahi|nhi|doesn'?t)\s+(?:\w+\s+)?(?:clot|stop|ruk)\w*|"
                            r"(?:won'?t|not|doesn'?t)\s+clot\w*|\bbleed\w*|"
                            r"(?:gums?|masood\w*|nose|naak)\s+(?:\w+\s+){0,2}(?:blood|bleed\w*|khoon)|पेशाब\S*\s+(?:\S+\s+){0,4}(?:लाल|भूरा|काला|गहरा)|खून\s+(?:नहीं\s+)?रुक"),
     "unconscious": re.compile(r"\bunconc?s\w*|\bunconsc?\w*|\bbeh?osh?\w*|\bbehos\b|nidh?aa?l\w*|nodding|nod off|dozing|drows\w*|"
-                              r"(?:not|doesn'?t|does not|isn'?t|nahi|nhi)\s+(?:\w+\s+){0,2}(?:respond\w*|answer\w*|wake|waking|jaag\w*|jag\w*|uth\w*|sun raha|sun rahi|sunta|sunti)|"
-                              r"\bjerk\w*|twitch\w*|convuls\w*|\bseiz\w*|\bdaur[ae]\w*|jhatk\w*|collaps\w*|pass(?:ed)? out|"
-                              r"(?:he|she|they|papa|father|mother|dad|mom|grandpa|grandma|is|seems|looks|became|getting)\s+(?:very\s+|so\s+|a bit\s+)?confus\w*|"
+                              r"(?:not|doesn'?t|does not|isn'?t|won'?t|wont|nahi|nhi)\s+(?:\w+\s+){0,2}(?:respond\w*|wake|waking|jaag\w*|jag\w*|uth\w*|sun raha|sun rahi|sunta|sunti)|"
+                              r"(?:he|she|they|papa|father|mother|dad|mom|grandpa|grandma|child|baby|son|daughter)\s+(?:is\s+)?(?:not|isn'?t|doesn'?t)\s+answer\w*|"
+                              r"blacked out|black out|out cold|keeled|hosh kho|hosh nahi|mirgi|\bjerking|\bjerks\b|body (?:is )?jerk\w*|twitch\w*|convuls\w*|\bseiz\w*|\bdaur[ae]\w*|jhatk\w*|collaps\w*|pass(?:ed)? out|"
+                              r"(?:he|she|they|papa|father|mother|dad|mom|grandpa|grandma|is|seems|looks|became|getting)\s+(?:very\s+|so\s+|a bit\s+)?confus(?:ed|ion)\b|"
                               r"nonsense|not making sense|ulti?\s*seedhi baat|cold and (?:sweaty|clammy)|clammy|"
                               r"बेहोश|निढाल|दौर[ेा]|झटक\S*|नहीं\s+(?:उठ|जाग|सुन)"),
-    "weakness": re.compile(r"(?:head|neck|gardan|\bsir|\bsar)\s+(?:\w+\s+){0,3}(?:flop\w*|fall\w*|drop\w*|lat?ak\w*|straight|uth\w*|gir\w*)|"
+    "weakness": re.compile(r"(?:head|neck|gardan|\bsir|\bsar)\s+(?:\w+\s+){0,3}(?:flop\w*|fall\w*|drop\w*|lat?ak\w*|gir\w*)|"
                            r"(?:keep|hold|lift)\s+(?:his|her|the)\s+head|"
                            r"(?:can'?t|cannot|unable to|not able to|nahi|nhi)\s+(?:\w+\s+){0,2}(?:lift|stand|move|hold|utha|khada|khade|hil)\w*|"
                            r"khada nahi|khade nahi|paralys\w*|paralyz\w*|\blimp\b|floppy|\bweak\w*|kamzor\w*|kamjor\w*|dheel\w*|"
                            r"गर्दन|खड़ा\s+नहीं|ढील|कमज़ोर|कमजोर|लकवा"),
-    "vomiting_abdominal": re.compile(r"\bvom\w*|\bpuk(?:e|ed|es|ing)\b|throw\w* up|threw up|\bult(?:i|ee)(?:y[aoe]?n|yaan|ya|yan|an|aan)?\b|"
+    "vomiting_abdominal": re.compile(r"\b[vw]om[it]\w*|\bretch\w*|\bult[iy]\w*\s+hu|\bpuk(?:e|ed|es|ing)\b|throw\w* up|threw up|\bult(?:i|ee)(?:y[aoe]?n|yaan|ya|yan|an|aan)?\b|"
                                      r"(?:stomach|tummy|belly|abdom\w*|\bpet)\s+(?:\w+\s+){0,3}(?:pain\w*|ache\w*|dard|marod|cramp\w*|hurt\w*)|"
                                      r"(?:pain|ache|dard|marod)\s+(?:\w+\s+){0,2}(?:stomach|tummy|belly|pet)\b|tummy ache|stomachache|marod|"
                                      r"उल्ट\S*|पेट\S*\s+(?:\S+\s+){0,2}(?:दर्द|मरोड़)|मरोड़"),
 }
-# A body-wide change after a bite that is not a named danger sign. English: a CHANGE verb ("keeps nodding off",
-# "is getting groggy") or a listed state ("is pale"); Hinglish/Hindi: any "<x> ho/aa/lag/pad raha/gaya" except local or
-# neutral words ("nidhaal ho gaya", "aankhen bhaari ho rahi" -> yes; "dard ho raha", "kya ho gaya" -> no).
-LOCAL_STATE = {"swelling", "swollen", "swell", "sujan", "soojan", "sooj", "suj", "dard", "pain", "painful", "paining",
-               "jalan", "burning", "red", "lal", "laal", "numb", "sunn", "itchy", "itching", "khujli", "fine", "ok", "okay",
-               "theek", "thik", "normal", "stable", "better", "crying", "scared", "afraid", "worried", "calm", "awake",
-               "conscious", "alert", "talking", "walking", "eating", "in", "on", "with", "at", "going", "coming", "being",
-               "taken", "here", "there", "now", "still", "alive", "safe", "home", "hospital", "ro", "rona", "khoon",
-               "bleeding", "blood", "a", "the", "very", "so", "bahut", "thoda", "little", "bit", "bitten", "kaata",
-               "kya", "kuch", "sab", "ye", "yeh", "wo", "woh", "vo", "ab", "abhi", "late", "der", "time", "shaam", "raat",
-               "subah", "ghanta", "ghante", "minute", "minat", "din", "pata", "kaise", "kab", "jaldi", "aaram", "bhi", "to",
-               "toh", "hi", "ki", "ke", "ka", "me", "mein", "se", "na", "nahi", "nhi", "pus", "mawad", "chhala", "chhale",
-               "kala", "kaala", "kali", "pasina", "paseena", "mar", "maar", "dar", "darr", "ghabrahat", "nishan", "nishaan",
-               "pregnant", "wearing", "sitting", "standing", "lying", "holding", "asking", "saying", "telling", "shouting",
-               "panicking", "nervous", "anxious", "upset", "sweating", "sleeping", "resting", "fasting", "waiting",
-               "क्या", "कुछ", "देर", "ठीक", "दर्द", "सूजन", "सूज", "जलन", "लाल", "खून", "पसीना", "डर", "मर", "बहुत", "सब",
-               "अब", "रो", "सुन्न", "समय", "घंटा", "घंटे"}
-SYSTEMIC_WORDS = {"pale", "sleepy", "groggy", "dazed", "drunk", "cold", "blue", "grey", "gray", "yellow", "lethargic",
-                  "listless", "restless", "delirious", "unwell", "sick", "serious", "critical", "worse", "strange", "weird",
-                  "quiet", "silent", "stiff", "blank", "sweaty", "clammy", "dizzy", "giddy", "wobbly", "off"}
-SYSTEMIC_RE = re.compile(
-    r"\b(?:he|she|they|papa|father|mother|mom|dad|son|daughter|baby|child|grandpa|grandma|bhai|beta|beti|bachha|"
-    r"bachcha|chhotu|chotu|he's|she's|it's|he is|she is)\s+(?:keeps|kept|became|has become|is getting|getting|got|turned|"
-    r"turning|is going|going|started|starts)\s+(?:very\s+|so\s+|really\s+|bahut\s+|a bit\s+)?([a-z']+)"
-    r"|\b(?:he|she|they|he's|she's|papa|father|mother|son|daughter|baby|child|grandpa|grandma)\s+(?:is\s+|was\s+|seems\s+|"
-    r"looks\s+|feels\s+)?(?:very\s+|so\s+|really\s+|a bit\s+|quite\s+)?(" + "|".join(sorted(SYSTEMIC_WORDS)) + r")\b"
-    r"|(?:^|[\s,])([a-z]+)\s+(?:ho|aa|lag|pad|padh)\s+(?:raha|rahi|rahe|gaya|gayi|gaye|gya|gyi)\b"
-    r"|(\S+)\s+(?:हो|आ|लग|पड़)\s+(?:रहा|रही|रहे|गया|गई|गए)")
 SWELLING = ["swelling", "sujgaya", "sujh", "sooj gaya", "soojh", "sujan aa", "swollen", "swell", "sujan", "soojan", "sooj", "suj", "suj gaya", "suj raha", "suj rahi",
             "puffy", "fool gaya", "phool gaya", "सूजन", "सूज", "फूल गया"]
 DONE = {
@@ -318,7 +290,8 @@ NEG_QUALIFIED = re.compile(r"(?:difficulty|trouble|problem|problems|sign|signs|i
                            r"active|visible)\s+$")
 QUALIFIER_AFTER = re.compile(r"^\s*(?:problem|problems|trouble|issue|issues|difficulty|ki dikkat|ki problem|"
                              r"me dikkat|mein dikkat|takleef)\b")
-QUESTION_CLAUSE = re.compile(r"(?:\bis\b|\bhow\b|\bkya\b|क्या|\bif\b)[^,.;!?।]*$")
+# A question only when the clause STARTS with the question word: "is his breathing ok?", not "he is breathing normally".
+QUESTION_CLAUSE = re.compile(r"(?:^|[,.;!?।]\s*|\b(?:and|but|aur|par)\s+)(?:is|are|how|kya|क्या|if|does|do)\b[^,.;!?।]*$|\b(?:kya|क्या|how|if)\b[^,.;!?।]*$")
 NEG_STOPPING = re.compile(r"(?:\bnot\b|\bnahi\b|नहीं)[^,.;!?।]{0,10}$")
 PRESENCE_TYPE = {"bleeding", "vomiting_abdominal", "swelling"}  # "khoon nahi" = no bleeding
 
@@ -348,6 +321,8 @@ def _negated(text: str, words: list[str], flag: str = "") -> bool:
                 denied = False
             if flag in PRESENCE_TYPE and HI_NEG_AFTER.search(after):
                 denied = True
+            if flag in PRESENCE_TYPE and re.search(r"\b(?:not|isn'?t|no longer)\s+$", before):
+                denied = True  # "he is not vomiting" (never applied to breathing: "not breathing" = arrest)
             if not denied:
                 return False
     return found
@@ -374,6 +349,11 @@ def _minutes(text: str) -> int | None:
     return None
 
 
+# Everyday phrases that contain danger-sign words but describe the phone, the network or the pain, not the patient.
+NOT_A_SIGN_RE = re.compile(r"can'?t stand (?:it|the pain)|cannot stand (?:it|the pain)|(?:network|signal|internet|net)\s+(?:is\s+|bahut\s+)?"
+                           r"(?:weak|kamzor|kamjor)|(?:weak|kamzor)\s+(?:network|signal)|(?:phone|call|calls)\s+(?:\S+\s+){0,2}"
+                           r"(?:nahi|nhi|not|isn'?t|doesn'?t)\s+(?:\S+\s+)?(?:utha|uth|answer\w*|lag|respond\w*)\w*|"
+                           r"(?:not|nahi|nhi|isn'?t)\s+(?:\S+\s+)?(?:answering|utha rahe|utha raha|utha rahi)\s+(?:the\s+)?(?:phone|call)")
 BIT_IDIOM = re.compile(r"\b(a|little|tiny|quite a|bit by bit|one)\s+bit\b(?!\s+(him|her|me|my|his|them|us|you|on|by))")
 
 
@@ -409,7 +389,7 @@ INFO_WORDS = ["tips", "game", "plant", "pose", "species", "project", "show", "ti
 GENERIC_ANY = ["kyon", "kyun", "why do", "why does", "how many", "kitne log", "kitne logon", "क्यों", "कितने"]
 MARK_WORDS = ["mark", "marks", "nishan", "nishaan", "निशान", "puncture", "punctures", "holes", "dots", "daag", "lal daag",
               "spots", "red spots", "fang"]
-PRICK_WORDS = ["stepped on", "touched", "touch", "pinch", "pinched", "nipped", "injection", "sting like", "kisi cheez", "किसी चीज़", "किसी चीज",
+PRICK_WORDS = ["stepped on", "jab", "jabbed", "poke", "poked", "sharp", "touched", "touch", "pinch", "pinched", "nipped", "injection", "sting like", "kisi cheez", "किसी चीज़", "किसी चीज",
                "prick", "pricked", "chubh", "chubha", "chubhan", "chubi", "grabbed", "something", "kuch laga",
                "कुछ लगा", "stung", "sting", "nipped", "nip"]
 GOT_PERSON = ["got papa", "got mummy", "got dad", "got mom", "got bhai", "got my", "got him", "got her", "got me"]
@@ -432,7 +412,7 @@ LIKE_RE = re.compile(r"\b(?:like|jaisa|jaise|jaisi)\b|-like|जैसा|जै�
 OUTDOOR = ["orchard", "bagicha", "bageecha", "bagh", "yard", "courtyard", "aangan", "angan", "backyard", "barn", "verandah", "veranda", "आंगन", "बगीचा", "hand pump", "canal", "garden", "bhoosa", "bhoose", "dung", "shed", "sugarcane", "rice field", "tea", "woodpile", "haystack", "cattle shed", "cowshed", "water channel", "well",
            "dhaan", "field", "fields", "paddy", "grass", "farm", "khet", "jungle", "forest", "garden", "bushes", "dark",
            "andhere", "खेत", "घास", "जंगल", "अंधेरे"]
-BODY_CHANGE = ["screaming", "scream", "rote hue", "rota hua", "roti hui", "rote", "रोता", "रोती", "रो रहा", "रो रही",
+BODY_CHANGE = ["screaming", "pale", "jal raha", "jal rahi", "jalna", "peela", "scream", "rote hue", "rota hua", "roti hui", "rote", "रोता", "रोती", "रो रहा", "रो रही",
                "bhaari", "heavy", "burns", "pain", "painful", "dard", "jalan", "burning", "crying", "ro raha", "ro rahi", "rona", "red dots",
                "bleeding", "khoon", "hurts", "hurting", "throbs", "throbbing", "tingling", "tingle", "numb", "sunn",
                "jhanjhanahat", "tees", "झनझनाहट", "सुन्न", "dizzy", "chakkar", "चक्कर", "blue", "neela", "नीला",
@@ -471,7 +451,11 @@ SNAKE_CONTACT_RE = re.compile(
     r"\bchh?oo?\b|chhoo|chhua|chhu kar|chhoo kar|touch\w*|\bupar\b|ke upar|uske upar|over (?:him|her|his|my|the|a|our)|"
     r"across (?:her|his|my|the)|\blap\b|kambal|bistar|blanket|\bbed\b|scratch\w*|ragad\w*|rubb\w*|brush\w*|graz\w*|"
     r"lipat\w*|lapet\w*|coil\w*|wrap\w*|pakad\w*|tried to catch|\bgir\b|fell|slid|crawl\w*|slither\w*|went over|"
-    r"ran over|on (?:him|her|his|my)|chadh\w*|lunge\w*|struck|hit him|hit her|"
+    r"ran over|landed on|on (?:his|her|my|their) (?:body|leg|legs|foot|feet|hand|arm|chest|neck|lap|back|face)|chadh\w*|lunge\w*|struck|hit him|hit her|"
+    r"\b(?:sat|sit|sitting|stepped|stepping|step|picked|picking|held|holding|grabbed|bumped|put it on|wore|wearing|reached|stood)\b|"
+    r"(?:in|inside|into|under|from)\s+(?:my|his|her|our|their|the|a)\s+(?:\w+\s+)?(?:shoe|shoes|boot|boots|chappal|slipper|kurta|shirt|pant|pants|"
+    r"trouser|clothes|kapd\w*|helmet|sleeping bag|bedding|bed|bedsheet|mat|pocket|glove|gloves|bag|bucket|toilet|sock|socks|saree|dupatta|lungi|cap|hat)|"
+    r"kapd\w*|jeb\b|joote|jute|chappal|bistar|godi|under it|asleep|so raha|so rahi|"
     r"छू|छुआ|ऊपर|लिपट|गिर|कंबल|बिस्तर")
 RAT_BITER_RE = re.compile(r"\b(?:rats?|mouse|mice)\s+(?:ne|bit|bites|bitten|has bitten|had bitten|bite)\b"
                           r"|\b(?:bitten|bit|bite|bites)\s+by\s+(?:a\s+|the\s+)?(?:\S+\s+)?(?:rats?|mouse|mice)\b"
@@ -495,15 +479,31 @@ def _animal_biter_res(w: str):
             re.compile(rf"\b(?:bitten|bit|stung|attacked|scratched|nipped)\s+by\s+(?:a\s+|an\s+|the\s+|our\s+|my\s+|some\s+)?"
                        rf"(?:[a-z]+\s+){{0,2}}?{a}s?(?![a-z])"),
             re.compile(rf"{edge}{a}(?:'s|s)?\s+(?:bite|bites|sting|stings|attack)\b"),
-            re.compile(rf"{edge}{a}[a-z\u0900-\u097F]*\s+(?:ne|ने)\s+(?:[^\s,.;!?।]+\s+){{0,5}}?(?:{bite_alt})"),
+            re.compile(rf"{edge}{a}[a-z\u0900-\u097F]*\s+(?:ne|ने)\s+(?:(?!(?:tab|phir|fir|aur|then|dekha|dekhi|bhonka|bhaga|bhagi)\b)"
+                       rf"[^\s,.;!?।]+\s+){{0,5}}?(?:{bite_alt})"),
             re.compile(rf"{edge}{a}[a-z\u0900-\u097F]*\s+(?:ka\s+|ke\s+|ki\s+|का\s+|के\s+|की\s+|bahut\s+|bohot\s+|bahot\s+|jor se\s+|"
                        rf"phir se\s+|fir se\s+|mujhe\s+|mujhko\s+|hume\s+|humko\s+|use\s+|usko\s+|बहुत\s+)?(?:kaata|kata|kaat|kat gaya|kaat gaya|kaat liya|dank|dans|daans|डंक|काटा|काट)(?![a-z])"))
+
+
+def _flag_re_hit(text: str, flag: str) -> bool:
+    """A FLAG_RE match that is not plainly denied: 'he is not vomiting', 'breathing normally', 'no breathing problem'."""
+    for m in FLAG_RE[flag].finditer(text):
+        before = text[max(0, m.start() - 14):m.start()]
+        after = text[m.end():m.end() + 24]
+        if re.search(r"\b(?:no|not|isn'?t|without|na)\s+$", before) and not re.match(r"\s*(?:\w+\s+)?(?:properly|well|at all)", after):
+            continue
+        if re.match(r"\s*(?:is\s+|are\s+)?(?:normal\w*|fine|ok|okay|theek|thik|ठीक)\b", after):
+            continue
+        return True
+    return False
 
 
 def _later_change(text: str) -> bool:
     """After 'did not bite': anything that could be a change ('but', 'now', 'just', 'only', 'khali ragad')."""
     m = BITE_DENIED_RE.search(text)
     tail = text[m.end():] if m else text
+    tail = re.sub(r"(?:all|are|is|everyone is|everybody is|we are|sab|sab log)?\s*(?:fine|ok|okay|theek|thik|safe)\s*"
+                  r"(?:now|hai|hain|ab|right now)?", " ", tail)
     return bool(re.search(r"\b(?:but|lekin|magar|par|now|ab|just|only|bas|khali|sirf|then|phir|after|baad|except|"
                           r"still|though|although)\b|लेकिन|मगर|अब|बाद|सिर्फ", tail))
 
@@ -512,6 +512,8 @@ def _explicit_animal_biter(text: str, animal: str, animal_words: list[str]) -> b
     """The animal is the stated biter: 'dog bit me', 'bitten by a stray dog', 'kutte ne kaata', 'bee sting'.
     An animal that is only context ('bitten while milking the cow') is NOT the biter."""
     if animal == "rat":  # Hinglish 'rat' is usually raat (night): needs 'rat ne' or English grammar
+        if _any(text, HINGLISH) and not re.search(r"\b(?:rats?|chuh[ae]|chooha)\s+ne\b|चूहे\s+ने|चूह[ाे]\s+(?:\S+\s+)?काट", text):
+            return False  # "rat bite ho gaya pair pe 12 baje" = a bite at night
         return bool(RAT_BITER_RE.search(text))
     passive = bool(VICTIM_RE.search(text))
     for w in animal_words:
@@ -526,6 +528,7 @@ def _explicit_animal_biter(text: str, animal: str, animal_words: list[str]) -> b
 def parse(raw: str) -> Facts:
     text = _norm(raw)
     text = BIT_IDIOM.sub(" ", text)
+    text = NOT_A_SIGN_RE.sub(" ", text)
     no_bite_seen = bool(NO_BITE_SEEN.search(text))
     text = SUCKED_BLOOD.sub(" choos ", text)  # sucking blood is a thing done, not a bleeding sign
     f = Facts(lang=_detect_lang(raw, text))
@@ -629,7 +632,10 @@ def parse(raw: str) -> Facts:
                    or _any(text, INFO_WORDS))
     snake_did = f.snake and bool(SNAKE_AGENT_RE.search(text) or SNAKE_ACTION_RE.search(text)
                                  or SNAKE_CONTACT_RE.search(text))
-    f.snake_mention_only = (f.snake and info_marker and not snake_did and not f.bite and not f.unknown_bite and not urgent and not doubt
+    first_person = bool(re.search(r"\b(?:i|i'm|im|me|mujhe|mujh|mere|meri|mera|maine|hum|humko|hume)\b|मुझे|मेरे|मेरी|मेरा|मैंने", text))
+    sighting_only = _any(text, SIGHTING) and not snake_did
+    f.snake_mention_only = (f.snake and info_marker and not snake_did and (not first_person or sighting_only
+                                                                         or _any(text, PREVENT) or _any(text, INFO_WORDS)) and not f.bite and not f.unknown_bite and not urgent and not doubt
                             and not flag_hit and not swelling and not _any(text, BODY_CHANGE) and not victim
                             and not _any(text, BODY_PARTS) and not _any(text, GOT_PERSON) and len(words) >= 3
                             and not _any(text, SPECIFIC_PERSON) and not night)
@@ -647,14 +653,8 @@ def parse(raw: str) -> Facts:
                 f.negated.append(flag)
             else:
                 f.red_flags.append(flag)
-        elif FLAG_RE[flag].search(text) and (f.snake or f.bite or f.unknown_bite or f.other_animal or victim):
+        elif (f.snake or f.bite or f.unknown_bite or f.other_animal or victim) and _flag_re_hit(text, flag):
             f.red_flags.append(flag)  # spelling / inflection variants, only in a bite context
-    if (f.snake or f.bite or f.unknown_bite or victim) and not denied_fine:
-        for m in SYSTEMIC_RE.finditer(text):
-            w = next((g for g in m.groups() if g), "")
-            if w and w not in LOCAL_STATE and not any(w.startswith(x) for x in ("swell", "sooj", "suj", "dard", "pain", "jal", "theek", "thik", "ठीक")):
-                f.systemic = True
-                break
     if getattr(f, "_drool", False) and "speech_swallow" not in f.red_flags:
         f.red_flags.append("speech_swallow")  # drooling after a bite = can't swallow (neurotoxic)
     f.swelling = _any(text, SWELLING) and not _negated(text, SWELLING, "swelling")

@@ -80,16 +80,16 @@ def decide(f: Facts, lang: str | None = None, answered: dict | None = None) -> P
         f.unknown_bite = True
         is_bite_context = True
         trace.append(f"R1d danger signs {flags} after a '{f.other_animal}' bite -> treat as possible snakebite")
-    elif f.other_animal in LOOKALIKE and f.night_floor and not f.occult_krait:
+    elif f.other_animal in LOOKALIKE and (f.night_floor or f.swelling) and not f.occult_krait:
         # "a rat bit my son at night while he slept on the floor": the classic hidden krait bite
         f.unknown_bite = True
         is_bite_context = True
         trace.append(f"R1f '{f.other_animal}' bite at night / on the floor -> treat as possible snakebite")
-    elif f.other_animal and (set(flags) - {"bleeding"} or f.systemic) and not f.occult_krait:
+    elif f.other_animal and set(flags) - {"bleeding"} and not f.occult_krait:
         # any body-wide danger sign after an animal bite: the animal may be wrong, the signs are not
         f.unknown_bite = True
         is_bite_context = True
-        trace.append(f"R1e danger signs {sorted(set(flags) - {'bleeding'}) or ['systemic']} although "
+        trace.append(f"R1e danger signs {sorted(set(flags) - {'bleeding'})} although "
                      f"'{f.other_animal}' named -> snakebite protocol")
     # R1 another animal named, no snake, no doubt about it -> out of scope with a safe pointer.
     if f.other_animal and not f.snake and not f.unknown_bite and not f.occult_krait:
@@ -110,6 +110,8 @@ def decide(f: Facts, lang: str | None = None, answered: dict | None = None) -> P
         p = Plan("INFO", UI["level_INFO"][lang], lang=lang, rule_trace=trace, calls=["108"])
         for i in ("prevent_torch", "prevent_sleep", "prevent_hands"):
             p.do.append(_item(i, lang))
+        if f.snake:
+            p.notes.append(_item("unsure_treat_as_snake", lang))  # a residual event misread as a question still sees this
         return p
 
     # R3 nothing recognisable -> ask the user to describe what happened.
@@ -122,15 +124,14 @@ def decide(f: Facts, lang: str | None = None, answered: dict | None = None) -> P
             trace.append("R3 no snake/bite recognised -> ask")
             p = Plan("OFF_TOPIC", UI["level_OFF_TOPIC"][lang], lang=lang, rule_trace=trace, calls=["112", "108"])
             p.notes.append(_item("off_topic", lang))
+            if f.bite or f.snake or f.contact:
+                p.notes.append(_item("unsure_treat_as_snake", lang))
             return p
 
     # From here on: a (possible) snakebite. Every path sends the person to hospital.
     if flags:
         level = "CRITICAL"
         trace.append(f"R4 danger signs {flags} -> CRITICAL")
-    elif f.systemic:
-        level = "CRITICAL"
-        trace.append("R4b a body-wide change after the bite (not a listed sign) -> CRITICAL")
     elif f.snake:
         level = "URGENT"
         trace.append("R5 snake named, no danger signs yet -> URGENT")
