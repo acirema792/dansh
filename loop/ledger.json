@@ -82,15 +82,42 @@
    "round": 1,
    "finding": "V1-V4 (rework of F1,F2,F3,F8)",
    "action": "explicit-animal rule, uncertain bite beats prevention, stop-verbs, WORSENING, thorn/drool/slept/generic-question false alarms",
-   "outcome": "pending-verify",
-   "note": "narrowed test_fuzz_snake_plus_bite_word scope (weak 'attack' words need person/past tense) - escalated"
+   "outcome": "superseded",
+   "note": "narrowed test_fuzz_snake_plus_bite_word scope (weak 'attack' words need person/past tense) - escalated | later verifier rounds 1b-5 reviewed this area; see loop/audits"
   },
   {
    "round": 1,
    "finding": "V5-V7 (rework of F7,F11,F13)",
    "action": "emergency never 429; 411 on chunked; total LLM deadline; impact.js markup",
-   "outcome": "pending-verify",
-   "note": "test_f7_rate_limit retargeted from /api/consult to /api/learn/start per verifier - escalated"
+   "outcome": "superseded",
+   "note": "test_f7_rate_limit retargeted from /api/consult to /api/learn/start per verifier - escalated | later verifier rounds 1b-5 reviewed this area; see loop/audits"
+  },
+  {
+   "round": 3,
+   "finding": "verifier-2 REJECT (d185b66..)",
+   "action": "narrow HUMAN_BITER/INJURY/thorn suppressions; corpus committed (d500cbf)",
+   "outcome": "failure",
+   "error": "verifier-3: 25 false safes on 101 fresh messages"
+  },
+  {
+   "round": 3,
+   "finding": "verifier-3 REJECT (d500cbf)",
+   "action": "Devanagari word-start matching, lookalike animals + danger signs, info marker (931552f)",
+   "outcome": "failure",
+   "error": "verifier-4: 30 false safes / 32 under on 175 fresh messages"
+  },
+  {
+   "round": 3,
+   "finding": "verifier-4 REJECT (931552f)",
+   "action": "explicit animal biter, rat/raat, snake actions, 32 sign phrasings (ccb9302)",
+   "outcome": "failure",
+   "error": "verifier-5: 15 false safes (9 non-arguable) / 30 under on 166 fresh messages"
+  },
+  {
+   "round": 3,
+   "finding": "verifier-5 REJECT (ccb9302)",
+   "action": "grammatical animal-biter, contact words, later-change guard, FLAG_RE stems, systemic catch-all R4b (b002768)",
+   "outcome": "pending-verify"
   }
  ]
 }
