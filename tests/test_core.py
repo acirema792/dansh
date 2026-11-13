@@ -5,6 +5,9 @@ import tempfile
 
 os.environ["DANSH_DB"] = os.path.join(tempfile.mkdtemp(), "t.db")
 os.environ.pop("ANTHROPIC_API_KEY", None)
+os.environ["DANSH_MIN_PRE_SECS"] = "0"   # the timing filter is tested separately in test_integrity.py
+os.environ["DANSH_MIN_POST_SECS"] = "0"
+os.environ["DANSH_RATE_PER_MIN"] = "100000"
 
 import pytest  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
@@ -144,8 +147,9 @@ def test_quiz_each_question_one_correct_and_parallel():
 
 
 # ---------------------------------------------------------------- API
-def _complete(headers=None, pre_right=False, post_right=True, lang="en"):
+def _complete(headers=None, pre_right=False, post_right=True, lang="en", ip="testclient"):
     h = headers or {}
+    client = TestClient(app, client=(ip, 50000))
     r = client.post("/api/learn/start", json={"lang": lang}, headers=h).json()
     sid, pre_form = r["session"], r["form"]
     ans = {q["concept"]: (quiz.correct_option(q["concept"], pre_form) if pre_right else
@@ -166,7 +170,7 @@ def test_learn_flow_and_impact_excludes_test():
     _, r = _complete(headers={"x-dansh-test": "1"})
     assert r.status_code == 200
     assert client.get("/api/impact").json()["learn"]["completed"] == before
-    _, r = _complete(headers={"x-forwarded-for": "10.0.0.1"})
+    _, r = _complete(ip="10.0.0.1")
     j = r.json()
     assert j["post"]["correct"] == 6 and j["pre"]["correct"] == 0
     imp = client.get("/api/impact").json()["learn"]
@@ -175,7 +179,7 @@ def test_learn_flow_and_impact_excludes_test():
 
 
 def test_cannot_complete_twice_or_skip_pre():
-    sid, r = _complete(headers={"x-forwarded-for": "10.0.0.2"})
+    sid, r = _complete(ip="10.0.0.2")
     again = client.post("/api/learn/post", json={"session": sid, "answers": {}})
     assert again.status_code == 409
     s = client.post("/api/learn/start", json={"lang": "en"}).json()["session"]
@@ -183,10 +187,9 @@ def test_cannot_complete_twice_or_skip_pre():
 
 
 def test_device_cap():
-    ip = {"x-forwarded-for": "10.9.9.9"}
     before = client.get("/api/impact").json()["learn"]["completed"]
     for _ in range(7):
-        _complete(headers=ip)
+        _complete(ip="10.9.9.9")
     after = client.get("/api/impact").json()["learn"]["completed"]
     assert after - before == 5
 

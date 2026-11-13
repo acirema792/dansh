@@ -48,7 +48,8 @@ CREATE TABLE IF NOT EXISTS learn_sessions (
   per_concept TEXT,
   state TEXT, role TEXT, src TEXT,
   device TEXT, is_test INTEGER NOT NULL DEFAULT 0,
-  shared INTEGER NOT NULL DEFAULT 0
+  shared INTEGER NOT NULL DEFAULT 0,
+  pre_at REAL, excluded TEXT
 );
 CREATE TABLE IF NOT EXISTS consults (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -70,6 +71,10 @@ def _conn() -> sqlite3.Connection:
 def init() -> None:
     with _lock, _conn() as c:
         c.executescript(SCHEMA)
+        cols = {r[1] for r in c.execute("PRAGMA table_info(learn_sessions)")}
+        for col, typ in (("pre_at", "REAL"), ("excluded", "TEXT")):
+            if col not in cols:
+                c.execute(f"ALTER TABLE learn_sessions ADD COLUMN {col} {typ}")
 
 
 def device_hash(ip: str | None) -> str:
@@ -91,8 +96,8 @@ def get_session(sid: str) -> sqlite3.Row | None:
 
 def save_pre(sid: str, answers: dict, scored: dict):
     with _lock, _conn() as c:
-        c.execute("UPDATE learn_sessions SET pre_answers=?, pre_correct=?, pre_dangerous=? WHERE id=?",
-                  (json.dumps(answers), scored["correct"], scored["dangerous"], sid))
+        c.execute("UPDATE learn_sessions SET pre_answers=?, pre_correct=?, pre_dangerous=?, pre_at=? WHERE id=?",
+                  (json.dumps(answers), scored["correct"], scored["dangerous"], time.time(), sid))
 
 
 def save_post(sid: str, answers: dict, scored: dict, per_concept: dict, state: str | None, role: str | None):
@@ -108,9 +113,17 @@ def mark_shared(sid: str):
         c.execute("UPDATE learn_sessions SET shared=1 WHERE id=?", (sid,))
 
 
-def mark_test(sid: str):
+def exclude(sid: str, reason: str):
+    """Kept for transparency, but not counted in the public numbers."""
     with _lock, _conn() as c:
-        c.execute("UPDATE learn_sessions SET is_test=1 WHERE id=?", (sid,))
+        c.execute("UPDATE learn_sessions SET excluded=? WHERE id=?", (reason, sid))
+
+
+def excluded_counts() -> dict:
+    with _conn() as c:
+        rows = c.execute("SELECT excluded, COUNT(*) FROM learn_sessions WHERE completed_at IS NOT NULL AND is_test=0"
+                         " AND excluded IS NOT NULL GROUP BY excluded").fetchall()
+    return {r[0]: r[1] for r in rows}
 
 
 def log_consult(lang: str, level: str, flags: list[str], parser: str, latency_ms: int, device: str, is_test: bool):
@@ -123,7 +136,7 @@ def log_consult(lang: str, level: str, flags: list[str], parser: str, latency_ms
 def completed_sessions(include_test: bool = False) -> list[sqlite3.Row]:
     q = "SELECT * FROM learn_sessions WHERE completed_at IS NOT NULL"
     if not include_test:
-        q += " AND is_test=0"
+        q += " AND is_test=0 AND excluded IS NULL"
     with _conn() as c:
         return c.execute(q + " ORDER BY completed_at").fetchall()
 
@@ -143,5 +156,5 @@ def consult_rows(include_test: bool = False) -> list[sqlite3.Row]:
 def device_completions_today(device: str) -> int:
     since = time.time() - 86400
     with _conn() as c:
-        return c.execute("SELECT COUNT(*) FROM learn_sessions WHERE device=? AND completed_at>?",
+        return c.execute("SELECT COUNT(*) FROM learn_sessions WHERE device=? AND completed_at>? AND is_test=0",
                          (device, since)).fetchone()[0]

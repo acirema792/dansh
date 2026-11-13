@@ -6,6 +6,7 @@ import io
 import json
 import os
 import random
+import re
 import secrets
 import time
 from pathlib import Path
@@ -16,7 +17,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from . import llm, quiz, store
-from .content import SOURCES, cite, text
+from .content import RED_FLAGS, SOURCES, cite, text
 from .parser import parse
 from .protocol import check_invariants, decide
 
@@ -24,14 +25,56 @@ VERSION = "1.0.0"
 STATIC = Path(__file__).resolve().parent.parent / "static"
 TEST_TOKEN = os.environ.get("DANSH_TEST_TOKEN", "")
 MAX_COMPLETIONS_PER_DEVICE_PER_DAY = int(os.environ.get("DANSH_MAX_PER_DEVICE", "5"))
+MIN_PRE_SECS = float(os.environ.get("DANSH_MIN_PRE_SECS", "20"))
+MIN_POST_SECS = float(os.environ.get("DANSH_MIN_POST_SECS", "30"))
+SRC_RE = re.compile(r"^[a-z0-9_-]{0,24}$")
+ALLOWED_ROLES = {"farmer", "student", "health_worker", "teacher", "parent", "other"}
+ALLOWED_STATES = {"Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Delhi", "Goa", "Gujarat",
+                  "Haryana", "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand", "Karnataka", "Kerala", "Ladakh",
+                  "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha",
+                  "Puducherry", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura",
+                  "Uttar Pradesh", "Uttarakhand", "West Bengal", "Other UT", "Outside India"}
 
 app = FastAPI(title="Dansh", version=VERSION, docs_url="/api/docs", redoc_url=None)
 store.init()
 
 
+MAX_BODY = 16 * 1024
+_buckets: dict[str, list[float]] = {}
+RATE = float(os.environ.get("DANSH_RATE_PER_MIN", "40"))
+
+
+def _allow(ip: str) -> bool:
+    now = time.time()
+    tokens, last = _buckets.get(ip, [RATE, now])
+    tokens = min(RATE, tokens + (now - last) * RATE / 60.0)
+    if tokens < 1:
+        _buckets[ip] = [tokens, now]
+        return False
+    _buckets[ip] = [tokens - 1, now]
+    if len(_buckets) > 50000:
+        _buckets.clear()
+    return True
+
+
+CSP = ("default-src 'self'; connect-src 'self' https://overpass-api.de; img-src 'self' data:; "
+       "style-src 'self' 'unsafe-inline'; script-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'")
+
+
 @app.middleware("http")
 async def headers(request: Request, call_next):
+    if request.method == "POST":
+        try:
+            if int(request.headers.get("content-length") or 0) > MAX_BODY:
+                return JSONResponse({"error": "request too large"}, status_code=413)
+        except ValueError:
+            return JSONResponse({"error": "bad content-length"}, status_code=400)
+        if not _allow(_ip(request)):
+            return JSONResponse({"error": "too many requests, wait a minute"}, status_code=429)
     resp = await call_next(request)
+    resp.headers["Content-Security-Policy"] = CSP
+    resp.headers["Strict-Transport-Security"] = "max-age=31536000"
+    resp.headers["X-Frame-Options"] = "DENY"
     resp.headers.setdefault("Cache-Control", "no-cache")
     resp.headers["X-Content-Type-Options"] = "nosniff"
     resp.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
@@ -40,8 +83,9 @@ async def headers(request: Request, call_next):
 
 
 def _ip(request: Request) -> str:
-    fwd = request.headers.get("x-forwarded-for", "")
-    return (fwd.split(",")[0].strip() if fwd else (request.client.host if request.client else "")) or ""
+    """The client as resolved by uvicorn. X-Forwarded-For is only honoured by uvicorn itself
+    (--proxy-headers) when it comes from FORWARDED_ALLOW_IPS, so a client cannot forge it."""
+    return request.client.host if request.client else ""
 
 
 def _is_test(request: Request) -> bool:
@@ -59,6 +103,7 @@ def _is_test(request: Request) -> bool:
 # ----------------------------------------------------------------------------- emergency agent
 class ConsultIn(BaseModel):
     message: str = Field(..., max_length=2000)
+    repeat: bool = False  # same message re-rendered (language switch / follow-up): not logged again
     lang: str | None = Field(None, pattern="^(en|hi)$")
     answered: dict[str, bool] = Field(default_factory=dict)
     state: str | None = Field(None, max_length=40)
@@ -77,13 +122,15 @@ def consult(body: ConsultIn, request: Request):
         extra, meta = llm.read(body.message)
         facts, added = llm.merge(facts, extra)
         parser_used = "keywords+llm" if meta.get("ok") else "keywords (llm unavailable)"
-    plan = decide(facts, lang=body.lang, answered=body.answered)
+    plan = decide(facts, lang=body.lang, answered={k: v for k, v in body.answered.items() if k in RED_FLAGS})
     errs = check_invariants(plan)
     if errs:  # should be impossible; fail safe rather than show a broken plan
         raise HTTPException(500, f"safety invariant failed: {errs}")
     ms = int((time.time() - t0) * 1000)
-    store.log_consult(plan.lang, plan.level, sorted(set(facts.red_flags) | {k for k, v in body.answered.items() if v}),
-                      parser_used, ms, store.device_hash(_ip(request)), _is_test(request))
+    answered_flags = {k for k, v in body.answered.items() if v and k in RED_FLAGS}
+    if not body.repeat:
+        store.log_consult(plan.lang, plan.level, sorted(set(facts.red_flags) | answered_flags),
+                          parser_used, ms, store.device_hash(_ip(request)), _is_test(request))
     out = plan.to_dict()
     out["facts"] = facts.to_dict()
     out["parser"] = {"used": parser_used, "llm_added": added, "llm_model": meta.get("model"), "ms": ms}
@@ -100,13 +147,18 @@ class StartIn(BaseModel):
 def learn_start(body: StartIn, request: Request):
     sid = secrets.token_urlsafe(12)
     pre, post = quiz.assign_forms()
-    store.new_session(sid, body.lang, pre, post, body.src, store.device_hash(_ip(request)), _is_test(request))
+    src = (body.src or "").lower()
+    src = src if SRC_RE.match(src) else "other"
+    store.new_session(sid, body.lang, pre, post, src, store.device_hash(_ip(request)), _is_test(request))
     return {"session": sid, "questions": quiz.questions(pre, body.lang, random.Random(sid)), "form": pre}
 
 
 class AnswersIn(BaseModel):
-    session: str
+    session: str = Field(..., max_length=40)
     answers: dict[str, str]
+
+    def clean(self) -> dict[str, str]:
+        return {c: str(self.answers.get(c, ""))[:1] for c in quiz.ORDER if c in self.answers}
 
 
 def _lesson(lang: str, wrong: list[str]) -> list[dict]:
@@ -126,10 +178,11 @@ def learn_pre(body: AnswersIn):
         raise HTTPException(404, "unknown session")
     if s["pre_answers"]:
         raise HTTPException(409, "already answered")
-    scored = quiz.score(s["pre_form"], body.answers)
+    answers = body.clean()
+    scored = quiz.score(s["pre_form"], answers)
     if scored["answered"] < scored["total"]:
         raise HTTPException(422, "answer every question")
-    store.save_pre(body.session, body.answers, scored)
+    store.save_pre(body.session, answers, scored)
     wrong = [c for c, v in scored["per_concept"].items() if not v["correct"]]
     lang = s["lang"]
     return {"pre": {"correct": scored["correct"], "total": scored["total"], "dangerous": scored["dangerous"]},
@@ -152,7 +205,8 @@ def learn_post(body: PostIn, request: Request):
         raise HTTPException(409, "pre-test first")
     if s["completed_at"]:
         raise HTTPException(409, "already completed")
-    scored = quiz.score(s["post_form"], body.answers)
+    answers = body.clean()
+    scored = quiz.score(s["post_form"], answers)
     if scored["answered"] < scored["total"]:
         raise HTTPException(422, "answer every question")
     pre = quiz.score(s["pre_form"], json.loads(s["pre_answers"]))
@@ -161,9 +215,19 @@ def learn_post(body: PostIn, request: Request):
            for c in quiz.ORDER}
     # Anti-stuffing: past a few completions per device per day, keep the row but mark it test.
     over = store.device_completions_today(s["device"]) >= MAX_COMPLETIONS_PER_DEVICE_PER_DAY
-    store.save_post(body.session, body.answers, scored, per, body.state, body.role)
-    if over and not s["is_test"]:
-        store.mark_test(body.session)
+    state = body.state if body.state in ALLOWED_STATES else None
+    role = body.role if body.role in ALLOWED_ROLES else None
+    store.save_post(body.session, answers, scored, per, state, role)
+    # F5 plausibility: nobody reads 6 scenarios in under 20 s, or a lesson + 6 more in under 30 s.
+    pre_secs = (s["pre_at"] or 0) - s["created_at"]
+    post_secs = time.time() - (s["pre_at"] or time.time())
+    reason = None
+    if over:
+        reason = "device_cap"
+    elif pre_secs < MIN_PRE_SECS or post_secs < MIN_POST_SECS:
+        reason = "too_fast"
+    if reason and not s["is_test"]:
+        store.exclude(body.session, reason)
     review = []
     for c in quiz.ORDER:
         if not scored["per_concept"][c]["correct"]:
@@ -247,6 +311,9 @@ def impact_summary(include_test: bool = False) -> dict:
                                 "dangerous_post_pct": _pct(per[c]["post_danger"], n)} for c in quiz.ORDER},
             "by_lang": by_lang, "by_state": by_state, "by_role": by_role, "by_form_order": by_form,
             "shared": shared, "first_completed_at": first, "last_completed_at": last,
+            "excluded": store.excluded_counts(),
+            "exclusion_rules": {"device_cap_per_day": MAX_COMPLETIONS_PER_DEVICE_PER_DAY,
+                                "min_seconds_part1": MIN_PRE_SECS, "min_seconds_lesson_and_part3": MIN_POST_SECS},
         },
         "consults": {"total": len(consults), "by_level": levels,
                      "note": "Emergency-agent uses. These include people trying the tool out; they are not counted as emergencies."},
@@ -265,10 +332,14 @@ def impact_csv():
     w = csv.writer(buf)
     w.writerow(["completed_utc", "lang", "pre_form", "post_form", "pre_correct", "post_correct", "pre_dangerous",
                 "post_dangerous", "state", "role", "src"])
+    def safe(v):
+        v = "" if v is None else str(v)
+        return "'" + v if v[:1] in ("=", "+", "-", "@") else v
+
     for r in rows:
-        w.writerow([time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(r["completed_at"])), r["lang"], r["pre_form"],
+        w.writerow([safe(x) for x in [time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(r["completed_at"])), r["lang"], r["pre_form"],
                     r["post_form"], r["pre_correct"], r["post_correct"], r["pre_dangerous"], r["post_dangerous"],
-                    r["state"] or "", r["role"] or "", r["src"] or ""])
+                    r["state"] or "", r["role"] or "", r["src"] or ""]])
     return PlainTextResponse(buf.getvalue(), media_type="text/csv")
 
 
@@ -293,7 +364,7 @@ def check_page():
     return FileResponse(STATIC / "index.html")
 
 
-@app.get("/")
+@app.api_route("/", methods=["GET", "HEAD"])
 def index():
     return FileResponse(STATIC / "index.html")
 
