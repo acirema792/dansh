@@ -14,5 +14,5 @@
 | Built in AgentFoundry | See AGENTFOUNDRY.md |
 | Public GitHub repo with README | https://github.com/acirema792/dansh |
 | Open source (MIT) | LICENSE |
-| Deployed to a cloud | {{LIVE_URL}} |
-| Demo link | {{LIVE_URL}} |
+| Deployed to a cloud | https://65-20-73-107.sslip.io |
+| Demo link | https://65-20-73-107.sslip.io |

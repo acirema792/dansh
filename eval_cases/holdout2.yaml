@@ -1,0 +1,98 @@
+# HELD-OUT set 2. Written 13 Nov 2026 ~16:20 UTC, after all round-1 fixes, BEFORE it was ever run.
+# Not used for tuning. Results are reported as-is in BENCHMARK-RESULTS.md.
+
+- id: h2-en-farmer-ankle
+  lang: en
+  group: bite
+  message: "My father was cutting grass and a snake bit his ankle, he is sitting and sweating"
+  expect: {level: URGENT, include: [go_hospital, immobilise]}
+
+- id: h2-hinglish-viper-swelling
+  lang: hinglish
+  group: bite
+  message: "ghonas ne kaata hai pair me, sujan badh rahi hai, kya karu"
+  expect: {level: URGENT, include: [remove_tight]}
+
+- id: h2-hi-gums
+  lang: hi
+  group: bite
+  message: "मेरे भाई को सांप ने काटा था, अब उसके मसूड़ों से खून आ रहा है"
+  expect: {level: CRITICAL, include: [critical_signs]}
+
+- id: h2-en-turmeric
+  lang: en
+  group: bite
+  message: "snake bite on my mother's hand, neighbours put turmeric and tied a cloth"
+  expect: {level: URGENT, include: [fix_healer, fix_tourniquet]}
+
+- id: h2-hinglish-krait-morning
+  lang: hinglish
+  group: bite
+  message: "bacha subah se uth nahi raha, raat ko zameen pe soya tha, pet dard bata raha tha"
+  expect: {level: CRITICAL, include: [suspect_krait]}
+
+- id: h2-en-double-vision
+  lang: en
+  group: bite
+  message: "bitten by a krait last night, now he says he sees double"
+  expect: {level: CRITICAL}
+
+- id: h2-en-temple
+  lang: en
+  group: bite
+  message: "snake bit my uncle, family wants to take him to the temple first for mantra"
+  expect: {level: URGENT, include: [fix_healer]}
+
+- id: h2-hi-pregnant
+  lang: hi
+  group: bite
+  message: "मेरी पत्नी गर्भवती है और उसे खेत में सांप ने काट लिया"
+  expect: {level: URGENT, include: [pregnant_note]}
+
+- id: h2-en-no-symptoms-wait
+  lang: en
+  group: bite
+  message: "small snake bit my son an hour ago, nothing is happening, should we wait and see?"
+  expect: {level: URGENT, include: [go_hospital, stay_24h]}
+
+- id: h2-hinglish-chubha-dark
+  lang: hinglish
+  group: bite
+  message: "andhere me kuch chubha pair me, do nishan hai"
+  expect: {level: POSSIBLE, include: [go_hospital]}
+
+- id: h2-en-breath-worse
+  lang: en
+  group: bite
+  message: "snake bite 2 hours ago, his breathing is becoming difficult"
+  expect: {level: CRITICAL}
+
+- id: h2-en-delhi
+  lang: en
+  group: bite
+  message: "We live in Delhi, a cobra bit my friend in the park"
+  expect: {level: URGENT, include: [call_15400]}
+
+- id: h2-ctl-snake-in-house
+  lang: en
+  group: control
+  message: "what should I do to keep snakes out of my house?"
+  expect: {level: INFO, exclude: [go_hospital]}
+
+- id: h2-ctl-dog-hinglish
+  lang: hinglish
+  group: control
+  message: "gali ke kutte ne mere bete ko kaat liya"
+  expect: {level: OTHER, exclude: [go_hospital]}
+
+- id: h2-ctl-scorpion-en
+  lang: en
+  group: control
+  message: "a scorpion stung my wife's foot, it hurts a lot"
+  expect: {level: OTHER, exclude: [go_hospital]}
+
+- id: h2-ctl-headache
+  lang: en
+  group: control
+  message: "I have had a headache since morning"
+  expect: {level: OFF_TOPIC, exclude: [go_hospital]}

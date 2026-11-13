@@ -1,8 +1,8 @@
 # Dansh · दंश: the first 30 minutes after a snakebite
 
-**Live:** {{LIVE_URL}} · **Live impact data:** {{LIVE_URL}}/impact · **Review in 5 minutes:** [JUDGES.md](JUDGES.md)
+**Live:** https://65-20-73-107.sslip.io · **Live impact data:** https://65-20-73-107.sslip.io/impact · **Review in 5 minutes:** [JUDGES.md](JUDGES.md)
 
-> **Field result so far:** see the live [/impact]({{LIVE_URL}}/impact) page. It is updated automatically and has a raw CSV.
+> **Field result so far:** see the live [/impact](https://65-20-73-107.sslip.io/impact) page. It is updated automatically and has a raw CSV.
 > A dated snapshot is in [IMPACT-SNAPSHOT.md](IMPACT-SNAPSHOT.md).
 >
 > **Safety benchmark (held-out scenarios, written before the run):** 12/12 bite messages sent to hospital,

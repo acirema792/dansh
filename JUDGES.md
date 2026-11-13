@@ -5,7 +5,7 @@ Add `?test=1` to any URL so your clicks are **not** counted in the impact number
 
 ## 1. Emergency agent (90 seconds)
 
-Open {{LIVE_URL}}/?test=1 and paste these messages one at a time:
+Open https://65-20-73-107.sslip.io/?test=1 and paste these messages one at a time:
 
 | Paste this | What you should see |
 |---|---|
@@ -20,11 +20,11 @@ Open **"Why this advice?"** to see the exact rules that fired. Every line has a 
 
 ## 2. The 3-minute check (2 minutes)
 
-Open {{LIVE_URL}}/check?test=1 and answer badly on purpose. You get a lesson (missed items first), then 6 *different* scenarios on the same decisions, then before/after scores and a WhatsApp share button.
+Open https://65-20-73-107.sslip.io/check?test=1 and answer badly on purpose. You get a lesson (missed items first), then 6 *different* scenarios on the same decisions, then before/after scores and a WhatsApp share button.
 
 ## 3. The proof (90 seconds)
 
-- **Field data:** {{LIVE_URL}}/impact shows the real people who completed the check, the share who chose a dangerous action before vs after, and per-decision results. Raw rows: `/api/impact/sessions.csv`. The exclusion rules (test traffic, device cap, too-fast) are listed on the page, with counts.
+- **Field data:** https://65-20-73-107.sslip.io/impact shows the real people who completed the check, the share who chose a dangerous action before vs after, and per-decision results. Raw rows: `/api/impact/sessions.csv`. The exclusion rules (test traffic, device cap, too-fast) are listed on the page, with counts.
 - **Safety benchmark:** [BENCHMARK-RESULTS.md](BENCHMARK-RESULTS.md). Expected answers are written before each run; misses are listed, not hidden.
 - **Claims and their evidence:** [CLAIMS.md](CLAIMS.md) · criteria map: [EVIDENCE.md](EVIDENCE.md)
 
