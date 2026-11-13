@@ -1786,5 +1786,510 @@
 {
 "expect": "bite",
 "message": "stepped on a nail I think, now my gums are bleeding"
+},
+{
+"expect": "bite",
+"message": "my husband was cutting fodder and felt a sharp sting on his ankle, it hurts now",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "a long thin thing came out of the rat hole and touched my hand, now it burns",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "my father was bitten on the foot while eating dinner outside",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "my son was bitten while eating at the dhaba at night",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "bitten near the toe nail, what should I do",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "ungli ke nail ke paas kaata, kya karu",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "bit on the foot, gave him a glass of milk, what to do now",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "felt a pinch on my toe while drawing water from the handpump",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "kuch kat gaya pair me",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "my wife was gathering cow dung cakes and something nipped her wrist",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "papa ko bhoose ke dher me haath dalte waqt kuch laga, ab haath bhaari",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "while lifting a stone in the backyard he got bitten on the thumb",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "he says it felt like an injection on his calf when he walked through the paddy",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "मेरे पति को लकड़ी उठाते समय हाथ पर कुछ चुभा, अब दर्द बढ़ रहा है",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "बच्चे ने बताया कि पैर में किसी चीज़ ने काटा",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "बच्चे ने कहा उसे काटा, वो रो रहा है",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "could be a lizard, small marks on my son's hand",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "definitely a rat bite, he's very sleepy now, he was sleeping on the floor",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "rat bit him at night, now stomach pain and vomiting",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "chuhe ne kaata raat ko, ab pet me dard aur ulti",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "he was sleeping on the floor without a mosquito net and woke with a painful swollen hand",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "lagta hai bichhu tha, par pair suj gaya aur kala pad raha",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "either a mongoose or something else got my brother's ankle in the field",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "नेवला था या सांप, पता नहीं, पैर में दर्द है",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "I assumed it was a frog in the bathroom but my foot has two little holes",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "a needle prick on the heel in the rice paddy, now it's going numb up the leg",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "kaanta chubha khet me, ab pair sunn ho raha",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "thorn in the foot at night, now he can't keep his eyes open",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "ctl",
+"message": "rose thorn pricked my thumb while gardening at home, tiny drop of blood",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "stepped on what I thought was a thorn near the canal, there are two tiny red points",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "सुई जैसा कुछ चुभा, अब उल्टी और चक्कर",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "my 3 year old came in from the garden screaming and holding his foot",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "beta khet se rote hue aaya, pair pakad ke",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "बच्चा खेत से रोता हुआ आया, पैर पर निशान है",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "nani ko raat ko sote waqt kuch kaata, subah se ulti ho rahi",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "nana ji ke pair pe kuch kaata, wo 80 saal ke hai",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "dadi ko khet me kuch laga, ab vo bilkul sust hai",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "baby was crawling in the courtyard, now two red spots on her palm and she won't stop crying",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "my grandfather was bitten in the shed and now his voice has gone funny",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "the toddler was bitten in the field and is shaking all over and frothing",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "snake bit my uncle, his eyes keep shutting by themselves",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "cobra bit her, she's struggling to get air",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "snake bite, he's gone blue around the mouth",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "saanp ne kaata, aankhein band ho rahi hai",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "saap ne dasa, haath pair dheele pad gaye",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "saanp ne kaata, gardan sambhal nahi raha",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "saanp ne kaata, muh se jhaag aa raha",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "sanp ne kata, neend se jag nahi raha",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "सांप ने काटा, पेशाब काला हो गया",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "सांप ने काटा, वो जाग नहीं रहा",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "सांप ने काटा, गर्दन नहीं संभल रही",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "krait bit him, he is talking like he is drunk",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "snake bit my son and his head keeps falling forward",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "how long do we have? my mother was bitten by a snake 2 hours ago",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "how to keep snakes out of the house, one bit my nephew on the leg yesterday",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "kaise ilaj kare, khet me hamla hua",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "what is the antivenom, my brother got bitten in the paddy",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "is it normal to vomit after a snakebite? he has done it 4 times",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "snake se bachne ka upay batao, bhai ko abhi kaata",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "snake bit him, he has never vomited like this, 4 times now",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "snake bit her, no swelling at all but she can't swallow",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "saanp ne kaata par koi dard nahi, koi sujan nahi",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "no bite marks but he woke up on the floor with drooping eyelids",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "snake bit me, no bleeding, no pain, I feel fine",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "crit",
+"message": "not sure it bit him but the snake was on his bed and now he is not breathing properly",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "snaek bitt",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "bitn on leg",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "sanke bit me",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "rat ko pair me kaata, ab pet dard",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "sap ne kat lia",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "snkebite hlp",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "saamp pair",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "dasa gaya pair me",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "bite",
+"message": "साप काटा",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "animal",
+"message": "a dog bit my leg",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "animal",
+"message": "monkey ne haath pe kaata",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "animal",
+"message": "चूहे ने उंगली काटी",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "animal",
+"message": "scorpion sting on my toe, very painful",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "animal",
+"message": "bee stung me on the cheek",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "animal",
+"message": "honeybee sting, swelling on my arm",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "animal",
+"message": "my dog bit my son's hand, bleeding a lot",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "animal",
+"message": "a horse bit my arm",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "animal",
+"message": "a squirrel bit my finger",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "animal",
+"message": "a spider bit me on the neck",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "animal",
+"message": "kankhajura ne kaata",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "animal",
+"message": "बिल्ली ने हाथ पर काटा",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "animal",
+"message": "stray dog attacked my brother, deep wound on his thigh",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "ctl",
+"message": "snake plant care tips please",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "ctl",
+"message": "I bit into a green chilli and my mouth burns",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "ctl",
+"message": "I want to learn about cobra species for my school project",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "ctl",
+"message": "cobra pose kaise kare",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "ctl",
+"message": "Russell Peters show tickets",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "ctl",
+"message": "snakes and ladders game rules",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "ctl",
+"message": "my sister bit me during a fight, just a small mark",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "ctl",
+"message": "headache and fever since two days",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "ctl",
+"message": "recipe for dal makhani",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "ctl",
+"message": "the snake boat race in Kerala is on which date",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "ctl",
+"message": "is it safe to keep a pet python",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "ctl",
+"message": "मेरे बेटे के दांत निकल रहे हैं, वो सब कुछ काटता है",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "ctl",
+"message": "I cut my finger with a knife while chopping onions",
+"source": "verify-round-3 held-out"
+},
+{
+"expect": "ctl",
+"message": "my knee hurts after running",
+"source": "verify-round-3 held-out"
 }
 ]

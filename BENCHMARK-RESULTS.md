@@ -28,9 +28,15 @@ Times are the `ran_at` values recorded in each bundle. The header comment in `ho
 
 ## Audit-found inputs (adversarial set)
 
-Two independent audit rounds and three verifier passes wrote and labelled adversarial messages, and many of them broke earlier versions. Their labelled corpus (**447 messages**: 217 bites, 142 danger-sign, 62 controls, 22 other-animal, 4 other) is `tests/data/adversarial.json`. `tests/test_adversarial.py` asserts **0 false safes, 0 under-triage, and a crisis line for self-harm**.
+Two independent audit rounds and three verifier passes wrote and labelled adversarial messages, and many of them broke earlier versions. Their labelled corpus is `tests/data/adversarial.json`: **548 messages**, including verifier round 3's 101 held-out messages. `tests/test_adversarial.py` asserts **0 false safes, 0 under-triage, and a crisis line for self-harm**.
 
-Result at the time of writing: **445/447 as labelled**. The 2 differences are over-triage: "बंदर ने काटा, शायद" and "kaanta chubh gaya, khoon nikal raha hai" get the snakebite plan. The rules were fixed *against* this corpus, so it is a regression test, not a held-out score. The held-out measure is each verifier's fresh probe set, reported in `loop/audits/`.
+Result at the time of writing: **545/548 as labelled, 0 false safes, 0 under-triage**. The 3 differences are over-triage ("बंदर ने काटा, शायद" and two thorn pricks with blood).
+
+**Held-out results from the verifiers, recorded before the fixes that followed them:**
+- Verifier round 3 wrote 101 new messages against commit d500cbf. Result: **25 false safes**, 15 under-triaged, 10 false alarms. Its report is `loop/audits/verify-round-3.md`. Those 101 messages are now in the corpus and pass.
+- Verifier round 2 (`verify-round-2.md`) and round 1b (`verify-round-1b.md`) found earlier regressions the same way.
+
+The pattern was the same each time: every rule written to *suppress* a false alarm created new false safes. The current design has one guard (`can_suppress`) and a safety net, so doubt always resolves to the hospital. The rules were fixed *against* this corpus, so it is a regression test, not a held-out score. The held-out measure is each verifier's fresh probe set, reported in `loop/audits/`.
 
 ## What this does and doesn't show
 

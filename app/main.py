@@ -229,8 +229,9 @@ def learn_post(body: PostIn, request: Request):
                "pre_danger": pre["per_concept"][c]["dangerous"], "post_danger": scored["per_concept"][c]["dangerous"]}
            for c in quiz.ORDER}
     # Anti-stuffing: past a few completions per device per day, keep the row but mark it test.
-    over = (store.device_completions_today(s["device"]) >= MAX_COMPLETIONS_PER_DEVICE_PER_DAY
-            or store.network_completions_today(s["network"]) >= MAX_COMPLETIONS_PER_NETWORK_PER_DAY)
+    over_device = store.device_completions_today(s["device"]) >= MAX_COMPLETIONS_PER_DEVICE_PER_DAY
+    over_network = store.network_completions_today(s["network"]) >= MAX_COMPLETIONS_PER_NETWORK_PER_DAY
+    over = over_device or over_network
     state = body.state if body.state in ALLOWED_STATES else None
     role = body.role if body.role in ALLOWED_ROLES else None
     store.save_post(body.session, answers, scored, per, state, role)
@@ -239,7 +240,7 @@ def learn_post(body: PostIn, request: Request):
     post_secs = time.time() - (s["pre_at"] or time.time())
     reason = None
     if over:
-        reason = "device_cap"
+        reason = "network_cap" if over_network and not over_device else "device_cap"
     elif pre_secs < MIN_PRE_SECS or post_secs < MIN_POST_SECS:
         reason = "too_fast"
     if reason and not s["is_test"]:

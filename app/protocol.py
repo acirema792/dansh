@@ -13,6 +13,7 @@ from .content import FOLLOW_UPS, HELPLINE_15400_STATES, ITEMS, RED_FLAGS, UI, ci
 from .parser import Facts
 
 LEVELS = ["OFF_TOPIC", "OTHER", "INFO", "POSSIBLE", "URGENT", "CRITICAL", "SUPPORT"]
+LOOKALIKE = {"rat", "lizard", "insect"}  # animals a hidden krait bite is commonly blamed on
 NEVER_SAY_FOR_BITES = {"dont_tourniquet", "dont_cut_suck", "dont_healer"}  # always included for any bite
 
 
@@ -73,7 +74,17 @@ def decide(f: Facts, lang: str | None = None, answered: dict | None = None) -> P
 
     neuro = set(flags) & {"ptosis", "speech_swallow", "breathing", "weakness"}
     strong_neuro = set(flags) & {"ptosis", "speech_swallow"}
-    if f.other_animal and not f.occult_krait and (strong_neuro or (neuro and f.night_floor)):
+    if f.other_animal in LOOKALIKE and flags and not f.occult_krait:
+        # "rat bit him at night, now vomiting": a krait bite is often blamed on a rat
+        f.occult_krait = bool(f.night_floor or strong_neuro)
+        f.unknown_bite = True
+        is_bite_context = True
+        trace.append(f"R1d danger signs {flags} after a '{f.other_animal}' bite -> treat as possible snakebite")
+    elif f.other_animal and strong_neuro and not f.occult_krait:
+        f.unknown_bite = True
+        is_bite_context = True
+        trace.append(f"R1e krait-type signs {sorted(strong_neuro)} although '{f.other_animal}' named -> snakebite protocol")
+    if False:
         f.occult_krait = True
         trace.append("R1d krait-type signs at night/floor although another animal was named -> possible krait")
     # R1 another animal named, no snake, no doubt about it -> out of scope with a safe pointer.
@@ -88,8 +99,8 @@ def decide(f: Facts, lang: str | None = None, answered: dict | None = None) -> P
     if f.other_animal and f.unknown_bite and not f.snake:
         trace.append(f"R1c animal ({f.other_animal}) named but uncertain -> treat as possible snakebite")
 
-    # R2 prevention / general question with no bite -> prevention advice.
-    general = (f.prevention or (f.generic_question and f.snake))
+    # R2 prevention / general question / snake mentioned with nothing happening -> prevention advice.
+    general = (f.prevention or (f.generic_question and f.snake) or f.snake_mention_only)
     if general and not (f.bite or f.unknown_bite or f.occult_krait or flags or f.swelling or f.contact):
         trace.append("R2 prevention question -> prevention advice")
         p = Plan("INFO", UI["level_INFO"][lang], lang=lang, rule_trace=trace, calls=["108"])
