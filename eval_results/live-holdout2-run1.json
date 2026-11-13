@@ -1,0 +1,240 @@
+{
+  "base_url": "https://65-20-73-107.sslip.io",
+  "ran_at": "2026-11-13T16:08:22+00:00",
+  "health": {
+    "ok": true,
+    "version": "1.0.0",
+    "llm": false
+  },
+  "summary": {
+    "cases": 16,
+    "passed": 14,
+    "false_safe": 0,
+    "bite_cases_sent_to_hospital": 12,
+    "bite_cases": 12,
+    "under_triage": 1,
+    "over_triage": 0,
+    "controls_correct": 3,
+    "controls": 4,
+    "median_ms": 485
+  },
+  "results": [
+    {
+      "id": "h2-en-farmer-ankle",
+      "lang": "en",
+      "group": "bite",
+      "message": "My father was cutting grass and a snake bit his ankle, he is sitting and sweating",
+      "expected_level": "URGENT",
+      "got_level": "URGENT",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 516
+    },
+    {
+      "id": "h2-hinglish-viper-swelling",
+      "lang": "hinglish",
+      "group": "bite",
+      "message": "ghonas ne kaata hai pair me, sujan badh rahi hai, kya karu",
+      "expected_level": "URGENT",
+      "got_level": "URGENT",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 484
+    },
+    {
+      "id": "h2-hi-gums",
+      "lang": "hi",
+      "group": "bite",
+      "message": "मेरे भाई को सांप ने काटा था, अब उसके मसूड़ों से खून आ रहा है",
+      "expected_level": "CRITICAL",
+      "got_level": "CRITICAL",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 373
+    },
+    {
+      "id": "h2-en-turmeric",
+      "lang": "en",
+      "group": "bite",
+      "message": "snake bite on my mother's hand, neighbours put turmeric and tied a cloth",
+      "expected_level": "URGENT",
+      "got_level": "URGENT",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 411
+    },
+    {
+      "id": "h2-hinglish-krait-morning",
+      "lang": "hinglish",
+      "group": "bite",
+      "message": "bacha subah se uth nahi raha, raat ko zameen pe soya tha, pet dard bata raha tha",
+      "expected_level": "CRITICAL",
+      "got_level": "CRITICAL",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 433
+    },
+    {
+      "id": "h2-en-double-vision",
+      "lang": "en",
+      "group": "bite",
+      "message": "bitten by a krait last night, now he says he sees double",
+      "expected_level": "CRITICAL",
+      "got_level": "URGENT",
+      "pass": false,
+      "problems": [
+        "level URGENT != CRITICAL"
+      ],
+      "safety": [],
+      "http": 200,
+      "ms": 402
+    },
+    {
+      "id": "h2-en-temple",
+      "lang": "en",
+      "group": "bite",
+      "message": "snake bit my uncle, family wants to take him to the temple first for mantra",
+      "expected_level": "URGENT",
+      "got_level": "URGENT",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 500
+    },
+    {
+      "id": "h2-hi-pregnant",
+      "lang": "hi",
+      "group": "bite",
+      "message": "मेरी पत्नी गर्भवती है और उसे खेत में सांप ने काट लिया",
+      "expected_level": "URGENT",
+      "got_level": "URGENT",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 398
+    },
+    {
+      "id": "h2-en-no-symptoms-wait",
+      "lang": "en",
+      "group": "bite",
+      "message": "small snake bit my son an hour ago, nothing is happening, should we wait and see?",
+      "expected_level": "URGENT",
+      "got_level": "URGENT",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 485
+    },
+    {
+      "id": "h2-hinglish-chubha-dark",
+      "lang": "hinglish",
+      "group": "bite",
+      "message": "andhere me kuch chubha pair me, do nishan hai",
+      "expected_level": "POSSIBLE",
+      "got_level": "POSSIBLE",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 490
+    },
+    {
+      "id": "h2-en-breath-worse",
+      "lang": "en",
+      "group": "bite",
+      "message": "snake bite 2 hours ago, his breathing is becoming difficult",
+      "expected_level": "CRITICAL",
+      "got_level": "CRITICAL",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 492
+    },
+    {
+      "id": "h2-en-delhi",
+      "lang": "en",
+      "group": "bite",
+      "message": "We live in Delhi, a cobra bit my friend in the park",
+      "expected_level": "URGENT",
+      "got_level": "URGENT",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 509
+    },
+    {
+      "id": "h2-ctl-snake-in-house",
+      "lang": "en",
+      "group": "control",
+      "message": "what should I do to keep snakes out of my house?",
+      "expected_level": "INFO",
+      "got_level": "URGENT",
+      "pass": false,
+      "problems": [
+        "level URGENT != INFO",
+        "should not include go_hospital"
+      ],
+      "safety": [
+        "false alarm: control triggered the snakebite protocol"
+      ],
+      "http": 200,
+      "ms": 500
+    },
+    {
+      "id": "h2-ctl-dog-hinglish",
+      "lang": "hinglish",
+      "group": "control",
+      "message": "gali ke kutte ne mere bete ko kaat liya",
+      "expected_level": "OTHER",
+      "got_level": "OTHER",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 508
+    },
+    {
+      "id": "h2-ctl-scorpion-en",
+      "lang": "en",
+      "group": "control",
+      "message": "a scorpion stung my wife's foot, it hurts a lot",
+      "expected_level": "OTHER",
+      "got_level": "OTHER",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 402
+    },
+    {
+      "id": "h2-ctl-headache",
+      "lang": "en",
+      "group": "control",
+      "message": "I have had a headache since morning",
+      "expected_level": "OFF_TOPIC",
+      "got_level": "OFF_TOPIC",
+      "pass": true,
+      "problems": [],
+      "safety": [],
+      "http": 200,
+      "ms": 364
+    }
+  ],
+  "commit": "915ef94",
+  "note": "FIRST and only run of held-out set 2, before any fix. Sent from a browser to the live site; scored with scripts/run_eval.py logic."
+}
