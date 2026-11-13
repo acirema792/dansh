@@ -28,15 +28,22 @@ Times are the `ran_at` values recorded in each bundle. The header comment in `ho
 
 ## Audit-found inputs (adversarial set)
 
-Two independent audit rounds and three verifier passes wrote and labelled adversarial messages, and many of them broke earlier versions. Their labelled corpus is `tests/data/adversarial.json`: **548 messages**, including verifier round 3's 101 held-out messages. `tests/test_adversarial.py` asserts **0 false safes, 0 under-triage, and a crisis line for self-harm**.
+Two independent audit rounds and four verifier passes wrote and labelled adversarial messages, and many of them broke earlier versions. Their labelled corpus is `tests/data/adversarial.json`: **775 messages**, including verifier round 3's 101 held-out messages, verifier round 4's 175 held-out messages and its 52-message probe grid. `tests/test_adversarial.py` asserts **0 false safes, 0 under-triage, and a crisis line for self-harm**.
 
-Result at the time of writing: **545/548 as labelled, 0 false safes, 0 under-triage**. The 3 differences are over-triage ("बंदर ने काटा, शायद" and two thorn pricks with blood).
+Result at the time of writing: **767/775 as labelled, 0 false safes, 0 under-triage**. All 8 differences are over-triage: thorn, needle and nail pricks, figures of speech ("the cold wind bites", "love bite"), and "बंदर ने काटा, शायद" ("a monkey bit, maybe"), which goes to the hospital plan because of the doubt word.
 
 **Held-out results from the verifiers, recorded before the fixes that followed them:**
-- Verifier round 3 wrote 101 new messages against commit d500cbf. Result: **25 false safes**, 15 under-triaged, 10 false alarms. Its report is `loop/audits/verify-round-3.md`. Those 101 messages are now in the corpus and pass.
+- Verifier round 4 wrote 175 new messages against commit 931552f. Result: **30 false safes** and 32 under-triaged. Before any fix, the corpus with its messages added stood at 78 false safes and 32 under-triaged out of 775. Its report is `loop/audits/verify-round-4.md`.
+- Verifier round 3 wrote 101 new messages against commit d500cbf. Result: **25 false safes**, 15 under-triaged, 10 false alarms (`loop/audits/verify-round-3.md`).
 - Verifier round 2 (`verify-round-2.md`) and round 1b (`verify-round-1b.md`) found earlier regressions the same way.
 
-The pattern was the same each time: every rule written to *suppress* a false alarm created new false safes. The current design has one guard (`can_suppress`) and a safety net, so doubt always resolves to the hospital. The rules were fixed *against* this corpus, so it is a regression test, not a held-out score. The held-out measure is each verifier's fresh probe set, reported in `loop/audits/`.
+Each round found false safes that the previous fixes had created. Every rule written to *suppress* a false alarm opened a new gap. Round 4 traced most of its 30 to one rule: any animal word anywhere in the message ("bitten while milking the **cow**", "**rat** 2 baje", which is Hinglish for *raat*, night) made the bite "another animal's" and switched the safety net off. The fix after round 4 changes the routing, not just the word lists:
+- another animal is out of scope only when the message says it is the biter ("dog bit me", "kutte ne kaata", "bitten by a stray dog");
+- any bite word with a body part, a family member or an outdoor or night setting is a possible snakebite;
+- a snake doing something to someone ("saanp ne maara", "cobra spat in his eyes") counts as contact;
+- "kya kare" / "what to do" alone no longer makes a message a general question.
+
+These rules were fixed *against* this corpus, so it is a regression test, not a held-out score. The held-out measure is each verifier's fresh probe set, reported in `loop/audits/`. Scenario set 2 (holdout2) went from 14/16 to 16/16 after its two misses were fixed. The live 14/16 is the held-out figure.
 
 ## What this does and doesn't show
 

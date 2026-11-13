@@ -84,9 +84,6 @@ def decide(f: Facts, lang: str | None = None, answered: dict | None = None) -> P
         f.unknown_bite = True
         is_bite_context = True
         trace.append(f"R1e krait-type signs {sorted(strong_neuro)} although '{f.other_animal}' named -> snakebite protocol")
-    if False:
-        f.occult_krait = True
-        trace.append("R1d krait-type signs at night/floor although another animal was named -> possible krait")
     # R1 another animal named, no snake, no doubt about it -> out of scope with a safe pointer.
     if f.other_animal and not f.snake and not f.unknown_bite and not f.occult_krait:
         trace.append(f"R1 other animal ({f.other_animal}) -> out of scope")
