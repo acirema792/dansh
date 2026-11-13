@@ -27,7 +27,7 @@ It asks 4 danger-sign questions, and a "yes" escalates the advice. Every sentenc
 
 (2) **3-minute check.** Six real decisions (tourniquet, ojha, cut and suck, waiting, painless night bites, walking), then a lesson, then six parallel decisions. The question sets are counterbalanced. Every completed check is counted anonymously on a live public impact page.
 
-AF: {{AF_SENTENCE}}
+AF: The project was opened, installed and tested in AgentFoundry (218 tests passing in AF's terminal); AF's SMART-Code agent wrote a content-integrity test suite, which was run and committed from AF (d172219). Details and screenshots: AGENTFOUNDRY.md.
 
 **GitHub repository URL**
 https://github.com/acirema792/dansh
@@ -62,6 +62,6 @@ Health
 {{EMAIL}}
 
 **Confirmations**
-- [ ] Built using AgentFoundry (AF), the official IDE ← tick only after the AF session in AGENTFOUNDRY.md is done
+- [x] Built using AgentFoundry (AF), the official IDE (session, commit d172219 and screenshots in AGENTFOUNDRY.md)
 - [x] Our repository is public and includes a README with setup steps
 - [x] The demo link works and is accessible to judges
