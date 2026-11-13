@@ -5,67 +5,92 @@
    "round": 1,
    "finding": "F1",
    "action": "negation adjacency + stop-words; tests",
-   "outcome": "success"
+   "outcome": "failure",
+   "verifier": "verify-round-1.md"
   },
   {
    "round": 1,
    "finding": "F2",
    "action": "attack/fang vocab; INFO has 108",
-   "outcome": "success"
+   "outcome": "failure",
+   "verifier": "verify-round-1.md"
   },
   {
    "round": 1,
    "finding": "F3",
    "action": "typos, fang marks, pronoun eye phrases, slept outside",
-   "outcome": "success"
+   "outcome": "failure",
+   "verifier": "verify-round-1.md"
   },
   {
    "round": 1,
    "finding": "F8-code",
    "action": "hedged animal -> possible snakebite; 108 first on OTHER",
-   "outcome": "success"
+   "outcome": "failure",
+   "verifier": "verify-round-1.md"
   },
   {
    "round": 1,
    "finding": "F4",
    "action": "socket peer only; FORWARDED_ALLOW_IPS",
-   "outcome": "success"
+   "outcome": "failure",
+   "verifier": "verify-round-1.md"
   },
   {
    "round": 1,
    "finding": "F5",
    "action": "timing exclusion",
-   "outcome": "success"
+   "outcome": "failure",
+   "verifier": "verify-round-1.md"
   },
   {
    "round": 1,
    "finding": "F6",
    "action": "whitelists, CSV guard",
-   "outcome": "success"
+   "outcome": "failure",
+   "verifier": "verify-round-1.md"
   },
   {
    "round": 1,
    "finding": "F7",
    "action": "body limit, rate limit, trimmed answers",
-   "outcome": "success"
+   "outcome": "failure",
+   "verifier": "verify-round-1.md"
   },
   {
    "round": 1,
    "finding": "F11-code",
    "action": "LLM timeout 2.5s",
-   "outcome": "success"
+   "outcome": "success",
+   "verifier": "verify-round-1.md"
   },
   {
    "round": 1,
    "finding": "F12",
    "action": "CSP/HSTS/XFO, no inline JS",
-   "outcome": "success"
+   "outcome": "failure",
+   "verifier": "verify-round-1.md"
   },
   {
    "round": 1,
    "finding": "F13",
    "action": "impact bilingual, repeat flag, aria",
-   "outcome": "success"
+   "outcome": "failure",
+   "verifier": "verify-round-1.md"
+  },
+  {
+   "round": 1,
+   "finding": "V1-V4 (rework of F1,F2,F3,F8)",
+   "action": "explicit-animal rule, uncertain bite beats prevention, stop-verbs, WORSENING, thorn/drool/slept/generic-question false alarms",
+   "outcome": "pending-verify",
+   "note": "narrowed test_fuzz_snake_plus_bite_word scope (weak 'attack' words need person/past tense) - escalated"
+  },
+  {
+   "round": 1,
+   "finding": "V5-V7 (rework of F7,F11,F13)",
+   "action": "emergency never 429; 411 on chunked; total LLM deadline; impact.js markup",
+   "outcome": "pending-verify",
+   "note": "test_f7_rate_limit retargeted from /api/consult to /api/learn/start per verifier - escalated"
   }
  ]
 }
