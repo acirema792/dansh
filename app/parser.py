@@ -35,6 +35,8 @@ class Facts:
     state: str | None = None
     lang: str = "en"
     negated: list[str] = field(default_factory=list)  # red flags explicitly denied
+    generic_question: bool = False  # "why do snakes strike" with no person involved
+    night_floor: bool = False
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -96,7 +98,7 @@ FLAG_WORDS = {
     "breathing": ["breath", "breathe", "breathing", "breathless", "short of breath", "choking", "saans", "sans",
                   "saas", "dam ghut", "dum ghut", "सांस", "दम घुट", "श्वास"],
     "speech_swallow": ["slurred", "can't speak", "cannot speak", "cant speak", "can't swallow", "cannot swallow",
-                       "difficulty swallowing", "trouble swallowing", "unable to swallow", "drool", "drooling",
+                       "difficulty swallowing", "trouble swallowing", "unable to swallow",
                        "slurring", "lar tapak", "laar", "trouble speaking", "bol nahi", "bol nhi",
                        "nigal nahi", "nigalne", "awaaz", "आवाज़", "बोल नहीं", "निगल", "बोलने में"],
     "bleeding": ["bleeding", "bleed", "blood", "khoon", "khun", "gums", "nosebleed", "nose bleed", "red urine",
@@ -135,7 +137,7 @@ DONE = {
 CHILD = ["child", "kid", "baby", "toddler", "boy", "girl", "infant", "bachcha", "bacha", "bachche", "bachchi",
          "bacchi", "beta", "beti", "munna", "munni", "बच्चा", "बच्चे", "बच्ची", "बेटा", "बेटी", "मुन्ना"]
 PREGNANT = ["pregnant", "pregnancy", "garbhvati", "garbhavati", "pet se", "गर्भवती", "पेट से"]
-NIGHT_FLOOR = ["slept outside", "sleeping outside", "slept", "sleeping", "slept on the floor", "sleeping on the floor", "on the floor", "floor", "woke up", "woke", "at night",
+NIGHT_FLOOR = ["slept outside", "sleeping outside", "slept on the floor", "sleeping on the floor", "on the floor", "floor", "woke up", "woke", "at night",
                "in the morning", "early morning", "zameen par", "jameen par", "zamin", "neend", "subah", "raat",
                "ज़मीन", "जमीन", "सुबह", "रात", "नींद", "सो रहा", "सोया", "सोई"]
 
@@ -177,11 +179,14 @@ def _detect_lang(raw: str, text: str) -> str:
 # "not"/"nahi" never negates an inability-type sign. Only explicit denials count.
 # A denial must be adjacent ("no bleeding", "no difficulty breathing", "without swelling") and must not
 # cross punctuation. "koi" is NOT a negator ("koi madad karo" = "someone help").
-NEG_BEFORE = re.compile(r"(?:\bno\b|\bwithout\b|\bdenies\b|\bnever\b)\s+(?:[^\s,.;!?।]+\s+){0,1}$")
+NEG_BEFORE = re.compile(r"(?:\bno\b|\bwithout\b|\bdenies\b|\bnever\b)\s+(?:(?:difficulty|trouble|problem|problems|"
+                        r"sign|signs|issue|issues|sign of|signs of|active|visible)\s+)?$")
 NORMAL_AFTER = re.compile(r"^\s*(?:is\s+|are\s+|hai\s+|है\s+)?(?:normal|normally|fine|ok|okay|theek|thik|ठीक|सामान्य)"
                           r"(?![^,.;!?।]{0,12}(?:\bnot\b|\bnahi\b|\bnahin\b|\bnhi\b|\bna\b|नहीं|नही))")
 HI_NEG_AFTER = re.compile(r"^\s*(?:aa\s+|aa raha\s+|आ\s+)?(?:nahi|nahin|nhi|नहीं|नही)\b"
-                          r"(?!\s*(?:ruk|ruka|rukta|rukti|tham|tham\w*|band|रुक|थम|बंद))")
+                          r"(?!\s*(?:ruk|ruka|rukta|rukti|rok|tham|tham\w*|thahar|thehar|jam|jamta|jam raha|band|"
+                          r"रुक|रोक|थम|ठहर|जम|बंद))")
+WORSENING = re.compile(r"\b(?:but|lekin|magar|par|worse|worsening|getting|badh|badhti|badh raha)\b|लेकिन|मगर|बढ़|बिगड़")
 NEG_STOPPING = re.compile(r"(?:\bnot\b|\bnahi\b|नहीं)[^,.;!?।]{0,10}$")
 PRESENCE_TYPE = {"bleeding", "vomiting_abdominal", "swelling"}  # "khoon nahi" = no bleeding
 
@@ -197,6 +202,8 @@ def _negated(text: str, words: list[str], flag: str = "") -> bool:
             before = text[max(0, m.start() - 30): m.start()]
             after = text[m.end(): m.end() + 24]
             denied = bool(NEG_BEFORE.search(before)) or bool(NORMAL_AFTER.search(after))
+            if denied and WORSENING.search(text[m.end(): m.end() + 40]):
+                denied = False  # "breathing is ok for now but getting worse"
             if denied and NEG_STOPPING.search(before) and not NEG_BEFORE.search(before):
                 denied = False
             if flag in PRESENCE_TYPE and HI_NEG_AFTER.search(after):
@@ -236,6 +243,30 @@ SUCKED_BLOOD = re.compile(r"(?:khoon|khun|blood|खून)\s+(?:\S+\s+)?(?:choos
 AGE = re.compile(r"(\d{1,2})\s*(?:-\s*)?(?:year|years|yr|yrs|saal|sal|varsh|साल|वर्ष)")
 
 
+THORN = ["thorn", "kaanta", "kanta", "kaante", "needle", "sui", "suii", "glass", "nail", "keel", "splinter",
+         "काँटा", "कांटा", "सुई", "कील", "शीशा"]
+WEAK_BITE = ["attack", "attacked", "struck", "strike", "hamla"]
+WEAK_PAST = ["attacked", "struck", "hamla kiya", "hamla kar", "hamla ho", "ne hamla"]
+PERSON = ["my", "me", "i ", "him", "her", "his", "son", "daughter", "father", "mother", "wife", "husband", "brother",
+          "sister", "child", "baby", "papa", "mummy", "maa", "bhai", "behen", "beta", "beti", "mere", "meri", "mera",
+          "ko", "uncle", "aunty", "dada", "dadi", "nana", "nani", "friend", "someone", "somebody", "kisi",
+          "मेरे", "मेरी", "मेरा", "को", "पापा", "माँ", "मां", "भाई", "बहन", "बेटा", "बेटी", "बच्चा", "बच्चे", "पति", "पत्नी"]
+GENERIC_Q = ["why", "how do", "how to", "what is", "what are", "which snakes", "kyon", "kyun", "kaise", "kya hota",
+             "क्यों", "कैसे", "क्या होता"]
+
+
+def _explicit_animal_biter(text: str, animal_words: list[str]) -> bool:
+    """'dog bit me', 'bitten by a dog', 'kutte ne kaata' - the animal is the stated biter."""
+    bite_alt = "|".join(re.escape(_norm(w)) for w in BITE if len(w) > 2)
+    for w in animal_words:
+        a = re.escape(_norm(w))
+        if re.search(rf"{a}[a-z\u0900-\u097F]*\s+(?:[^\s,.;!?।]+\s+){{0,2}}?(?:{bite_alt})", text):
+            return True
+        if re.search(rf"(?:{bite_alt})\S*\s+(?:by\s+)?(?:a\s+|the\s+)?{a}", text):
+            return True
+    return False
+
+
 def parse(raw: str) -> Facts:
     text = _norm(raw)
     text = BIT_IDIOM.sub(" ", text)
@@ -245,13 +276,26 @@ def parse(raw: str) -> Facts:
     f.snake = _any(text, SNAKE)
     f.bite = _any(text, BITE)
     f.unknown_bite = _any(text, UNKNOWN)
+    explicit_animal = False
     if not f.snake:
         for animal, words in OTHER.items():
             if _any(text, words):
                 f.other_animal = animal
+                explicit_animal = _explicit_animal_biter(text, words)
                 break
     if not f.unknown_bite and (f.bite or f.other_animal) and _any(text, HEDGE):
         f.unknown_bite = True
+    if f.other_animal and explicit_animal:
+        f.unknown_bite = False  # "a dog bit my son, maybe rabies?" is a dog bite, not a mystery bite
+    if _any(text, THORN) and not f.snake:
+        f.unknown_bite = False  # "kaanta chubh gaya" is a thorn
+        if not _any(text, [w for w in BITE if w not in ("prick",)]):
+            f.bite = False
+    person = _any(text, PERSON)
+    weak_only = f.bite and _any(text, WEAK_BITE) and not _any(text, [w for w in BITE if w not in WEAK_BITE])
+    if weak_only and not person and not _any(text, WEAK_PAST):
+        f.bite = False  # "how to protect from snake attack", "why do snakes strike"
+    f.generic_question = _any(text, GENERIC_Q) and not person
     f.prevention = _any(text, PREVENT)
     f.self_harm = _any(text, SELF_HARM)
     for flag, words in FLAG_WORDS.items():
@@ -276,7 +320,8 @@ def parse(raw: str) -> Facts:
             f.state = state
             break
     symptoms = set(f.red_flags) & {"ptosis", "weakness", "vomiting_abdominal", "unconscious", "breathing", "speech_swallow"}
-    if not f.snake and (not f.bite or no_bite_seen) and _any(text, NIGHT_FLOOR) and symptoms:
+    f.night_floor = _any(text, NIGHT_FLOOR) or "sleeping on the floor" in text
+    if not f.snake and (not f.bite or no_bite_seen) and f.night_floor and symptoms:
         f.occult_krait = True
     return f
 

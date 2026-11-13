@@ -71,6 +71,10 @@ def decide(f: Facts, lang: str | None = None, answered: dict | None = None) -> P
         # fall through: a bite is still an emergency; keep the crisis line on top.
         trace.append("R0b bite also present -> continue with bite protocol")
 
+    neuro = set(flags) & {"ptosis", "speech_swallow", "breathing", "weakness"}
+    if f.other_animal and neuro and f.occult_krait is False and f.night_floor:
+        f.occult_krait = True
+        trace.append("R1d krait-type signs at night/floor although another animal was named -> possible krait")
     # R1 another animal named, no snake, no doubt about it -> out of scope with a safe pointer.
     if f.other_animal and not f.snake and not f.unknown_bite and not f.occult_krait:
         trace.append(f"R1 other animal ({f.other_animal}) -> out of scope")
@@ -83,8 +87,9 @@ def decide(f: Facts, lang: str | None = None, answered: dict | None = None) -> P
     if f.other_animal and f.unknown_bite and not f.snake:
         trace.append(f"R1c animal ({f.other_animal}) named but uncertain -> treat as possible snakebite")
 
-    # R2 prevention question with no bite -> prevention advice.
-    if f.prevention and not (f.bite or f.occult_krait or flags):
+    # R2 prevention / general question with no bite -> prevention advice.
+    general = (f.prevention or (f.generic_question and f.snake))
+    if general and not (f.bite or f.unknown_bite or f.occult_krait or flags):
         trace.append("R2 prevention question -> prevention advice")
         p = Plan("INFO", UI["level_INFO"][lang], lang=lang, rule_trace=trace, calls=["108"])
         for i in ("prevent_torch", "prevent_sleep", "prevent_hands"):
