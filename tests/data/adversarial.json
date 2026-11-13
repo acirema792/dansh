@@ -3426,5 +3426,1118 @@
   "expect": "bite",
   "message": "my son's toe has a burning pain since evening",
   "src": "verify-r4-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "kal shaam khet me kaam karte hue papa ke pair me kuch kaat gaya, ab sooj raha hai",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "mere bete ko raat ko zameen pe sote hue kisi ne kaat liya, ungli pe do nishan",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "saap ne kaat lea bhai ko nadi kinare",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "sanp ka kata h mere chacha ko, jaldi batao",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "snek bitt my leg near the pond",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "snake bait on my hand while cutting grass",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "sap katne se pair sujgaya hai",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "saanp ne dass liya beti ko",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "naagin ne kata mere bhai ko khet me",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "मेरे भाई को खेत में किसी ने काट लिया, पैर सूज गया",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "रात को सोते समय बच्चे के हाथ में कुछ काट गया, वह रो रहा है",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "खेत में काम करते समय पैर में कुछ चुभा, अब बहुत दर्द और सूजन है",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "रात को बिस्तर पर कुछ रेंगता हुआ लगा, सुबह हाथ पर दो निशान हैं",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "दादी को लकड़ी उठाते वक्त उंगली में डंक लगा",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "बेटी को गोबर उठाते समय कुछ ने काटा",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "while milking the cow i got bitten on the foot, the foot is swelling",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "cleaning the cow shed got bitten on the toe, toe is swollen and painful",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "tying the goat got bitten on the hand near the haystack",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "buffalo shed me kaata papa ko raat ko, pair sooj gaya",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "near the pig pen got bitten on the ankle this evening",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "letting the cat out got bitten on the heel in the dark",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "grabbed the hen and got bitten in the coop at night, hand is swelling",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "kneeling by the ant hill got bit on the knee, it hurts a lot",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "kutte ne jagaya tab dekha munna ke pair pe kaata hua hai",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "murgiyon ne shor kiya dekha beti ko kaata hai pair pe",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "son bitten by something near dog house at night, leg swollen",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "after the cow attack he fell in the bushes and something bit his hand, swelling now",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "while chasing the goat he got bit on the ankle in the field, it is swelling",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "saanp dikha aur use chhoo kar nikal gaya, kya karu",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "we saw a snake and it touched her, what do we do",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "it looked like a snake, it touched her and went away, kya karein",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "snake found in the cradle where the baby was sleeping, what should we do",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "saanp dekha bistar pe jahan nana so rahe the, ab kya karein",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "a snake brushed past him in the dark, what should we do",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "saanp pair pe chadh gaya tha bachhe ke, kya karna chahiye",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "saanp ne lapet liya bhai ke haath ko",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "snake struck at my son's leg, not sure if it bit",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "cobra ne fan maara aur chacha gir gaye",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "snake touched her foot while she slept on the mat",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "a python bit my son at the zoo, his hand is bleeding",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "ajgar ne lapet liya bachhe ko, chhudaya, ab kya karein",
+  "src": "verify-r5-heldout",
+  "arguable": true
+ },
+ {
+  "expect": "bite",
+  "message": "python coiled around my son's leg at the zoo, what now",
+  "src": "verify-r5-heldout",
+  "arguable": true
+ },
+ {
+  "expect": "bite",
+  "message": "snake bit my uncle during harvest season, leg swelling",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "saanp ne kaata kai ghante pehle, abhi dard hai",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "bachha toy le raha tha ghaas me, haath pe kuch kaat gaya",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "rubber plantation me kaam karte hue saanp ne kaata",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "something like a snake bit her ankle in the dark",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "kids say the snake did not bite, all fine, but now chhotu keeps nodding off",
+  "src": "verify-r5-heldout",
+  "arguable": true
+ },
+ {
+  "expect": "bite",
+  "message": "saanp ne kaata nahi shayad, sab theek hai par chhotu sust lag raha",
+  "src": "verify-r5-heldout",
+  "arguable": true
+ },
+ {
+  "expect": "bite",
+  "message": "snake didn't bite anyone, all fine, only my grandma's ankle has two small red dots",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "the snake did not bite him, he is fine, he just feels cold and his chest hurts",
+  "src": "verify-r5-heldout",
+  "arguable": true
+ },
+ {
+  "expect": "bite",
+  "message": "saanp dikha, chacha ne pakadne ki koshish ki, kya karein",
+  "src": "verify-r5-heldout",
+  "arguable": true
+ },
+ {
+  "expect": "bite",
+  "message": "saanp ghar me ghusa aur chhotu uske paas khel raha tha, kya karein",
+  "src": "verify-r5-heldout",
+  "arguable": true
+ },
+ {
+  "expect": "bite",
+  "message": "our puppy bites everything, but this morning my son has two holes in his heel and it's swollen",
+  "src": "verify-r5-heldout",
+  "arguable": true
+ },
+ {
+  "expect": "bite",
+  "message": "kal rat 1 baje bachhi ke pair me kaata, sujan aa gayi",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "rat ke andhere me ungli pe kuch kaata",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "rat bhar dard raha, shaam ko khet me pair pe kaata tha",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "rat 11 baje papa ko pair pe kaat liya, bahut jalan",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "aaj rat sote waqt bete ko haath pe kaata, haath laal ho gaya",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "rat mein kuch kaata pair pe, chuha hoga shayad",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "a rat bit my son at night while he slept on the floor, now his foot is swollen",
+  "src": "verify-r5-heldout",
+  "arguable": true
+ },
+ {
+  "expect": "bite",
+  "message": "something bit me, maybe a rat, foot swelling fast",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "woke up with two red dots on my ankle and it burns",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "subah uthi to pair pe do lal nishan the aur dard",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "बच्चा रात को ज़मीन पर सोया था, सुबह से रो रहा है और पैर पर निशान है",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "my 4 yr old came crying from the field holding her foot, there is a small wound",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "beti khelte hue cheekh padi, pair pe kuch kaat gaya",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "jangal se lakdi laate waqt haath me kuch chubh gaya, ab jal raha hai",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "ghaas kaatte samay ungli pe kuch kaat gaya",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "paddy transplanting today, something stung my foot under the water, it is burning",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "bhoosa nikalte waqt haath par dank laga",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "while collecting firewood my wife got bitten on the wrist",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "my husband was bitten on the leg going to the toilet in the field at night",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "grandpa felt a sharp pain in his toe in the dark courtyard, now it's swelling",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "brother put his hand in the rat hole and something bit him",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "papa ne chuhe ke bil me haath dala aur kuch ne kaat liya",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "chuhe pakadne ka pinjra lagate waqt ungli me kaata, sooj gayi",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "mouse trap lagate hue raat ko pair me kaata kuch ne",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "pakde hue saanp ne haath pe maara",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "snakes and ladders khel rahe the tabhi bachhe ko kuch kaat gaya pair me",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "watching a snake documentary when something bit my foot on the floor",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "snake plant ke gamle me haath dala aur kuch kaat gaya",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "my son was playing with a rubber snake in the yard and then got bitten by something real",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "snek ne katta pair pe",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "saanp ne katta hai papa ko",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "kuch keeda kaat gaya bete ko raat me, ro raha hai",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "मुझे लगता है सांप ने काटा है, पैर में जलन",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "सांप ने डस लिया मेरी माँ को",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "साँप ने छू लिया बच्चे को, क्या करें",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "साँप देखा और बच्चे के पास था, क्या करें",
+  "src": "verify-r5-heldout",
+  "arguable": true
+ },
+ {
+  "expect": "bite",
+  "message": "snake slithered across my daughter's legs while she slept outside",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "sota hua tha, kuch thanda sa haath pe se gaya, subah haath me dard",
+  "src": "verify-r5-heldout",
+  "arguable": true
+ },
+ {
+  "expect": "bite",
+  "message": "bitten on my finger reaching into the grain bin at night",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "kisan bhai ko kheti karte hue kaata, kya karein",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "ammi ko bakri ke liye ghaas laate waqt kaata",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "something got my little sister on the foot near the well",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "my brother stepped on something soft in the dark and it bit him",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "i was bitten by something while fishing in the canal, my leg hurts",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "bitten on the toe near the cattle trough this morning, hurts a lot",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "snake bit my father, now he keeps nodding off",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "saanp ne kaata, aankhen bhaari ho rahi hain",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "सांप ने काटा, आंखें भारी हो रही हैं",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "cobra bite, her speech is thick and slow",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "snake bit him, his breathing is noisy and he is wheezing",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "saanp ke kaatne ke baad haath nahi utha pa raha",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "सांप ने काटा, हाथ नहीं उठा पा रहा",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "सांप ने काटा, जुबान लड़खड़ा रही है",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "saanp ne kata, pet me marod ho rahi",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "snake bite, she puked twice",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "snake bit him, his pee looks like black tea",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "saanp ne kaata, nazar dhundli ho gayi",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "saanp ne kata papa ko, behos ho gaye",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "snake bite, he is unconsious",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "snake bit my mom, brething problem",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "snake bite, foam at the mouth",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "krait bit him, his tongue feels heavy",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "saap ne kata, pet me bahut dard",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "snake bit her, stomach is paining badly",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "snake bit my son, he says tummy ache",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "snake bite, body is jerking",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "snake bit grandpa, he doesn't respond when we call",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "snake bite, lips are going blue",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "saanp ne kaata, beta khada nahi ho pa raha",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "cobra bite, he cant open his eye",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "snake bite, wound keeps oozing and won't clot",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "snake bit him, he can't keep his head straight, it flops",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "saanp ne kaata, gale se kuch nahi utar raha",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "snake bit my wife, she is very sleepy and dull",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "saanp ke kaatne ke baad bachha bilkul nidhaal ho gaya",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "saanp ne kaata, chakkar aa rahe aur aankhen jhapak rahi",
+  "src": "verify-r5-heldout",
+  "arguable": true
+ },
+ {
+  "expect": "crit",
+  "message": "सांप के काटने के बाद पेशाब का रंग गहरा भूरा हो गया",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "सांप के काटने के बाद दम फूल रहा है",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "snake bit my son, he's seeing everything blurry",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "crit",
+  "message": "chuhe ne kaata raat me zameen pe, ab saans lene me dikkat",
+  "src": "verify-r5-heldout",
+  "arguable": true
+ },
+ {
+  "expect": "ctl",
+  "message": "saanp dikha ghar ke peeche, kaise bhagaye",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "ctl",
+  "message": "my boss is a snake, he bit my head off today",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "ctl",
+  "message": "kaanta chubh gaya pair me, nikal diya, ab theek hai",
+  "src": "verify-r5-heldout",
+  "arguable": true
+ },
+ {
+  "expect": "ctl",
+  "message": "snakes and ladders me kaun jeeta",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "animal",
+  "message": "kutte ne kaata haath pe, rabies injection kahan milega",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "animal",
+  "message": "a bee stung me on the arm, it's red and itchy",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "animal",
+  "message": "bichhu ne dank maara ungli pe, bahut dard",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "animal",
+  "message": "honeybee sting on my toddler's cheek",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "animal",
+  "message": "bandar ne bag cheena aur haath pe kaata",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "animal",
+  "message": "mosquito bites all over my legs, itching",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "animal",
+  "message": "lal cheenti ne kaata, khujli ho rahi",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "animal",
+  "message": "the cat scratched my hand while playing",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "animal",
+  "message": "our dog bit the postman on his leg",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "ctl",
+  "message": "is the rat snake venomous?",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "ctl",
+  "message": "best snake repellent for the farm",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "ctl",
+  "message": "saanp ke kaatne par kya karna chahiye, general jaankari",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "ctl",
+  "message": "snake charmer show in the village fair tomorrow",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "ctl",
+  "message": "this mango is so sour it bites",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "ctl",
+  "message": "naag panchami kab hai is saal",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "ctl",
+  "message": "I stepped on a lego, ouch",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "ctl",
+  "message": "rose ke kaante se ungli pe khoon aa gaya",
+  "src": "verify-r5-heldout",
+  "arguable": true
+ },
+ {
+  "expect": "ctl",
+  "message": "the frost bites in the morning",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "ctl",
+  "message": "saw a cobra in the zoo today, so big",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "ctl",
+  "message": "which snake is the most venomous in India",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "ctl",
+  "message": "cricket bat se chot lagi ungli pe",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "ctl",
+  "message": "my phone's snake game high score is 300",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "animal",
+  "message": "शहद की मक्खी ने काट लिया",
+  "src": "verify-r5-heldout",
+  "arguable": true
+ },
+ {
+  "expect": "animal",
+  "message": "khatmal ne raat bhar kaata",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "animal",
+  "message": "dog ne bachhe ko kaat liya gali me",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "ctl",
+  "message": "saanp ki kenchuli mili store room me, safe hai kya",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "ctl",
+  "message": "a snake crossed the road ahead of my bike, nobody was hurt",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "ctl",
+  "message": "saanp ka sapna aaya kal raat, iska matlab kya hai",
+  "src": "verify-r5-heldout"
+ },
+ {
+  "expect": "bite",
+  "message": "untying the cow was bitten on the hand in the shed",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "feeding the buffalo got bit on the finger, finger swelling",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "milking the goat at dawn got bitten on the heel",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "cleaning the horse stable got bitten on the ankle",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "near the cat bowl got bitten on the toe last night",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "son bitten by something near cow trough in the field",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "papa bitten by something behind goat shed, leg swollen",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "cow ne laat maari phir pair me kaata kisi cheez ne",
+  "src": "verify-r5-grid",
+  "arguable": true
+ },
+ {
+  "expect": "bite",
+  "message": "dog attack scare, he ran into the bushes and got bitten on the leg",
+  "src": "verify-r5-grid",
+  "arguable": true
+ },
+ {
+  "expect": "bite",
+  "message": "cleaning out the spider webs in the cowshed got bitten on the finger at night",
+  "src": "verify-r5-grid",
+  "arguable": true
+ },
+ {
+  "expect": "bite",
+  "message": "picking up the bat from the grass got bitten on the thumb",
+  "src": "verify-r5-grid",
+  "arguable": true
+ },
+ {
+  "expect": "bite",
+  "message": "walking past the ant hill in the paddy got bit on the foot, swelling",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "crit",
+  "message": "near the pig pen got bitten on the ankle, now he is vomiting",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "crit",
+  "message": "milking the cow got bitten on the foot, now her eyelids are drooping",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "crit",
+  "message": "chuhe ne kaata raat ko zameen pe sote hue, ab aankhen nahi khul rahi",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "crit",
+  "message": "a rat bit him on the floor at night, now he is drowsy and his foot swollen",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "the snake didn't bite but it scratched him, he is fine",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "saanp kaata nahi, khali ragad ke gaya, sab theek",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "the snake did not bite her, she is fine, just puked once",
+  "src": "verify-r5-grid",
+  "arguable": true
+ },
+ {
+  "expect": "bite",
+  "message": "saanp ne kaata nahi, sab theek hai, par dadi ko chakkar aa raha",
+  "src": "verify-r5-grid",
+  "arguable": true
+ },
+ {
+  "expect": "bite",
+  "message": "snake didn't bite, all fine, he just feels a tingling",
+  "src": "verify-r5-grid",
+  "arguable": true
+ },
+ {
+  "expect": "ctl",
+  "message": "a snake crawled past the gate but did not bite anyone, all are fine",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "saanp dikha aur uske upar gir gaya, kya karein",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "saanp ghus gaya kambal me, chotu andar tha, kya karu",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "saanp dikha bistar me, dadaji usi pe soye the, kya karein",
+  "src": "verify-r5-grid",
+  "arguable": true
+ },
+ {
+  "expect": "bite",
+  "message": "saw a snake under the cot where amma sleeps, what to do",
+  "src": "verify-r5-grid",
+  "arguable": true
+ },
+ {
+  "expect": "bite",
+  "message": "snake seen going out of the room where grandpa was lying, he says he felt something, what now",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "ctl",
+  "message": "saanp dikha aangan me, kaise bhagayein",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "I bit my lip and then something stung my foot",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "i bit into a guava in the orchard and then felt a sharp sting on my ankle",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "when i bite down it hurts, but also something nipped my toe in the dark",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "ctl",
+  "message": "when i bite down my gum hurts",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "ctl",
+  "message": "i bit my tongue while eating dal",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "rat 2 baje bitten on foot, swelling",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "rat bite ho gaya pair pe 12 baje, sooj raha",
+  "src": "verify-r5-grid",
+  "arguable": true
+ },
+ {
+  "expect": "bite",
+  "message": "chuhe ne kaata raat me, haath bahut sooj gaya",
+  "src": "verify-r5-grid",
+  "arguable": true
+ },
+ {
+  "expect": "bite",
+  "message": "raat ko rat ne kaata ya kuch aur pata nahi, pair sooja",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "kal rat khet me pani lagate hue kaata, bahut dard",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "rat me sote hue pair pe kuch kaata",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "rat sote waqt ungli pe kaata, sujan",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "animal",
+  "message": "a rat bit my finger in the kitchen while i was cleaning",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "kai saanp dikhe khet me, ek bachhe ke upar se gaya",
+  "src": "verify-r5-grid",
+  "arguable": true
+ },
+ {
+  "expect": "bite",
+  "message": "it was like a snake, it went across her lap while she sat in the yard",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "at the zoo a snake slid over my daughter, what should we do",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "snake came out of the toy box and touched my son, what now",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "during the paddy season a snake jumped at my brother while he was in the water",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "snake struck during the tattoo session? no - snake in the shed struck at uncle, what to do",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "python ne bachhe ke haath pe kaata",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "bite",
+  "message": "bitten by a python at the farm, his hand has marks",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "ctl",
+  "message": "cobra kai new episode is out",
+  "src": "verify-r5-grid"
+ },
+ {
+  "expect": "ctl",
+  "message": "snake tattoo designs for arm",
+  "src": "verify-r5-grid"
  }
 ]

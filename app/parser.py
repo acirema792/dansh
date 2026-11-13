@@ -40,6 +40,7 @@ class Facts:
     contact: bool = False
     snake_mention_only: bool = False  # "snake plant care tips", "snakes and ladders rules"  # wound, marks, pain, swelling, or a snake touching a body part
     night_floor: bool = False
+    systemic: bool = False  # a body-wide change after a bite that no listed danger sign matched -> CRITICAL
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -83,10 +84,10 @@ def _any(text: str, words) -> bool:
     return False
 
 
-SNAKE = ["snaek", "snakbit", "snakbitten", "snkbite", "snak bite", "snkae", "snkebite", "snke", "sanke", "snakee", "pambu", "paambu", "haavu", "hav kad", "🐍", "साप", "sap ne", "snake", "snakes", "snakebite", "saanp", "saap", "sanp", "saamp", "samp", "saap ne", "naag", "nag ne",
+SNAKE = ["snaek", "ajgar", "अजगर", "python", "pythons", "sap katne", "sap kaatne", "sap ke", "sap ka", "sap kaat", "sap kat", "snakbit", "snakbitten", "snkbite", "snak bite", "snkae", "snkebite", "snke", "sanke", "snakee", "pambu", "paambu", "haavu", "hav kad", "🐍", "साप", "sap ne", "snake", "snakes", "snakebite", "saanp", "saap", "sanp", "saamp", "samp", "saap ne", "naag", "nag ne",
          "cobra", "krait", "karait", "kraitt", "viper", "snakbite", "snakebit", "snek", "snak", "snakes bite", "russell", "russells", "ghonas", "sarp", "sarpdansh", "serpent",
          "साँप", "सांप", "सर्प", "नाग", "करैत", "कोबरा", "वाइपर", "घोणस", "सर्पदंश", "फन"]
-BITE = ["chavla", "das liya", "das gaya", "das diya", "dus liya", "dus gaya", "dasa hai", "dans liya", "bitted", "biting", "bitting", "bitte", "chavli", "chavle", "chavala", "dash diya", "dansh diya", "dank mara", "kat lia", "kaat lia", "bitt", "bitn", "biten", "bittn", "bited", "kat gaya", "kaat gaya", "kat liya", "kadichi", "kadichiruchu", "kadise", "kachchi", "चावला", "चावले", "चावली", "हमला", "got papa", "got mummy",
+BITE = ["chavla", "katne", "kaatne", "katne se", "kaatne se", "kaatne ke", "katne ke", "काटने", "das liya", "das gaya", "das diya", "dus liya", "dus gaya", "dasa hai", "dans liya", "bitted", "biting", "bitting", "bitte", "chavli", "chavle", "chavala", "dash diya", "dansh diya", "dank mara", "kat lia", "kaat lia", "bitt", "bitn", "biten", "bittn", "bited", "kat gaya", "kaat gaya", "kat liya", "kadichi", "kadichiruchu", "kadise", "kachchi", "चावला", "चावले", "चावली", "हमला", "got papa", "got mummy",
         "got dad", "got mom", "got bhai", "bite", "bit", "bitten", "biting", "bites", "kaata", "kata", "kaat", "kaatа", "kaat liya", "kaat diya", "kat liya",
         "daswa", "dasa", "dans", "dansh", "dank", "sting", "stung", "attack", "attacked", "struck", "strike",
         "hamla", "got my", "got him", "got her", "fang", "fangs", "fang marks", "snakbite", "snakebit",
@@ -155,7 +156,7 @@ FLAG_WORDS = {
                  "like cola", "cola", "coca", "black urine", "pee is", "पेशाब काला", "peshab kala", "kala peshab",
                  "dark urine", "black urine", "brown urine", "naak se", "masood", "खून", "मसूड़", "नाक से", "लाल पेशाब",
                  "काला पेशाब", "रक्त"],
-    "unconscious": ["eyes rolling", "eyes are rolling", "not answering", "not making sense", "confused", "talking nonsense", "cold and sweaty", "convulsing", "neend aa rhi", "nind aa rahi", "neend aa raha", "नहीं उठ", "नहीं जाग", "दौरे", "nahi uth raha", "nahi uth rahi", "nahi jaag", "nahi jag", "daure", "dore pad", "unconscious", "fainted", "fainting", "faint", "drowsy", "not responding", "unresponsive",
+    "unconscious": ["eyes rolling", "eyes are rolling", "not answering", "not making sense", "talking nonsense", "cold and sweaty", "convulsing", "neend aa rhi", "nind aa rahi", "neend aa raha", "नहीं उठ", "नहीं जाग", "दौरे", "nahi uth raha", "nahi uth rahi", "nahi jaag", "nahi jag", "daure", "dore pad", "unconscious", "fainted", "fainting", "faint", "drowsy", "not responding", "unresponsive",
                     "collapsed", "collapse", "passed out", "pass out", "fits", "fit aa", "seizure", "seizures",
                     "having a fit", "a fit", "shaking all over", "jag nahi raha", "jag nahi rahi", "jaag nahi",
                     "uth nahi raha", "uth nahi rahi", "जाग नहीं", "उठ नहीं",
@@ -175,7 +176,71 @@ FLAG_WORDS = {
                            "belly pain", "stomach ache", "ulti", "ultee", "pet dard", "pet me dard", "pet mein dard",
                            "उल्टी", "पेट दर्द", "पेट में दर्द"],
 }
-SWELLING = ["swelling", "swollen", "swell", "sujan", "soojan", "sooj", "suj", "suj gaya", "suj raha", "suj rahi",
+FLAG_RE = {
+    "ptosis": re.compile(r"\b(?:eyes?|aankh\w*|ankh\w*)\s+(?:\w+\s+){0,3}(?:heavy|bhaari|bhari|droop\w*|jhuk\w*|band ho\w*|closing|"
+                         r"keep shutting|shut\w*|(?:nahi|nhi|not|won'?t|can'?t)\s+(?:\w+\s+)?(?:open|khol|khul)\w*)"
+                         r"|(?:can'?t|cannot|not able to|unable to)\s+(?:\w+\s+)?open\s+(?:his|her|their|my|the)?\s*eyes?"
+                         r"|nazar\s+(?:\w+\s+)?(?:dhundh?l\w*|kam|kharab|nahi|nhi|do)\b|dhundh?l\w*|blurr?\w*|"
+                         r"(?:seeing|see|sees|vision)\s+(?:\w+\s+)?double|\bdo do dikh|"
+                         r"आंख\S*\s+(?:\S+\s+)?(?:भारी|नहीं खुल)|आँख\S*\s+(?:\S+\s+)?(?:भारी|नहीं खुल)|धुंध"),
+    "breathing": re.compile(r"\bbr[ea]{1,3}t?h\w*|\bbreat\w*|\bsaa?ns(?:e|en|on)?\b|dam\s+(?:phool|fool|ful|ghut)\w*|"
+                            r"\bhaa?n?f(?:\w*)|\bhaanp\w*|\bhanp\w*|lips?\s+(?:\w+\s+){0,2}blue|blue\s+lips|"
+                            r"(?:can'?t|cannot|not able to)\s+(?:get\s+)?air|suffocat\w*|wheez\w*|gasp\w*|"
+                            r"दम\s+फूल|सांस|साँस|हांफ|होंठ\S*\s+नीले"),
+    "speech_swallow": re.compile(r"speech\s+(?:is\s+)?(?:\w+\s+){0,2}(?:thick|slow|slurr\w*|unclear|strange|changed|weird)|"
+                                 r"tongue\s+(?:\w+\s+){0,2}(?:heavy|thick|numb)|\b(?:jubaa?n|zubaa?n|juban)\s+\w+|"
+                                 r"ladkha\w*|\bfoam\w*|froth\w*|jhaag|(?:gale|gala|throat)\s+(?:se\s+)?(?:\w+\s+){0,3}(?:utar|nigal|swallow|band|clos)\w*|"
+                                 r"(?:can'?t|cannot|unable to|not able to|nahi|nhi)\s+(?:\w+\s+){0,1}(?:speak|talk|swallow|bol pa|bol paa|nigal)\w*|"
+                                 r"जुबान\S*\s+\S+|ज़ुबान|लड़खड़ा|झाग|गले\s+से|निगल"),
+    "bleeding": re.compile(r"(?:pee|urine|peshab|pishab|mutra)\s+(?:\w+\s+){0,4}(?:red|lal|laal|brown|bhura|dark|black|kala|tea|cola|coke|blood)|"
+                           r"(?:blood|bleed\w*|khoon|khun|wound|ghav)\s+(?:\w+\s+){0,3}(?:won'?t|not|nahi|nhi|doesn'?t)\s+(?:\w+\s+)?(?:clot|stop|ruk)\w*|"
+                           r"(?:won'?t|not|doesn'?t)\s+clot\w*|\bbleed\w*|"
+                           r"(?:gums?|masood\w*|nose|naak)\s+(?:\w+\s+){0,2}(?:blood|bleed\w*|khoon)|पेशाब\S*\s+(?:\S+\s+){0,4}(?:लाल|भूरा|काला|गहरा)|खून\s+(?:नहीं\s+)?रुक"),
+    "unconscious": re.compile(r"\bunconc?s\w*|\bunconsc?\w*|\bbeh?osh?\w*|\bbehos\b|nidh?aa?l\w*|nodding|nod off|dozing|drows\w*|"
+                              r"(?:not|doesn'?t|does not|isn'?t|nahi|nhi)\s+(?:\w+\s+){0,2}(?:respond\w*|answer\w*|wake|waking|jaag\w*|jag\w*|uth\w*|sun raha|sun rahi|sunta|sunti)|"
+                              r"\bjerk\w*|twitch\w*|convuls\w*|\bseiz\w*|\bdaur[ae]\w*|jhatk\w*|collaps\w*|pass(?:ed)? out|"
+                              r"(?:he|she|they|papa|father|mother|dad|mom|grandpa|grandma|is|seems|looks|became|getting)\s+(?:very\s+|so\s+|a bit\s+)?confus\w*|"
+                              r"nonsense|not making sense|ulti?\s*seedhi baat|cold and (?:sweaty|clammy)|clammy|"
+                              r"बेहोश|निढाल|दौर[ेा]|झटक\S*|नहीं\s+(?:उठ|जाग|सुन)"),
+    "weakness": re.compile(r"(?:head|neck|gardan|\bsir|\bsar)\s+(?:\w+\s+){0,3}(?:flop\w*|fall\w*|drop\w*|lat?ak\w*|straight|uth\w*|gir\w*)|"
+                           r"(?:keep|hold|lift)\s+(?:his|her|the)\s+head|"
+                           r"(?:can'?t|cannot|unable to|not able to|nahi|nhi)\s+(?:\w+\s+){0,2}(?:lift|stand|move|hold|utha|khada|khade|hil)\w*|"
+                           r"khada nahi|khade nahi|paralys\w*|paralyz\w*|\blimp\b|floppy|\bweak\w*|kamzor\w*|kamjor\w*|dheel\w*|"
+                           r"गर्दन|खड़ा\s+नहीं|ढील|कमज़ोर|कमजोर|लकवा"),
+    "vomiting_abdominal": re.compile(r"\bvom\w*|\bpuk(?:e|ed|es|ing)\b|throw\w* up|threw up|\bult(?:i|ee)(?:y[aoe]?n|yaan|ya|yan|an|aan)?\b|"
+                                     r"(?:stomach|tummy|belly|abdom\w*|\bpet)\s+(?:\w+\s+){0,3}(?:pain\w*|ache\w*|dard|marod|cramp\w*|hurt\w*)|"
+                                     r"(?:pain|ache|dard|marod)\s+(?:\w+\s+){0,2}(?:stomach|tummy|belly|pet)\b|tummy ache|stomachache|marod|"
+                                     r"उल्ट\S*|पेट\S*\s+(?:\S+\s+){0,2}(?:दर्द|मरोड़)|मरोड़"),
+}
+# A body-wide change after a bite that is not a named danger sign. English: a CHANGE verb ("keeps nodding off",
+# "is getting groggy") or a listed state ("is pale"); Hinglish/Hindi: any "<x> ho/aa/lag/pad raha/gaya" except local or
+# neutral words ("nidhaal ho gaya", "aankhen bhaari ho rahi" -> yes; "dard ho raha", "kya ho gaya" -> no).
+LOCAL_STATE = {"swelling", "swollen", "swell", "sujan", "soojan", "sooj", "suj", "dard", "pain", "painful", "paining",
+               "jalan", "burning", "red", "lal", "laal", "numb", "sunn", "itchy", "itching", "khujli", "fine", "ok", "okay",
+               "theek", "thik", "normal", "stable", "better", "crying", "scared", "afraid", "worried", "calm", "awake",
+               "conscious", "alert", "talking", "walking", "eating", "in", "on", "with", "at", "going", "coming", "being",
+               "taken", "here", "there", "now", "still", "alive", "safe", "home", "hospital", "ro", "rona", "khoon",
+               "bleeding", "blood", "a", "the", "very", "so", "bahut", "thoda", "little", "bit", "bitten", "kaata",
+               "kya", "kuch", "sab", "ye", "yeh", "wo", "woh", "vo", "ab", "abhi", "late", "der", "time", "shaam", "raat",
+               "subah", "ghanta", "ghante", "minute", "minat", "din", "pata", "kaise", "kab", "jaldi", "aaram", "bhi", "to",
+               "toh", "hi", "ki", "ke", "ka", "me", "mein", "se", "na", "nahi", "nhi", "pus", "mawad", "chhala", "chhale",
+               "kala", "kaala", "kali", "pasina", "paseena", "mar", "maar", "dar", "darr", "ghabrahat", "nishan", "nishaan",
+               "pregnant", "wearing", "sitting", "standing", "lying", "holding", "asking", "saying", "telling", "shouting",
+               "panicking", "nervous", "anxious", "upset", "sweating", "sleeping", "resting", "fasting", "waiting",
+               "क्या", "कुछ", "देर", "ठीक", "दर्द", "सूजन", "सूज", "जलन", "लाल", "खून", "पसीना", "डर", "मर", "बहुत", "सब",
+               "अब", "रो", "सुन्न", "समय", "घंटा", "घंटे"}
+SYSTEMIC_WORDS = {"pale", "sleepy", "groggy", "dazed", "drunk", "cold", "blue", "grey", "gray", "yellow", "lethargic",
+                  "listless", "restless", "delirious", "unwell", "sick", "serious", "critical", "worse", "strange", "weird",
+                  "quiet", "silent", "stiff", "blank", "sweaty", "clammy", "dizzy", "giddy", "wobbly", "off"}
+SYSTEMIC_RE = re.compile(
+    r"\b(?:he|she|they|papa|father|mother|mom|dad|son|daughter|baby|child|grandpa|grandma|bhai|beta|beti|bachha|"
+    r"bachcha|chhotu|chotu|he's|she's|it's|he is|she is)\s+(?:keeps|kept|became|has become|is getting|getting|got|turned|"
+    r"turning|is going|going|started|starts)\s+(?:very\s+|so\s+|really\s+|bahut\s+|a bit\s+)?([a-z']+)"
+    r"|\b(?:he|she|they|he's|she's|papa|father|mother|son|daughter|baby|child|grandpa|grandma)\s+(?:is\s+|was\s+|seems\s+|"
+    r"looks\s+|feels\s+)?(?:very\s+|so\s+|really\s+|a bit\s+|quite\s+)?(" + "|".join(sorted(SYSTEMIC_WORDS)) + r")\b"
+    r"|(?:^|[\s,])([a-z]+)\s+(?:ho|aa|lag|pad|padh)\s+(?:raha|rahi|rahe|gaya|gayi|gaye|gya|gyi)\b"
+    r"|(\S+)\s+(?:हो|आ|लग|पड़)\s+(?:रहा|रही|रहे|गया|गई|गए)")
+SWELLING = ["swelling", "sujgaya", "sujh", "sooj gaya", "soojh", "sujan aa", "swollen", "swell", "sujan", "soojan", "sooj", "suj", "suj gaya", "suj raha", "suj rahi",
             "puffy", "fool gaya", "phool gaya", "सूजन", "सूज", "फूल गया"]
 DONE = {
     "done_tourniquet": ["tourniquet", "tied", "tie a", "tying", "rope", "string", "thread", "ligature", "band tied",
@@ -339,8 +404,8 @@ NOUN_BITE = ["snakebite", "snake bite", "snake bites", "snakebites", "sarpdansh"
              "kaatta", "kaat"]
 INFO_WORDS = ["tips", "game", "plant", "pose", "species", "project", "show", "tickets", "race", "boat", "rules", "film",
               "movie", "song", "documentary", "photo", "picture", "facts", "information", "learn", "study", "school",
-              "jaankari", "repellent", "keep", "seedhi", "ladder", "ladders", "kai", "season", "episode", "python",
-              "zoo", "tattoo", "toy", "rubber", "is a snake", "like a snake", "snake in the grass"]  # NOT bare kya/what/how: "saanp ne maara, kya kare" is an event
+              "jaankari", "repellent", "keep", "seedhi", "ladder", "ladders", "season", "episode", "python",
+              "zoo", "tattoo", "toy", "rubber", "is a snake", "snake in the grass", "cobra kai"]  # NOT bare kya/what/how: "saanp ne maara, kya kare" is an event
 GENERIC_ANY = ["kyon", "kyun", "why do", "why does", "how many", "kitne log", "kitne logon", "क्यों", "कितने"]
 MARK_WORDS = ["mark", "marks", "nishan", "nishaan", "निशान", "puncture", "punctures", "holes", "dots", "daag", "lal daag",
               "spots", "red spots", "fang"]
@@ -364,7 +429,7 @@ HEDGE_IGNORE_RE = re.compile(r"(?:maybe|shayad|i think|i guess)\s+(?:\S+\s+){0,3
                              r"what to do|kya karu|kya karun|kya karein|kya kare|not sure what to do|"
                              r"not sure if (?:it'?s |this is )?serious|कुछ करो|क्या करें|sab kuch|sab kuchh|सब कुछ")
 LIKE_RE = re.compile(r"\b(?:like|jaisa|jaise|jaisi)\b|-like|जैसा|जैसे")
-OUTDOOR = ["handpump", "hand pump", "canal", "garden", "bhoosa", "bhoose", "dung", "shed", "sugarcane", "rice field", "tea", "woodpile", "haystack", "cattle shed", "cowshed", "water channel", "well",
+OUTDOOR = ["orchard", "bagicha", "bageecha", "bagh", "yard", "courtyard", "aangan", "angan", "backyard", "barn", "verandah", "veranda", "आंगन", "बगीचा", "hand pump", "canal", "garden", "bhoosa", "bhoose", "dung", "shed", "sugarcane", "rice field", "tea", "woodpile", "haystack", "cattle shed", "cowshed", "water channel", "well",
            "dhaan", "field", "fields", "paddy", "grass", "farm", "khet", "jungle", "forest", "garden", "bushes", "dark",
            "andhere", "खेत", "घास", "जंगल", "अंधेरे"]
 BODY_CHANGE = ["screaming", "scream", "rote hue", "rota hua", "roti hui", "rote", "रोता", "रोती", "रो रहा", "रो रही",
@@ -379,13 +444,14 @@ URGENCY = ["hlp", "halp", "help", "fast", "quick", "quickly", "just now", "abhi"
            "मदद", "जल्दी", "बचाओ", "अभी"]
 BODY_PARTS = ["toe nail", "nail", "ungli", "leg", "foot", "feet", "hand", "arm", "ankle", "finger", "toe", "pair", "haath", "ungli", "पैर", "हाथ",
               "heel", "knee", "thigh", "shin", "calf", "wrist", "palm", "sole", "angutha", "एड़ी", "उंगली", "anguli"]
-SPECIFIC_PERSON = ["son", "daughter", "father", "mother", "wife", "husband", "brother", "sister", "child", "baby",
+SPECIFIC_PERSON = ["son", "amma", "ammi", "abba", "appa", "ammaji", "maaji", "nanaji", "naniji", "chacha", "chachi", "mama", "mami", "tau", "tai", "chhotu", "chotu", "munna", "munni", "bachha", "bachhe", "bacche", "baccha", "bachi", "bachchi", "ladka", "ladki", "bete", "papa ji", "dadaji", "dada ji", "usko", "uske", "unko", "daughter", "father", "mother", "wife", "husband", "brother", "sister", "child", "baby",
                    "papa", "mummy", "maa", "bhai", "behen", "beta", "beti", "uncle", "aunty", "dada", "dadi", "nana",
                    "nani", "grandma", "grandpa", "grandmother", "grandfather", "kid", "dad", "mom", "बेटा", "बेटी",
                    "बेटे", "पापा", "माँ", "भाई", "बहन", "बच्चा", "बच्चे"]
 # Only clear self/food bites. Applied only when can_suppress() holds (no symptom, no outdoor/night, no doubt).
 SELF_BITE_STRONG = re.compile(r"\bwhen i bite\b|\bbite my food\b|\bbit my (?:own )?(?:tongue|lip|lips|cheek)\b|\bi bit into\b")
-SELF_BITE = re.compile(SELF_BITE_STRONG.pattern + r"|bites everything|सब कुछ काटता|teething|दांत निकल")
+SELF_BITE_WEAK = re.compile(r"bites everything|सब कुछ काटता|teething|दांत निकल")
+SELF_BITE = re.compile(SELF_BITE_STRONG.pattern + "|" + SELF_BITE_WEAK.pattern)
 # A snake was seen; nobody was touched: "saanp dikha par kaata nahi, sab theek hai"
 BITE_DENIED_RE = re.compile(r"(?:did not|didn't|didnt|does not|doesn't) (?:\w+ )?(?:bite|bit)\b|\b(?:kaata|kata|kati|kaati|kaatа)\s+nahi"
                             r"|nahi\s+(?:kaata|kata)\b|काटा नहीं|नहीं काटा")
@@ -401,6 +467,12 @@ SNAKE_ACTION_RE = re.compile(
     r"slithered|crawled over|grabbed|lipat|lipta|lipti|gir|jhapat|chhu|chhua|chhoo|went over|ran over)\b"
     r"|jhapat|chhu liya|chhu gaya|lipat gaya|lipat gayi|gir gaya upar|gir gayi upar|wrapped around|coiled around|"
     r"fell on (?:him|her|me|my|his|the)|spat in|spit in|slithered over|crawled over")
+SNAKE_CONTACT_RE = re.compile(
+    r"\bchh?oo?\b|chhoo|chhua|chhu kar|chhoo kar|touch\w*|\bupar\b|ke upar|uske upar|over (?:him|her|his|my|the|a|our)|"
+    r"across (?:her|his|my|the)|\blap\b|kambal|bistar|blanket|\bbed\b|scratch\w*|ragad\w*|rubb\w*|brush\w*|graz\w*|"
+    r"lipat\w*|lapet\w*|coil\w*|wrap\w*|pakad\w*|tried to catch|\bgir\b|fell|slid|crawl\w*|slither\w*|went over|"
+    r"ran over|on (?:him|her|his|my)|chadh\w*|lunge\w*|struck|hit him|hit her|"
+    r"छू|छुआ|ऊपर|लिपट|गिर|कंबल|बिस्तर")
 RAT_BITER_RE = re.compile(r"\b(?:rats?|mouse|mice)\s+(?:ne|bit|bites|bitten|has bitten|had bitten|bite)\b"
                           r"|\b(?:bitten|bit|bite|bites)\s+by\s+(?:a\s+|the\s+)?(?:\S+\s+)?(?:rats?|mouse|mice)\b"
                           r"|\b(?:rat|mouse) bite|\brat's\b|\bchuh[ae]\s+ne\b|चूहे\s+ने|चूह[ाे]\s+(?:\S+\s+)?काट")
@@ -412,13 +484,28 @@ DROOL = ["drool", "drooling", "lar tapak", "laar", "लार"]
 
 @lru_cache(maxsize=256)
 def _animal_biter_res(w: str):
+    """Patterns where the animal is the grammatical biter. Passive voice ('the cow was bitten', 'milking the cow
+    i got bitten') and context ('near the pig pen got bitten') do NOT count: that is a bite by something unseen."""
     bite_alt = "|".join(re.escape(_norm(b)) for b in BITE if len(b) > 2 and b not in ("got my", "got him", "got her"))
     a = re.escape(_norm(w))
     edge = r"(?<![a-z\u0900-\u097F])"
-    return (re.compile(rf"{edge}{a}[a-z\u0900-\u097F]*\s+(?:[^\s,.;!?।]+\s+){{0,2}}?(?:{bite_alt})"),
-            re.compile(rf"(?:{bite_alt})\S*\s+by\s+(?:a\s+|an\s+|the\s+)?(?:[^\s,.;!?।]+\s+){{0,2}}?{a}(?![a-z])"),
-            re.compile(rf"{edge}{a}(?:'s)?\s+(?:bite|bites|sting|stings|attack|scratched|scratch)\b"),
-            re.compile(rf"{edge}{a}[a-z\u0900-\u097F]*\s+(?:ne|ने)\s+(?:[^\s,.;!?।]+\s+){{0,5}}?(?:{bite_alt})"))
+    act = (r"(?:bit|bites|biting|stung|stings|attacked|attacks|scratched|scratches|nipped|clawed|gored|"
+           r"kicked and bit|scratched and bit|jumped and bit|grabbed and bit)")
+    return (re.compile(rf"{edge}{a}s?\s+(?:has\s+|had\s+|just\s+|also\s+|suddenly\s+|then\s+|came and\s+|ran and\s+){{0,2}}{act}\b"),
+            re.compile(rf"\b(?:bitten|bit|stung|attacked|scratched|nipped)\s+by\s+(?:a\s+|an\s+|the\s+|our\s+|my\s+|some\s+)?"
+                       rf"(?:[a-z]+\s+){{0,2}}?{a}s?(?![a-z])"),
+            re.compile(rf"{edge}{a}(?:'s|s)?\s+(?:bite|bites|sting|stings|attack)\b"),
+            re.compile(rf"{edge}{a}[a-z\u0900-\u097F]*\s+(?:ne|ने)\s+(?:[^\s,.;!?।]+\s+){{0,5}}?(?:{bite_alt})"),
+            re.compile(rf"{edge}{a}[a-z\u0900-\u097F]*\s+(?:ka\s+|ke\s+|ki\s+|का\s+|के\s+|की\s+|bahut\s+|bohot\s+|bahot\s+|jor se\s+|"
+                       rf"phir se\s+|fir se\s+|mujhe\s+|mujhko\s+|hume\s+|humko\s+|use\s+|usko\s+|बहुत\s+)?(?:kaata|kata|kaat|kat gaya|kaat gaya|kaat liya|dank|dans|daans|डंक|काटा|काट)(?![a-z])"))
+
+
+def _later_change(text: str) -> bool:
+    """After 'did not bite': anything that could be a change ('but', 'now', 'just', 'only', 'khali ragad')."""
+    m = BITE_DENIED_RE.search(text)
+    tail = text[m.end():] if m else text
+    return bool(re.search(r"\b(?:but|lekin|magar|par|now|ab|just|only|bas|khali|sirf|then|phir|after|baad|except|"
+                          r"still|though|although)\b|लेकिन|मगर|अब|बाद|सिर्फ", tail))
 
 
 def _explicit_animal_biter(text: str, animal: str, animal_words: list[str]) -> bool:
@@ -426,9 +513,13 @@ def _explicit_animal_biter(text: str, animal: str, animal_words: list[str]) -> b
     An animal that is only context ('bitten while milking the cow') is NOT the biter."""
     if animal == "rat":  # Hinglish 'rat' is usually raat (night): needs 'rat ne' or English grammar
         return bool(RAT_BITER_RE.search(text))
+    passive = bool(VICTIM_RE.search(text))
     for w in animal_words:
-        if any(r.search(text) for r in _animal_biter_res(w)):
+        direct, by, noun, ne, hi_adj = _animal_biter_res(w)
+        if direct.search(text) or by.search(text):
             return True
+        if (noun.search(text) or ne.search(text) or hi_adj.search(text)) and not passive:
+            return True  # "dog attack scare ... got bitten on the leg": the passive bite has no named biter
     return False
 
 
@@ -472,8 +563,10 @@ def parse(raw: str) -> Facts:
                     or (outdoor and not allow_outdoor) or night or doubt or victim or urgent)
 
     self_bite = not f.snake and (
-        (bool(SELF_BITE_STRONG.search(text)) and not flag_hit and not swelling and not victim and not night and not outdoor)
-        or (bool(SELF_BITE.search(text)) and can_suppress(allow_marks=True)))
+        (bool(SELF_BITE_STRONG.search(text)) and not flag_hit and not swelling and not victim and not night and not outdoor
+         and not _any(text, UNKNOWN) and not _any(text, PRICK_WORDS)
+         and len(re.findall(r"\b(?:bit|bite|bitten|sting|stung|kaata|kata)\b", text)) <= 1)
+        or (bool(SELF_BITE_WEAK.search(text)) and can_suppress(allow_marks=True)))
     if self_bite and not _any(text, UNKNOWN):
         f.bite = False  # "my tooth hurts when i bite", "I bit my tongue while eating"
         if not (MARKS_RE.search(text) or _any(text, MARK_WORDS)):
@@ -528,12 +621,14 @@ def parse(raw: str) -> Facts:
         f.unknown_bite = True  # "my toddler bit my son?? ... his foot is swelling" - check it
     words = re.findall(r"\w+", text)
     denied_fine = (bool(BITE_DENIED_RE.search(text)) and bool(ALL_FINE_RE.search(text)) and not flag_hit
-                   and not swelling and not _any(text, BODY_CHANGE) and not _any(text, BODY_PARTS))
+                   and not swelling and not _any(text, BODY_CHANGE) and not _any(text, BODY_PARTS)
+                   and not SNAKE_CONTACT_RE.search(text) and not _later_change(text))
     if denied_fine and f.snake:
         f.bite = False  # "a snake crossed the path but did not bite anyone, we are all fine"
     info_marker = (denied_fine or (_any(text, SIGHTING) and _any(text, ASK_WORDS)) or "?" in raw or bool(GENERIC_START.match(text)) or _any(text, GENERIC_ANY)
                    or _any(text, INFO_WORDS))
-    snake_did = f.snake and bool(SNAKE_AGENT_RE.search(text) or SNAKE_ACTION_RE.search(text))
+    snake_did = f.snake and bool(SNAKE_AGENT_RE.search(text) or SNAKE_ACTION_RE.search(text)
+                                 or SNAKE_CONTACT_RE.search(text))
     f.snake_mention_only = (f.snake and info_marker and not snake_did and not f.bite and not f.unknown_bite and not urgent and not doubt
                             and not flag_hit and not swelling and not _any(text, BODY_CHANGE) and not victim
                             and not _any(text, BODY_PARTS) and not _any(text, GOT_PERSON) and len(words) >= 3
@@ -552,6 +647,14 @@ def parse(raw: str) -> Facts:
                 f.negated.append(flag)
             else:
                 f.red_flags.append(flag)
+        elif FLAG_RE[flag].search(text) and (f.snake or f.bite or f.unknown_bite or f.other_animal or victim):
+            f.red_flags.append(flag)  # spelling / inflection variants, only in a bite context
+    if (f.snake or f.bite or f.unknown_bite or victim) and not denied_fine:
+        for m in SYSTEMIC_RE.finditer(text):
+            w = next((g for g in m.groups() if g), "")
+            if w and w not in LOCAL_STATE and not any(w.startswith(x) for x in ("swell", "sooj", "suj", "dard", "pain", "jal", "theek", "thik", "ठीक")):
+                f.systemic = True
+                break
     if getattr(f, "_drool", False) and "speech_swallow" not in f.red_flags:
         f.red_flags.append("speech_swallow")  # drooling after a bite = can't swallow (neurotoxic)
     f.swelling = _any(text, SWELLING) and not _negated(text, SWELLING, "swelling")

@@ -80,10 +80,17 @@ def decide(f: Facts, lang: str | None = None, answered: dict | None = None) -> P
         f.unknown_bite = True
         is_bite_context = True
         trace.append(f"R1d danger signs {flags} after a '{f.other_animal}' bite -> treat as possible snakebite")
-    elif f.other_animal and strong_neuro and not f.occult_krait:
+    elif f.other_animal in LOOKALIKE and f.night_floor and not f.occult_krait:
+        # "a rat bit my son at night while he slept on the floor": the classic hidden krait bite
         f.unknown_bite = True
         is_bite_context = True
-        trace.append(f"R1e krait-type signs {sorted(strong_neuro)} although '{f.other_animal}' named -> snakebite protocol")
+        trace.append(f"R1f '{f.other_animal}' bite at night / on the floor -> treat as possible snakebite")
+    elif f.other_animal and (set(flags) - {"bleeding"} or f.systemic) and not f.occult_krait:
+        # any body-wide danger sign after an animal bite: the animal may be wrong, the signs are not
+        f.unknown_bite = True
+        is_bite_context = True
+        trace.append(f"R1e danger signs {sorted(set(flags) - {'bleeding'}) or ['systemic']} although "
+                     f"'{f.other_animal}' named -> snakebite protocol")
     # R1 another animal named, no snake, no doubt about it -> out of scope with a safe pointer.
     if f.other_animal and not f.snake and not f.unknown_bite and not f.occult_krait:
         trace.append(f"R1 other animal ({f.other_animal}) -> out of scope")
@@ -121,6 +128,9 @@ def decide(f: Facts, lang: str | None = None, answered: dict | None = None) -> P
     if flags:
         level = "CRITICAL"
         trace.append(f"R4 danger signs {flags} -> CRITICAL")
+    elif f.systemic:
+        level = "CRITICAL"
+        trace.append("R4b a body-wide change after the bite (not a listed sign) -> CRITICAL")
     elif f.snake:
         level = "URGENT"
         trace.append("R5 snake named, no danger signs yet -> URGENT")
