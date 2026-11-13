@@ -84,13 +84,15 @@ OTHER = {
 # Doubt words only count together with a bite word or a named animal ("maybe a rat bit me").
 HEDGE = ["in the dark", "andhere", "andhere mein", "something", "kuch", "maybe", "shayad", "not sure", "pata nahi",
          "may have been", "might be", "i think", "lagta hai", "अंधेरे", "शायद", "पता नहीं", "कुछ"]
-PREVENT = ["prevent", "prevention", "avoid", "stay safe", "keep away", "protect", "bachav", "bachaav", "kaise bache",
+PREVENT = ["prevent", "prevention", "avoid", "stay safe", "keep away", "keep snakes out", "keep out", "keep them out",
+           "repel", "repellent", "door gap", "protect", "bachav", "bachaav", "kaise bache",
            "kaise bachein", "how to be safe", "बचाव", "बचें", "बचे", "रोकथाम"]
 SELF_HARM = ["suicide", "kill myself", "end my life", "self harm", "self-harm", "want to die", "aatmahatya",
              "आत्महत्या", "मरना चाहता", "मरना चाहती"]
 
 FLAG_WORDS = {
     "ptosis": ["droop", "drooping", "droopy", "eyelid", "eyelids", "ptosis", "double vision", "blurred vision",
+               "sees double", "seeing double", "see double", "seeing two", "everything double", "vision is blurred",
                "blurry", "can't open eyes", "cannot open eyes", "cant open eyes", "eyes closing", "eyes are closing",
                "aankh band", "aankhen band", "aankhein band", "ankh band", "open his eyes", "open her eyes",
                "open their eyes", "open my eyes", "eyes heavy", "keep eyes open", "keep his eyes open", "palak", "palken", "dhundhla", "do do dikh",

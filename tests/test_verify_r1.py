@@ -81,3 +81,12 @@ def test_v4_false_alarms(msg, level):
 def test_snake_seen_with_person_still_urgent():
     assert decide(parse("snake! my father!")).level in BITE
     assert decide(parse("saanp ne papa ko")).level in BITE
+
+
+# Fixed AFTER held-out set 2 run 1 (eval_results/live-holdout2-run1.md); the held-out score stays as recorded.
+def test_h2_double_vision_is_danger_sign():
+    assert decide(parse("bitten by a krait last night, now he says he sees double")).level == "CRITICAL"
+
+
+def test_h2_keep_snakes_out_is_prevention():
+    assert decide(parse("what should I do to keep snakes out of my house?")).level == "INFO"
