@@ -88,9 +88,7 @@ def test_fuzz_snake_plus_bite_word_never_out_of_protocol():
     import random
     rng = random.Random(11)
     snake = ["snake", "saanp", "साँप", "cobra", "naag", "krait"]
-    # "attack"/"hamla" alone are generic ("protect from snake attack"); they count as a bite with a person
-    # or in the past tense (see test_verify_r1 V4). Changed after verifier round 1 - logged in loop/STATE.md.
-    bite = ["bit", "bitten", "kaata", "काटा", "attacked my", "hamla kiya", "fang marks", "dasa"]
+    bite = ["bit", "bitten", "kaata", "काटा", "attacked", "hamla", "fang marks", "dasa"]
     filler = ["my", "son", "how", "protect", "prevent", "help", "no", "not", "dog", "rat", "maybe", "kya", "karein", "bachav"]
     for _ in range(2000):
         words = [rng.choice(snake), rng.choice(bite)] + [rng.choice(filler) for _ in range(rng.randint(0, 6))]

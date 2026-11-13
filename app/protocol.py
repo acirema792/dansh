@@ -72,7 +72,8 @@ def decide(f: Facts, lang: str | None = None, answered: dict | None = None) -> P
         trace.append("R0b bite also present -> continue with bite protocol")
 
     neuro = set(flags) & {"ptosis", "speech_swallow", "breathing", "weakness"}
-    if f.other_animal and neuro and f.occult_krait is False and f.night_floor:
+    strong_neuro = set(flags) & {"ptosis", "speech_swallow"}
+    if f.other_animal and not f.occult_krait and (strong_neuro or (neuro and f.night_floor)):
         f.occult_krait = True
         trace.append("R1d krait-type signs at night/floor although another animal was named -> possible krait")
     # R1 another animal named, no snake, no doubt about it -> out of scope with a safe pointer.
@@ -89,7 +90,7 @@ def decide(f: Facts, lang: str | None = None, answered: dict | None = None) -> P
 
     # R2 prevention / general question with no bite -> prevention advice.
     general = (f.prevention or (f.generic_question and f.snake))
-    if general and not (f.bite or f.unknown_bite or f.occult_krait or flags):
+    if general and not (f.bite or f.unknown_bite or f.occult_krait or flags or f.swelling or f.contact):
         trace.append("R2 prevention question -> prevention advice")
         p = Plan("INFO", UI["level_INFO"][lang], lang=lang, rule_trace=trace, calls=["108"])
         for i in ("prevent_torch", "prevent_sleep", "prevent_hands"):
@@ -120,7 +121,7 @@ def decide(f: Facts, lang: str | None = None, answered: dict | None = None) -> P
         trace.append("R6 unknown bite / suspected krait -> POSSIBLE (treated as snakebite)")
     if f.self_harm:
         level_title = UI[f"level_{level}"][lang]
-        p = Plan("SUPPORT", level_title, lang=lang, rule_trace=trace, calls=["14416", "112"])
+        p = Plan("SUPPORT", level_title, lang=lang, rule_trace=trace, calls=["108", "14416", "112"])
         p.notes.append(_item("self_harm", lang))
         p.rule_trace.append(f"R0c bite level would be {level}")
     else:
@@ -154,7 +155,7 @@ def decide(f: Facts, lang: str | None = None, answered: dict | None = None) -> P
         order.append("recovery_position")
     order += ["reassure", "immobilise", "no_walk", "remove_tight", "nil_by_mouth", "note_time", "stay_24h"]
     p.do = [_item(i, lang) for i in order]
-    p.calls = (["108"] + (["15400"] if "call_15400" in order else []) + ["112"]) if not f.self_harm else p.calls + ["108"]
+    p.calls = (["108"] + (["15400"] if "call_15400" in order else []) + ["112"]) if not f.self_harm else p.calls
 
     # Corrections for what was already done (shown above the DON'T list).
     for key, fix in (("done_tourniquet", "fix_tourniquet"), ("done_cut", "fix_cut"), ("done_healer", "fix_healer"),
