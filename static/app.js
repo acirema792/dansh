@@ -50,7 +50,7 @@ const T = {
     foot1: "Free and open source (MIT).", foot_src: "Source: MoHFW guidelines",
   },
   hi: {
-    tab_help: "अभी काटा", tab_check: "3 मिनट जाँच", tab_impact: "असर",
+    tab_help: "मदद", tab_check: "जाँच", tab_impact: "असर",
     callbar: "साँप ने काटा? अभी 108 पर फ़ोन करें (मुफ़्त एम्बुलेंस)",
     help_h: "किसी को साँप ने काटा है?",
     help_lede: "बताइए क्या हुआ, हिंदी या अंग्रेज़ी में। मैं भारत सरकार की सर्पदंश गाइडलाइन के कदम बताऊँगा।",
@@ -157,11 +157,12 @@ function renderPlan(p) {
   const fh = $("#findh"); if (fh) fh.addEventListener("click", findHospitals);
 }
 async function runConsult(message, answered = {}, keepScroll = false) {
+  const repeat = !!lastPlanReq && lastPlanReq.message === message;
   lastPlanReq = {message, answered};
   const btn = $("#ask button[type=submit]");
   btn.disabled = true; btn.textContent = t("thinking");
   try {
-    const p = await api("/api/consult", {message, lang, answered});
+    const p = await api("/api/consult", {message, lang, answered, repeat});
     renderPlan(p);
     if (!keepScroll) $("#plan").scrollIntoView({behavior: "smooth", block: "start"});
   } catch (e) {
@@ -262,11 +263,12 @@ async function submitStage() {
         <p><a href="/" id="back">${t("again")}</a></p>`;
       const mark = () => api("/api/learn/shared", {session: S.id}).catch(() => {});
       $("#wa").addEventListener("click", mark);
-      $("#copy").addEventListener("click", async () => { try { await navigator.clipboard.writeText(link); $("#copy").textContent = t("copied"); mark(); } catch (_) { $("#copy").outerHTML = `<input class="copy" value="${esc(link)}" readonly onfocus="this.select()">`; } });
+      $("#copy").addEventListener("click", async () => { try { await navigator.clipboard.writeText(link); $("#copy").textContent = t("copied"); mark(); } catch (_) { $("#copy").outerHTML = `<input class="copy" id="copyfield" value="${esc(link)}" readonly>`; const cf = $("#copyfield"); cf.addEventListener("focus", () => cf.select()); cf.focus(); } });
       window.scrollTo(0, 0);
     }
   } catch (e) {
-    run.innerHTML = `<div class="note">${esc(String(e.message || e))}</div><button class="primary" onclick="location.reload()">↻</button>`;
+    run.innerHTML = `<div class="note">${esc(String(e.message || e))}</div><button class="primary" id="reload">↻</button>`;
+    $("#reload").addEventListener("click", () => location.reload());
   }
 }
 $("#start").addEventListener("click", async () => {
@@ -280,7 +282,7 @@ $("#start").addEventListener("click", async () => {
 });
 
 // --------------------------------------------------------------------------- boot
-if (TEST) { const b = document.createElement("div"); b.className = "note"; b.style.margin = "0"; b.textContent = t("test_banner"); document.body.insertBefore(b, $("main")); }
+if (TEST) { const b = document.createElement("div"); b.className = "note"; b.style.margin = "0"; b.dataset.i18n = "test_banner"; document.body.insertBefore(b, $("main")); }
 if (REPO_URL) $("#gh").href = REPO_URL; else $("#gh").href = GH;
 applyLang();
 if (location.pathname.startsWith("/check")) show("check");
