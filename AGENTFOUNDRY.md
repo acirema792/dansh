@@ -5,7 +5,7 @@ This file records what was done in AF. It is filled in from the actual session, 
 
 ## Steps (about 15 minutes)
 
-1. Open AgentFoundry → **Open project** → clone `{{REPO_URL}}`.
+1. Open AgentFoundry → **Open project** → clone `https://github.com/acirema792/dansh`.
 2. In AF's terminal: `pip install -r requirements.txt pytest` and then `python3 -m pytest -q tests`. Expect every test to pass.
 3. **Build → Evals:** run the scenario suite from AF's terminal against the live site:
    `python3 scripts/run_eval.py {{LIVE_URL}} --cases eval_cases/holdout.yaml`.

@@ -8,7 +8,7 @@
 
 write_files:
   - path: /etc/dansh.repo
-    content: "https://github.com/OWNER/dansh.git"
+    content: "https://github.com/acirema792/dansh.git"
   - path: /usr/local/bin/dansh-install
     permissions: "0755"
     content: |
