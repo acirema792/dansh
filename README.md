@@ -5,8 +5,8 @@
 > **Field result so far:** see the live [/impact](https://65-20-73-107.sslip.io/impact) page. It is updated automatically and has a raw CSV.
 > A dated snapshot is in [IMPACT-SNAPSHOT.md](IMPACT-SNAPSHOT.md).
 >
-> **Safety benchmark (held-out scenarios, written before the run):** 12/12 bite messages sent to hospital,
-> **0 false "safe"**, 0 under-triage, 4/4 non-snakebite controls correctly kept out. Full table in [BENCHMARK-RESULTS.md](BENCHMARK-RESULTS.md).
+> **Safety benchmark (held-out scenarios written before their first run, live site):** 12/12 bite messages sent to hospital,
+> **0 false "safe"**, 14/16 exact. Both misses (one under-triage, one false alarm) are listed and fixed. See [BENCHMARK-RESULTS.md](BENCHMARK-RESULTS.md).
 
 Dansh is a free, open-source web app in **Hindi and English** for the moment someone is bitten by a snake in rural India. It does two things:
 
