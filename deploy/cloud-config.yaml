@@ -96,6 +96,8 @@ bootcmd:
   - echo "dansh cloud-config v1 bootcmd ran" > /dev/console
 
 runcmd:
+  - ufw allow 80/tcp || true
+  - ufw allow 443/tcp || true
   - mkdir -p /var/www/boot && ln -sf /var/log/dansh-install.log /var/www/boot/install.log
   - systemd-run --unit dansh-bootlog --working-directory=/var/www/boot python3 -m http.server 80
   - /usr/local/bin/dansh-install
