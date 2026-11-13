@@ -10,6 +10,7 @@ import re
 import secrets
 import time
 from pathlib import Path
+from typing import Dict, Optional
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse, Response
@@ -115,9 +116,9 @@ def _is_test(request: Request) -> bool:
 class ConsultIn(BaseModel):
     message: str = Field(..., max_length=2000)
     repeat: bool = False  # same message re-rendered (language switch / follow-up): not logged again
-    lang: str | None = Field(None, pattern="^(en|hi)$")
-    answered: dict[str, bool] = Field(default_factory=dict)
-    state: str | None = Field(None, max_length=40)
+    lang: Optional[str] = Field(None, pattern="^(en|hi)$")
+    answered: Dict[str, bool] = Field(default_factory=dict)
+    state: Optional[str] = Field(None, max_length=40)
 
 
 @app.post("/api/consult")
@@ -152,8 +153,8 @@ def consult(body: ConsultIn, request: Request):
 # ----------------------------------------------------------------------------- 3-minute check
 class StartIn(BaseModel):
     lang: str = Field("en", pattern="^(en|hi)$")
-    src: str | None = Field(None, max_length=24)
-    client: str | None = Field(None, max_length=64)
+    src: Optional[str] = Field(None, max_length=24)
+    client: Optional[str] = Field(None, max_length=64)
 
 
 @app.post("/api/learn/start")
@@ -170,7 +171,7 @@ def learn_start(body: StartIn, request: Request):
 
 class AnswersIn(BaseModel):
     session: str = Field(..., max_length=40)
-    answers: dict[str, str]
+    answers: Dict[str, str]
 
     def clean(self) -> dict[str, str]:
         return {c: str(self.answers.get(c, ""))[:1] for c in quiz.ORDER if c in self.answers}
@@ -207,8 +208,8 @@ def learn_pre(body: AnswersIn):
 
 
 class PostIn(AnswersIn):
-    state: str | None = Field(None, max_length=40)
-    role: str | None = Field(None, max_length=24)
+    state: Optional[str] = Field(None, max_length=40)
+    role: Optional[str] = Field(None, max_length=24)
 
 
 @app.post("/api/learn/post")
