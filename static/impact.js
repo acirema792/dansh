@@ -1,6 +1,6 @@
 (() => {
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-try { if (new URLSearchParams(location.search).get("test") === "1") sessionStorage.setItem("dansh_test", "1"); } catch (_) {}
+try { if (new URLSearchParams(location.search).get("test") === "1") localStorage.setItem("dansh_test", "1"); } catch (_) {}
 const f = v => v === null || v === undefined ? "–" : v + "%";
 function ts(x){ if(!x) return "–"; const d=new Date(x*1000); return d.toLocaleString(undefined,{dateStyle:"medium",timeStyle:"short"}); }
 async function load(){
@@ -27,7 +27,7 @@ async function load(){
   <div class="tablewrap"><table><thead><tr><th>Decision</th><th>Correct</th><th></th><th>Dangerous choice</th></tr></thead><tbody>${rows}</tbody></table></div></div>
   <div class="card"><h2>Who took it</h2>
   <p><b>Language:</b> ${kv(L.by_lang)}<br><b>State (self-reported, optional):</b> ${kv(L.by_state)}<br><b>Role (optional):</b> ${kv(L.by_role)}<br>
-  <b>Question-set order:</b> ${kv(L.by_form_order)}<br><b>By campaign link (src):</b> ${Object.entries((L.breakdown||{}).src||{}).map(([k,v])=>`${esc(k)}: n=${v.n}, dangerous ${f(v.dangerous_pre_pct)}→${f(v.dangerous_post_pct)}`).join(" · ") || "–"}<br><b>By order:</b> ${Object.entries((L.breakdown||{}).order||{}).map(([k,v])=>`${esc(k)}: n=${v.n}, score ${f(v.score_pre_pct)}→${f(v.score_post_pct)}`).join(" · ") || "–"}<br><b>Not counted (excluded):</b> ${kv(L.excluded || {})}<br><b>First / latest:</b> ${ts(L.first_completed_at)} / ${ts(L.last_completed_at)}</p>
+  <b>Question-set order:</b> ${kv(L.by_form_order)}<br><b>By campaign link (src):</b> ${Object.entries((L.breakdown||{}).src||{}).map(([k,v])=>`${esc(k)}: n=${v.n}, dangerous ${f(v.dangerous_pre_pct)}→${f(v.dangerous_post_pct)}`).join(" · ") || "–"}<br><b>By order:</b> ${Object.entries((L.breakdown||{}).order||{}).map(([k,v])=>`${esc(k)}: n=${v.n}, score ${f(v.score_pre_pct)}→${f(v.score_post_pct)}`).join(" · ") || "–"}<br><b>Distinct networks:</b> ${L.networks ?? "–"} · largest share from one network: ${f(L.max_share_one_network_pct)}<br><b>Not counted (excluded):</b> ${kv(L.excluded || {})}<br><b>First / latest:</b> ${ts(L.first_completed_at)} / ${ts(L.last_completed_at)}</p>
   <p class="understood">Emergency-agent uses: ${j.consults.total} (${esc(j.consults.note)})</p></div>`;
 }
 load().catch(()=>{document.getElementById("out").innerHTML="<p>Could not load numbers.</p>"});

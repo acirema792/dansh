@@ -73,10 +73,11 @@ def _any(text: str, words) -> bool:
     return False
 
 
-SNAKE = ["🐍", "साप", "sap ne", "snake", "snakes", "snakebite", "saanp", "saap", "sanp", "saamp", "samp", "saap ne", "naag", "nag ne",
+SNAKE = ["pambu", "paambu", "haavu", "hav kad", "🐍", "साप", "sap ne", "snake", "snakes", "snakebite", "saanp", "saap", "sanp", "saamp", "samp", "saap ne", "naag", "nag ne",
          "cobra", "krait", "karait", "kraitt", "viper", "snakbite", "snakebit", "snek", "snak", "snakes bite", "russell", "russells", "ghonas", "sarp", "sarpdansh", "serpent",
          "साँप", "सांप", "सर्प", "नाग", "करैत", "कोबरा", "वाइपर", "घोणस", "सर्पदंश", "फन"]
-BITE = ["चावला", "चावले", "चावली", "हमला", "bite", "bit", "bitten", "biting", "bites", "kaata", "kata", "kaat", "kaatа", "kaat liya", "kaat diya", "kat liya",
+BITE = ["kadichi", "kadichiruchu", "kadise", "kachchi", "चावला", "चावले", "चावली", "हमला", "got papa", "got mummy",
+        "got dad", "got mom", "got bhai", "bite", "bit", "bitten", "biting", "bites", "kaata", "kata", "kaat", "kaatа", "kaat liya", "kaat diya", "kat liya",
         "daswa", "dasa", "dans", "dansh", "dank", "sting", "stung", "attack", "attacked", "struck", "strike",
         "hamla", "got my", "got him", "got her", "fang", "fangs", "fang marks", "snakbite", "snakebit",
         "काटा", "काट", "डसा", "डस", "डंस", "दंश", "डंक"]
@@ -92,15 +93,21 @@ OTHER = {
     "monkey": ["monkey", "bandar", "बंदर"],
     "bee": ["bee", "bees", "wasp", "honeybee", "madhumakhi", "tatayya", "ततैया", "मधुमक्खी"],
     "rat": ["rat", "chuha", "chooha", "चूहा", "चूहे"],
+    "mosquito": ["mosquito", "mosquitoes", "machhar", "मच्छर"],
+    "ant": ["ant", "ants", "cheenti", "chinti", "चींटी"],
+    "bedbug": ["bedbug", "bed bug", "khatmal", "खटमल"],
     "cat": ["cat", "billi", "बिल्ली"],
 }
 # Doubt words only count together with a bite word or a named animal ("maybe a rat bit me").
 HEDGE = ["in the dark", "andhere", "andhere mein", "something", "kuch", "maybe", "shayad", "not sure", "pata nahi",
          "i guess", "i think", "or something", "ya kuch aur", "pakka nahi", "ho sakta", "we think", "i thought",
-         "was it", "thought it was", "lagta hai", "shayad",
+         "was it", "thought it was", "lagta hai", "shayad", "dunno", "don't know what", "dont know what",
+         "assumed", "nobody saw", "didn't see", "did not see", "dikha nahi", "hoga", "could have been",
+         "not 100", "पता नहीं",
          "may have been", "might be", "i think", "lagta hai", "अंधेरे", "शायद", "पता नहीं", "कुछ"]
 PREVENT = ["prevent", "prevention", "avoid", "stay safe", "keep away", "keep snakes out", "keep snakes away",
-           "repel", "repellent", "door gap", "protect", "bachav", "bachaav", "kaise bache",
+           "repel", "repellent", "door gap", "keep it away", "keep it out", "keep them out", "keep them away",
+           "door kaise rakhe", "door rakhe", "bhagane", "bhagaye", "protect", "bachav", "bachaav", "kaise bache",
            "kaise bachein", "how to be safe", "बचाव", "बचें", "बचे", "रोकथाम"]
 SELF_HARM = ["suicide", "kill myself", "end my life", "self harm", "self-harm", "want to die", "aatmahatya",
              "marna chahta", "marna chahti", "jeena nahi", "jina nahi", "khud ko khatam", "zindagi khatam",
@@ -109,7 +116,8 @@ SELF_HARM = ["suicide", "kill myself", "end my life", "self harm", "self-harm", 
 FLAG_WORDS = {
     "ptosis": ["droop", "drooping", "droopy", "eyelid", "eyelids", "ptosis", "double vision", "blurred vision",
                "sees double", "seeing double", "see double", "everything double", "vision is blurred",
-               "eyes not opening", "eyes won't open", "aankh nahi khul", "aankhen nahi khul", "aankhein nahi khul",
+               "eyes not opening", "eyes are not opening", "eyes won't open", "half closed", "half-closed",
+               "looks drunk", "cannot see properly", "can't see properly", "cant see properly", "seeing double", "aankh nahi khul", "aankhen nahi khul", "aankhein nahi khul",
                "palke gir", "palken gir", "palke jhuk", "palken jhuk", "aankhen jhuk", "jhuk rahi", "palke bhaari",
                "palken bhaari", "पलकें गिर", "आँखें नहीं खुल", "आंखें नहीं खुल",
                "blurry", "can't open eyes", "cannot open eyes", "cant open eyes", "eyes closing", "eyes are closing",
@@ -118,18 +126,22 @@ FLAG_WORDS = {
                "पलक", "पलकें", "आंख बंद", "आंखें बंद", "धुंधला", "दो दो दिख", "आंखें नहीं खुल", "आंख नहीं खुल"],
     "breathing": ["breath", "breathe", "breathing", "breathless", "short of breath", "choking", "saans", "sans",
                   "gasping", "gasp", "haanf", "hanf", "haanp", "blue lips", "lips blue", "lips turning blue",
+                  "lips are turning blue", "lips are blue", "turning blue", "breaths are", "far apart", "neela pad",
                   "chest tight", "chest tightness", "chhati jakad", "हांफ", "होंठ नीले",
                   "saas", "dam ghut", "dum ghut", "सांस", "दम घुट", "श्वास"],
     "speech_swallow": ["slurred", "can't speak", "cannot speak", "cant speak", "can't swallow", "cannot swallow",
                        "difficulty swallowing", "trouble swallowing", "unable to swallow",
-                       "slurring", "gala band", "gale me kuch", "गला बंद", "trouble speaking", "bol nahi", "bol nhi",
+                       "slurring", "gala band", "gale me kuch", "गला बंद", "spitting", "saliva", "tongue feels thick",
+                       "thick tongue", "words are coming out wrong", "ladkhada", "aawaz ladkha", "awaaz ladkha", "trouble speaking", "bol nahi", "bol nhi",
                        "nigal nahi", "nigalne", "awaaz", "आवाज़", "बोल नहीं", "निगल", "बोलने में"],
     "bleeding": ["bleeding", "bleed", "blood", "khoon", "khun", "gums", "nosebleed", "nose bleed", "red urine",
                  "urine is red", "urine red", "peshab laal", "laal peshab", "pishab laal", "blood in urine",
+                 "like cola", "cola", "coca", "black urine", "pee is",
                  "dark urine", "black urine", "brown urine", "naak se", "masood", "खून", "मसूड़", "नाक से", "लाल पेशाब",
                  "काला पेशाब", "रक्त"],
     "unconscious": ["unconscious", "fainted", "fainting", "faint", "drowsy", "not responding", "unresponsive",
                     "collapsed", "collapse", "passed out", "pass out", "fits", "fit aa", "seizure", "seizures",
+                    "having a fit", "a fit",
                     "convulsion", "convulsions", "jhatke", "jhatka", "hosh me nahi", "hosh mein nahi", "sleepy",
                     "neend aa rahi", "बहुत नींद", "झटके", "दौरा",
                     "not waking", "won't wake", "hard to wake", "behosh", "behoshi", "hosh nahi", "sust",
@@ -137,13 +149,16 @@ FLAG_WORDS = {
     "weakness": ["weak", "weakness", "paralysis", "paralysed", "paralyzed", "can't move", "cannot move",
                  "can't hold his head", "can't hold her head", "cannot hold head", "can't hold head", "head drop",
                  "head falling", "gardan latak", "gardan gir", "no strength", "no power", "jaan nahi", "गर्दन लटक",
+                 "floppy", "can't lift", "cannot lift", "cant lift", "lift his head", "lift her head", "dheela",
+                 "शरीर ढीला", "ढीला",
                  "can't stand", "cannot stand", "limp", "kamzori", "kamjori", "lakwa", "lakva", "kamzor",
                  "कमज़ोरी", "कमजोरी", "कमज़ोर", "कमजोर", "लकवा", "हिल नहीं"],
     "vomiting_abdominal": ["vomit", "vomiting", "vomited", "throwing up", "stomach pain", "abdominal pain",
                            "belly pain", "stomach ache", "ulti", "ultee", "pet dard", "pet me dard", "pet mein dard",
                            "उल्टी", "पेट दर्द", "पेट में दर्द"],
 }
-SWELLING = ["swelling", "swollen", "swell", "sujan", "soojan", "sooj", "fool gaya", "phool gaya", "सूजन", "सूज", "फूल गया"]
+SWELLING = ["swelling", "swollen", "swell", "sujan", "soojan", "sooj", "suj", "suj gaya", "suj raha", "suj rahi",
+            "puffy", "fool gaya", "phool gaya", "सूजन", "सूज", "फूल गया"]
 DONE = {
     "done_tourniquet": ["tourniquet", "tied", "tie a", "tying", "rope", "string", "thread", "ligature", "band tied",
                         "tied tight", "tightly", "baandh", "bandh diya", "bandha", "bandhi", "baandha", "rassi",
@@ -298,26 +313,52 @@ GENERIC_Q = ["why", "how do", "how to", "what is", "what are", "which snakes", "
              "क्यों", "कैसे", "क्या होता"]
 
 
+VICTIM_RE = re.compile(r"\b(?:was|got|been|get|gets|getting|is)\s+(?:just\s+)?(?:bit|bitten|stung)\b|\bjust bit\b")
+GENERAL_GROUP = ["my family", "my home", "my house", "my village", "my kids from", "my children from", "my farm",
+                 "my field", "my garden", "parivar", "ghar ko", "घर को", "परिवार"]
+NOUN_BITE = ["snakebite", "snake bite", "snake bites", "snakebites", "sarpdansh", "सर्पदंश", "bite", "bites", "kaatte",
+             "kaatta", "kaat"]
+GENERIC_ANY = ["kyon", "kyun", "why do", "why does", "how many", "kitne log", "kitne logon", "क्यों", "कितने"]
+MARK_WORDS = ["mark", "marks", "nishan", "nishaan", "निशान", "puncture", "punctures", "holes", "dots", "daag", "lal daag",
+              "spots", "red spots", "fang"]
+PRICK_WORDS = ["prick", "pricked", "chubh", "chubha", "chubhan", "chubi", "grabbed", "something", "kuch laga",
+               "कुछ लगा", "stung", "sting", "nipped", "nip"]
+GOT_PERSON = ["got papa", "got mummy", "got dad", "got mom", "got bhai", "got my", "got him", "got her", "got me"]
 WOUND_WORDS = ["wound", "wounds", "ghav", "ghaav", "घाव", "touched", "touch", "chhua", "chhu gaya", "छुआ"]
-HUMAN_BITER = re.compile(r"\b(?:baby|toddler|child|kid|son|daughter|brother|sister|bachcha|bachche)\s+(?:\S+\s+)?"
-                         r"(?:bit|bites|biting)\b|\bbit my (?:tongue|lip|lips|cheek|nails?)\b|teeth marks from (?:my|a|the) "
-                         r"(?:baby|toddler|child|kid|son|daughter)|\b(?:toddler|baby) biting")
+HUMAN_BITER = re.compile(r"\b(?:baby|toddler|child|kid|son|daughter|brother|sister|bachcha|bachche|year old)\s+"
+                         r"(?:bit|bites|biting)\s+(?:my|me|him|her|his|other|the|a)\b"
+                         r"|\bbit my (?:tongue|lip|lips|cheek|nails?)\b|teeth marks from (?:my|a|the) "
+                         r"(?:baby|toddler|child|kid|son|daughter)|\b(?:toddler|baby) biting|\bwhen i bite\b|\bi bite\b"
+                         r"|(?:बच्चे|बच्चा|बच्ची|बेबी)\s+ने")
 INJURY = ["fell", "fall", "fallen", "stairs", "gir gaya", "gir gayi", "slipped", "accident", "गिर"]
-MARKS_RE = re.compile(r"\b(?:two|2|do|दो)\s+(?:small\s+|tiny\s+|red\s+|little\s+|chhote\s+)?"
-                      r"(?:marks?|holes?|dots?|punctures?|puncture wounds?|wounds|nishan|nishaan|daant|daant ke nishaan|निशान|छेद)")
-HEDGE_IGNORE_RE = re.compile(r"maybe (?:rabies|infection|infected|allergic|allergy|serious)|kuch karo|kuch karein|"
+MARKS_RE = re.compile(r"\b(?:two|2|do|दो)\s+(?:small\s+|tiny\s+|red\s+|little\s+|chhote\s+|lal\s+|bleeding\s+)?"
+                      r"(?:marks?|holes?|dots?|spots?|points?|punctures?|puncture wounds?|wounds|nishan|nishaan|daag|daant|"
+                      r"daant ke nishaan|निशान|छेद|घाव)")
+HEDGE_IGNORE_RE = re.compile(r"(?:maybe|shayad|i think|i guess)\s+(?:\S+\s+){0,3}?(?:rabies|rabid|pagal|vaccine|injection|"
+                             r"infection|infected|allergic|allergy|serious|khatra)\S*|i think it needs|kuch upay|upay batao|"
+                             r"maybe (?:rabies|infection|infected|allergic|allergy|serious)|kuch karo|kuch karein|"
                              r"what to do|kya karu|kya karun|kya karein|kya kare|not sure what to do|"
                              r"not sure if (?:it'?s |this is )?serious|कुछ करो|क्या करें")
 LIKE_RE = re.compile(r"\b(?:like|jaisa|jaise|jaisi)\b|-like|जैसा|जैसे")
-OUTDOOR = ["field", "fields", "paddy", "grass", "farm", "khet", "jungle", "forest", "garden", "bushes", "dark",
+OUTDOOR = ["sugarcane", "rice field", "tea", "woodpile", "haystack", "cattle shed", "cowshed", "water channel", "well",
+           "dhaan", "field", "fields", "paddy", "grass", "farm", "khet", "jungle", "forest", "garden", "bushes", "dark",
            "andhere", "खेत", "घास", "जंगल", "अंधेरे"]
-BODY_CHANGE = ["pain", "painful", "dard", "jalan", "burning", "crying", "rona", "red dots", "bleeding", "khoon",
+BODY_CHANGE = ["pain", "painful", "dard", "jalan", "burning", "crying", "ro raha", "ro rahi", "rona", "red dots",
+               "bleeding", "khoon", "hurts", "hurting", "throbs", "throbbing", "tingling", "tingle", "numb", "sunn",
+               "jhanjhanahat", "tees", "झनझनाहट", "सुन्न", "dizzy", "chakkar", "चक्कर", "blue", "neela", "नीला",
                "दर्द", "जलन"]
 SOMETHING_TOUCHED = ["stepped on something", "something slid", "slid over", "something touched", "something pricked",
                      "something stung", "kuch chubha", "kuch laga", "kuch chhua", "पैर पड़ा", "कुछ चुभा"]
 URGENCY = ["help", "fast", "quick", "quickly", "just now", "abhi", "jaldi", "bachao", "turant", "emergency",
+           "bachav karo", "bachaav karo", "बचाव करो", "बचाओ", "pls", "please",
            "मदद", "जल्दी", "बचाओ", "अभी"]
-BODY_PARTS = ["leg", "foot", "feet", "hand", "arm", "ankle", "finger", "toe", "pair", "haath", "ungli", "पैर", "हाथ"]
+BODY_PARTS = ["leg", "foot", "feet", "hand", "arm", "ankle", "finger", "toe", "pair", "haath", "ungli", "पैर", "हाथ",
+              "heel", "knee", "thigh", "shin", "calf", "wrist", "palm", "sole", "angutha", "एड़ी", "उंगली", "anguli"]
+SPECIFIC_PERSON = ["son", "daughter", "father", "mother", "wife", "husband", "brother", "sister", "child", "baby",
+                   "papa", "mummy", "maa", "bhai", "behen", "beta", "beti", "uncle", "aunty", "dada", "dadi", "nana",
+                   "nani", "grandma", "grandpa", "grandmother", "grandfather", "kid", "dad", "mom", "बेटा", "बेटी",
+                   "बेटे", "पापा", "माँ", "भाई", "बहन", "बच्चा", "बच्चे"]
+SELF_BITE = re.compile(r"\bwhen i bite\b|\bbite my food\b|\bwhile (?:eating|chewing)\b|\bbit my (?:tongue|lip|lips|cheek)\b")
 GENERIC_START = re.compile(r"^\s*(?:how to|how do|how can|why|what is|what are|what should|which|is there|are there|"
                            r"where is|where can|can i|do you|kaise|kyon|kyun|kya hota|kya koi|"
                            r"क्यों|कैसे)\b")
@@ -344,9 +385,9 @@ def parse(raw: str) -> Facts:
     f = Facts(lang=_detect_lang(raw, text))
     f.snake = _any(text, SNAKE)
     f.bite = _any(text, BITE)
-    # SAFETY RULE for this block: doubt always resolves toward the hospital. Signals may only be
-    # removed when the message is unambiguous (a plain thorn, a doubt word that is about something
-    # other than what bit, a textbook general question).
+    # SAFETY RULE for this block: doubt always resolves toward the hospital. A signal may only be
+    # removed by can_suppress(): no danger sign, no swelling/pain/marks, not outdoors or at night,
+    # no doubt words, no "was/got bit" victim phrasing. Everything else errs toward care.
     f.unknown_bite = _any(text, UNKNOWN) or bool(MARKS_RE.search(text))
     if not f.snake:
         for animal, words in OTHER.items():
@@ -354,33 +395,63 @@ def parse(raw: str) -> Facts:
                 f.other_animal = animal
                 break
     t_doubt = HEDGE_IGNORE_RE.sub(" ", text)  # "maybe rabies?", "kuch karo" are not doubts about the biter
-    if not f.unknown_bite and (f.bite or f.other_animal) and _any(t_doubt, HEDGE):
+    doubt = _any(t_doubt, HEDGE)
+    if not f.unknown_bite and (f.bite or f.other_animal) and doubt:
         f.unknown_bite = True
-    outdoor = _any(text, OUTDOOR) or _any(text, NIGHT_FLOOR)
-    body_change = _any(text, SWELLING) or _any(text, BODY_CHANGE)
-    if not f.unknown_bite and _any(text, SOMETHING_TOUCHED) and outdoor and body_change:
-        f.unknown_bite = True  # "stepped on something in the grass at night ... now swelling"
-    f.contact = (bool(MARKS_RE.search(text)) or _any(text, WOUND_WORDS) or body_change
-                 or (f.snake and _any(text, BODY_PARTS)))
-    if f.bite and not f.snake and HUMAN_BITER.search(text) and not _any(t_doubt, HEDGE) and not outdoor:
-        f.bite = False  # "my baby bit my finger", "I bit my tongue"
+    night = _any(text, NIGHT_FLOOR) or _any(text, ["at night", "raat", "night", "रात"])
+    outdoor = _any(text, OUTDOOR) or night
+    flag_hit = any(_any(text, w) for w in FLAG_WORDS.values())
+    swelling = _any(text, SWELLING)
+    body_change = swelling or _any(text, BODY_CHANGE) or _any(text, MARK_WORDS) or flag_hit
+    victim = bool(VICTIM_RE.search(text))
+    if victim:
+        f.bite = True
+    urgent = _any(text, URGENCY) or "!" in raw
+
+    def can_suppress(allow_marks: bool = False, allow_outdoor: bool = False) -> bool:
+        marks = bool(MARKS_RE.search(text)) or _any(text, MARK_WORDS)
+        return not (flag_hit or swelling or _any(text, BODY_CHANGE) or (marks and not allow_marks)
+                    or (outdoor and not allow_outdoor) or night or doubt or victim or urgent)
+
+    if SELF_BITE.search(text) and not f.snake and not flag_hit and not swelling:
+        f.bite = False  # "my tooth hurts when i bite", "I bit my tongue while eating"
+
+    # Narrow suppressions (each only when nothing in the message points to harm)
+    if f.bite and not f.snake and HUMAN_BITER.search(text) and can_suppress(allow_marks=True):
+        f.bite = False  # "my baby bit my finger", "I bit my tongue", "my 2 year old bites other kids"
         f.unknown_bite = False
-    if (MARKS_RE.search(text) and not f.snake and not f.bite and _any(text, INJURY) and not outdoor
-            and not _any(t_doubt, HEDGE)):
+    if MARKS_RE.search(text) and not f.snake and _any(text, INJURY) and can_suppress(allow_marks=True):
         f.unknown_bite = False  # "fell and has two marks on his knee from the stairs"
-    plain_thorn = (_any(text, THORN) and not f.snake and not MARKS_RE.search(text) and not _any(t_doubt, HEDGE)
-                   and not LIKE_RE.search(text) and not body_change and not outdoor
-                   and not _any(text, ["fang", "fangs", "bit", "bitten", "kaata", "काटा"]))
-    if plain_thorn:
+    if _any(text, THORN) and not f.snake and not LIKE_RE.search(text) and can_suppress():
         f.unknown_bite = False  # "kaanta chubh gaya pair me", "pricked my finger while sewing"
         f.bite = False
-    person = _any(text, PERSON)
-    urgent = _any(text, URGENCY) or "!" in raw or _any(text, BODY_PARTS)
-    noun_bite = ["snakebite", "snake bite", "snake bites", "snakebites", "sarpdansh", "सर्पदंश", "bite", "bites"]
-    weak_only = f.bite and not _any(text, [w for w in BITE if w not in WEAK_BITE + noun_bite])
-    if weak_only and GENERIC_START.match(text) and not person and not urgent and not _any(text, WEAK_PAST):
-        f.bite = False  # textbook questions only: "why do snakes strike", "how to protect from snake attack"
-    f.generic_question = bool(GENERIC_START.match(text)) and not person and not urgent
+    person = _any(text, PERSON) and not _any(text, GENERAL_GROUP)
+    weak_only = f.bite and not _any(text, [w for w in BITE if w not in WEAK_BITE + NOUN_BITE])
+    general_q = bool(GENERIC_START.match(text)) or _any(text, GENERIC_ANY)
+    if weak_only and general_q and not person and can_suppress(allow_outdoor=True) \
+            and not _any(text, WEAK_PAST) and not _any(text, BODY_PARTS):
+        f.bite = False  # "why do snakes strike", "how to protect my family from snake attack"
+    f.generic_question = general_q and not person and can_suppress(allow_outdoor=True) and not _any(text, BODY_PARTS)
+
+    # Safety net: an injury cue plus any symptom is a possible snakebite unless another animal is
+    # clearly the biter (no doubt words).
+    injury_cue = (_any(text, BODY_PARTS) or _any(text, MARK_WORDS) or bool(MARKS_RE.search(text)) or f.bite
+                  or _any(text, THORN) or _any(text, PRICK_WORDS) or victim)
+    explicit_other = f.other_animal and not doubt
+    symptom = flag_hit or swelling or _any(text, BODY_CHANGE)  # marks are an injury cue, not a symptom
+    human_bite = bool(HUMAN_BITER.search(text)) and not doubt
+    if not f.snake and not explicit_other and not human_bite and not f.unknown_bite:
+        if injury_cue and symptom:
+            f.unknown_bite = True  # "my son got bit on the ankle, now he is vomiting"
+        elif outdoor and (_any(text, PRICK_WORDS) or _any(text, THORN)) and _any(text, BODY_PARTS):
+            f.unknown_bite = True  # "sui jaisi chubhan hui pair me raat ko"
+        elif doubt and (_any(text, MARK_WORDS) or bool(MARKS_RE.search(text))):
+            f.unknown_bite = True  # "pata nahi kya tha ... pair par nishaan"
+    if human_bite and symptom and not f.snake and not SELF_BITE.search(text):
+        f.unknown_bite = True  # "my toddler bit my son?? ... his foot is swelling" - check it
+    f.contact = (bool(MARKS_RE.search(text)) or _any(text, WOUND_WORDS) or body_change
+                 or (f.snake and (_any(text, BODY_PARTS) or victim or _any(text, GOT_PERSON)
+                                  or _any(text, SPECIFIC_PERSON))))
     if f.snake or f.bite:
         if _any(text, DROOL):
             f._drool = True

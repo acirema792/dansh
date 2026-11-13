@@ -34,7 +34,7 @@
 <main>
   <h1>Live impact · लाइव असर</h1>
   <p class="lede" lang="hi">नीचे का हर आँकड़ा इस साइट पर 3 मिनट की जाँच करने वाले असली लोगों से आता है। कोई नाम या फ़ोन नंबर नहीं। टेस्ट और डेवलपर ट्रैफ़िक शामिल नहीं।</p>
-  <p class="lede">Every number below comes from real people who took the 3-minute check on this site. They are counted automatically, with no names or phone numbers. Test runs (including the developers' and the evaluation suite's) are excluded. Refreshes every minute.</p>
+  <p class="lede">Every number below comes from real people who took the 3-minute check on this site. They are counted automatically, with no names or phone numbers. Test runs are excluded when they are marked as tests: the evaluation suite always marks them, and anyone can mark their own visit with <code>?test=1</code>. That setting is remembered in the browser. Refreshes every minute.</p>
   <div id="out"><p>Loading…</p></div>
 
   <div class="card">
@@ -43,7 +43,8 @@
       <li>Each person answers 6 scenario questions <b>before</b> a short lesson, then 6 parallel questions <b>after</b> it. Each question has one correct choice and several common practices (tourniquet, ojha, cutting…).</li>
       <li>There are two question sets (A and B). Each person gets a <b>random order</b> (A then B, or B then A), so an easier set can't pass for learning. The split is shown below.</li>
       <li>A "dangerous choice" is a choice the Government of India guidelines name as harmful, such as a tourniquet, a healer, cutting or sucking, or waiting.</li>
-      <li>Only completed checks count. A device that completes more than 5 checks in a day only counts for its first 5. A check finished faster than anyone could read it (part 1 in under 20 s, or the lesson plus part 3 in under 30 s) is not counted. Excluded checks are shown below.</li>
+      <li>Only completed checks count. Each browser counts for at most 5 checks a day, and each network for at most 150 a day. The network limit exists because many Indian mobile users share one IP address, and a classroom shares one Wi-Fi. A check finished faster than anyone could read it (part 1 in under 20 s, or the lesson plus part 3 in under 30 s) is not counted. Excluded checks are shown below.</li>
+      <li><b>What these rules can't stop:</b> the browser ID is kept in the browser, so someone who clears it repeatedly can add up to 150 slow, scripted checks a day from one network. To make that visible, the page shows how many distinct networks contributed and the largest share from any one network.</li>
       <li><b>Limits:</b> this measures what people would do immediately after the lesson, not months later, and not in a real emergency. People who open a shared link are self-selected and are not a random sample of rural India.</li>
     </ul>
     <p>Raw anonymised rows: <a href="/api/impact/sessions.csv">sessions.csv</a> · JSON: <a href="/api/impact">/api/impact</a></p>

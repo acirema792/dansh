@@ -355,6 +355,9 @@ def impact_summary(include_test: bool = False) -> dict:
                                   for k, g in gv.items()} for gname, gv in groups.items()},
             "shared": shared, "first_completed_at": first, "last_completed_at": last,
             "excluded": store.excluded_counts(),
+            "networks": len({r["network"] for r in rows if r["network"]}),
+            "max_share_one_network_pct": _pct(max(
+                (sum(1 for r in rows if r["network"] == nw) for nw in {r["network"] for r in rows}), default=0), n),
             "exclusion_rules": {"device_cap_per_day": MAX_COMPLETIONS_PER_DEVICE_PER_DAY,
                                 "network_cap_per_day": MAX_COMPLETIONS_PER_NETWORK_PER_DAY,
                                 "min_seconds_part1": MIN_PRE_SECS, "min_seconds_lesson_and_part3": MIN_POST_SECS},

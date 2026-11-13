@@ -28,7 +28,9 @@ Times are the `ran_at` values recorded in each bundle. The header comment in `ho
 
 ## Audit-found inputs (adversarial set)
 
-Two independent audit rounds and two verifier passes wrote **about 180 fresh adversarial messages**. Many of them broke earlier versions: false safes, dropped danger signs and false alarms. Every one is now a permanent test (`tests/test_audit_r1.py`, `test_verify_r1.py`, `test_verify_r1b.py`, `test_audit_r2.py`). This is a harder benchmark than the scenario sets above, which a builder writes. The audit reports are in `loop/audits/`.
+Two independent audit rounds and three verifier passes wrote and labelled adversarial messages, and many of them broke earlier versions. Their labelled corpus (**447 messages**: 217 bites, 142 danger-sign, 62 controls, 22 other-animal, 4 other) is `tests/data/adversarial.json`. `tests/test_adversarial.py` asserts **0 false safes, 0 under-triage, and a crisis line for self-harm**.
+
+Result at the time of writing: **445/447 as labelled**. The 2 differences are over-triage: "बंदर ने काटा, शायद" and "kaanta chubh gaya, khoon nikal raha hai" get the snakebite plan. The rules were fixed *against* this corpus, so it is a regression test, not a held-out score. The held-out measure is each verifier's fresh probe set, reported in `loop/audits/`.
 
 ## What this does and doesn't show
 
