@@ -17,7 +17,7 @@ from .parser import Facts
 
 PROVIDER_URL = os.environ.get("DANSH_LLM_URL", "https://api.anthropic.com/v1/messages")
 MODEL = os.environ.get("DANSH_LLM_MODEL", "claude-haiku-4-5")
-TIMEOUT = float(os.environ.get("DANSH_LLM_TIMEOUT", "6"))
+TIMEOUT = float(os.environ.get("DANSH_LLM_TIMEOUT", "2.5"))  # never hold an emergency answer longer
 
 BOOL_KEYS = ["snake", "bite", "unknown_bite", "occult_krait", "prevention", "self_harm", "swelling",
              "done_tourniquet", "done_cut", "done_healer", "done_ate", "done_walked", "done_catch", "child", "pregnant"]
