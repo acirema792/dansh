@@ -1,5 +1,7 @@
 # Submission: copy into the GitHub issue form
 
+**Filed 14 Nov 2026 ~20:00 UTC as https://github.com/karlmehta/code-for-a-billion/issues/143.** The issue can be edited; update the impact section there if real users arrive.
+
 Form: https://github.com/karlmehta/code-for-a-billion/issues/new?template=submission.yml
 Title: `[Submission] Dansh: the first 30 minutes after a snakebite (Health)`
 

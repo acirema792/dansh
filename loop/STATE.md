@@ -1,6 +1,6 @@
 # Loop state
 
-Round: 3 closed. 3103d26 APPROVED by verifier 7 (0/224 fresh false safes). Loop stopped on plateau rule for further tuning; submission next
+Round: 3 closed. 3103d26 APPROVED by verifier 7 (0/224 fresh false safes). Loop stopped on plateau rule for further tuning. SUBMITTED: issue #143 (14 Nov ~20:00 UTC)
 Scores: round 1 = 5.4, round 2 = 6.5
 
 ## Baseline tripwires
