@@ -124,8 +124,9 @@
    "round": 3,
    "finding": "verifier-6 REJECT (b002768)",
    "action": "person/contact/container rule for snake events, unknown agents, removed catch-all, negation-aware sign patterns, unsure note on INFO/OFF_TOPIC (3103d26)",
-   "outcome": "pending-verify",
-   "note": "pushed before verification: strictly safer than live b557550 on every measured set (r6 fresh set: 20 -> 0 clear false safes after tuning; pre-tuning b002768 had 12). Verifier-7 measures it."
+   "outcome": "success",
+   "note": "pushed before verification: strictly safer than live b557550 on every measured set (r6 fresh set: 20 -> 0 clear false safes after tuning; pre-tuning b002768 had 12). Verifier-7 measures it.",
+   "verifier": "verify-round-7 APPROVE: 0/224 fresh false safes, 1 non-arguable under, 0 plain->CRITICAL"
   }
  ]
 }

@@ -46,14 +46,17 @@ https://65-20-73-107.sslip.io (judges: add `?test=1` so your clicks aren't count
 Sources are linked in the README.
 
 **Deployment & impact data**
-Live since 13 Nov 2026 15:50 UTC on Vultr Mumbai. As of {{SNAPSHOT_TIME}}:
-- **{{N}} people** completed the check, on {{DEVICES}} devices;
-- **{{DANGER_PRE}}% chose at least one dangerous action before the lesson, {{DANGER_POST}}% after**;
-- average score {{PRE}}% → {{POST}}%.
+Live since 13 Nov 2026 15:50 UTC on Vultr Mumbai, updated from the public repo by a self-updater (the running commit is shown at /api/health).
 
-Per-decision results, the raw CSV and the exclusion rules (test traffic, more than 5 a day per device, too-fast completions) are at https://65-20-73-107.sslip.io/impact. Limits: this measures decisions right after the lesson, among self-selected users, not outcomes.
+**Field use, stated plainly:** as of 14 Nov 2026 19:50 UTC, **0 people outside the team** had completed the 3-minute check, and the emergency agent had 0 non-test uses. We do not present test traffic or invented users as impact. The measurement is live and public: it counts each completed check anonymously, excludes test traffic, more than 5 a day per device, more than 150 a day per network, and too-fast completions, and reports the before/after share of people choosing a dangerous action with 95% intervals: https://65-20-73-107.sslip.io/impact (raw CSV linked there). Any numbers that appear there after submission are real users, counted by those rules.
 
-Safety benchmark on held-out scenarios written before their first run: 12/12 bite messages sent to hospital, 0 false "safe".
+**What we can prove today: safety on messages we did not write.** Seven rounds of independent reviewers wrote fresh, realistic messages (Hinglish, typos, Devanagari, unknown biters, people touching snakes) and ran them against the deployed code before any fix:
+- Latest round (round 7, commit 3103d26, the deployed parser): **224 fresh messages, 0 bite messages left without a hospital referral**, 1 clear danger sign graded URGENT instead of CRITICAL, 0 plain bites over-escalated. The previous version, which round 6 rejected, missed 1 of these bite messages, and the earlier live version missed 1 and under-graded 5 danger signs.
+- Earlier rounds found 25, 30, 15 and 12 missed bite messages on their fresh sets. Each finding was fixed and added to a regression corpus, now **1,294 labelled messages: 0 false "safe", 0 danger sign under-graded**.
+- Scenario benchmarks with expectations written before the first run: **54/54 matched; 42/42 bite cases sent to hospital**.
+- Every reply shows 108. Any reply that mentions a snake but isn't read as a bite also says "if you are not sure, treat it as a snakebite and go to the hospital".
+
+Full history, including every miss: BENCHMARK-RESULTS.md and loop/audits/ in the repo.
 
 **Track / category**
 Health

@@ -1,6 +1,6 @@
 # Loop state
 
-Round: 3 (safety rework 3103d26 deployed; verifier pass 7 running)
+Round: 3 closed. 3103d26 APPROVED by verifier 7 (0/224 fresh false safes). Loop stopped on plateau rule for further tuning; submission next
 Scores: round 1 = 5.4, round 2 = 6.5
 
 ## Baseline tripwires
@@ -11,7 +11,10 @@ Scores: round 1 = 5.4, round 2 = 6.5
 - Live serves 3103d26 (pushed before verifier 7 because live b557550 was measurably less safe)
 
 ## Open findings
-- S3 parser false safes on fresh phrasings: verifier rounds 3-5 each found new ones; 3103d26 deployed, verifier 7 measuring it. Plateau signal: every fresh set finds new phrasings (r3 25, r4 30, r5 15, r6 12 false safes)
+- S1 over-triage: sign words fire on ordinary wording (neend me, andhera, shaking, gir pada, been sick, sit up, reddish) -> CRITICAL for plain bites (verify-round-7 §5)
+- S1 under-triage: 'keeps falling asleep', 'lethargic', 'jawab nahi de rahe', 'everything looks double', 'urine is not normal, it is red'
+- S1 unsure note shows on 'snake plant care tips', 'snakes and ladders rules'
+- S3 parser false safes on fresh phrasings: verifier rounds 3-5 each found new ones; 3103d26 approved by verifier 7 (0 false safes on 224 fresh). Plateau signal: every fresh set finds new phrasings (r3 25, r4 30, r5 15, r6 12 false safes)
 - AgentFoundry requirement: DONE (d172219, AGENTFOUNDRY.md)
 - F9/F10 judge docs: README/JUDGES/CLAIMS/EVIDENCE written; BENCHMARK-RESULTS + IMPACT-SNAPSHOT pending live run
 - F11 deploy: no tested-update gate / rollback in self-updater (protected: deploy/**)
