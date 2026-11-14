@@ -9,7 +9,7 @@ Title: `[Submission] Dansh: the first 30 minutes after a snakebite (Health)`
 Dansh (दंश)
 
 **Team members (names + GitHub handles)**
-{{NAME}} (@acirema792)
+VALOR (@acirema792)
 
 **Problem statement**
 Snakebite kills tens of thousands of Indians a year, mostly farm workers and children in villages. Many die at home or on the way, because the first hour is lost to a tight rope, a cut, or a trip to the ojha before the hospital. A government hospital with antivenom treats it free. What's missing is the right decision, in the family's own language, in the first minutes.
@@ -62,7 +62,7 @@ Full history, including every miss: BENCHMARK-RESULTS.md and loop/audits/ in the
 Health
 
 **Contact email**
-{{EMAIL}}
+Via GitHub: @acirema792
 
 **Confirmations**
 - [x] Built using AgentFoundry (AF), the official IDE (session, commit d172219 and screenshots in AGENTFOUNDRY.md)
